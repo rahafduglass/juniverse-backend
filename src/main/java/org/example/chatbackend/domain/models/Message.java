@@ -1,14 +1,16 @@
 package org.example.chatbackend.domain.models;
 
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.example.chatbackend.domain.enums.MessageStatus;
-import org.example.chatbackend.persistance.entities.ChatEntity;
-import org.example.chatbackend.persistance.entities.UserEntity;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Message {
 
     private int id;

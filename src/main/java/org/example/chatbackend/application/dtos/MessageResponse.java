@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SendMessageResponse {
+public class MessageResponse {
 
     private int id;
 

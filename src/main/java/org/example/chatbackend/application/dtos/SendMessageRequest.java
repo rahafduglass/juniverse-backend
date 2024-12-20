@@ -2,7 +2,7 @@ package org.example.chatbackend.application.dtos;
 
 public class SendMessageRequest {
 
-    private int chat_id;
+    private int chatId;
 
     private int sender_id;
 

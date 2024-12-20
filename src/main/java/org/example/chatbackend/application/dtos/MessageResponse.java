@@ -14,15 +14,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class MessageResponse {
 
-    private int id;
+    private Long id;
 
     private String content;
 
     private LocalDateTime localDateTime;
 
-    private int senderId;
+    private Long senderId;
 
-    private int chatId;
+    private Long chatId;
 
     private MessageStatus status;
 

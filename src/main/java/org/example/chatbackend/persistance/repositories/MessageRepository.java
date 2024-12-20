@@ -11,5 +11,6 @@ public interface MessageRepository {
 
     Message save(Message message);
 
-    List<Message> findAllByChatIdAndMessageStatus(long chatId, MessageStatus sent);
+    List<Message> findAllPublicMessagesByChatIdAndMessageStatus(long chatId, MessageStatus sent);
+    List<Message> findAllPrivateMessagesByChatIdAndMessageStatus(long chatId, MessageStatus sent);
 }

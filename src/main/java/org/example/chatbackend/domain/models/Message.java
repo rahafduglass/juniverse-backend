@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Message {
 
-    private int id;
+    private Long id;
 
     private String content;
 
@@ -21,7 +21,7 @@ public class Message {
 
     private int senderId;
 
-    private int chatId; // to get type "private" or "public"
+    private int chatId; //
 
     private MessageStatus status;
 }

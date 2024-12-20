@@ -2,9 +2,9 @@ package org.example.chatbackend.application.dtos;
 
 public class SendMessageRequest {
 
-    private int chatId;
+    private Long chatId;
 
-    private int sender_id;
+    private Long senderId;
 
     private String content;
 

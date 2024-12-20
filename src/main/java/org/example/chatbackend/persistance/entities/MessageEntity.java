@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class MessageEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name="content")
     private String content;
@@ -27,8 +27,12 @@ public class MessageEntity {
     private UserEntity senderId;
 
     @ManyToOne
-    @JoinColumn(name="chat_id",referencedColumnName = "id")
-    private ChatEntity chatId; // to get type "private" or "public"
+    @JoinColumn(name="public_chat_id",referencedColumnName = "id")
+    private PublicChatEntity PublicChatId; //
+
+    @ManyToOne
+    @JoinColumn(name="private_chat_id",referencedColumnName = "id")
+    private PrivateChatEntity privateChatId;
 
     @Column(name="status")
     private MessageStatus status;

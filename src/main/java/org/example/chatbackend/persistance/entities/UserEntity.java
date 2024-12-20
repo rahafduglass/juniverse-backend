@@ -14,7 +14,7 @@ import org.example.chatbackend.domain.enums.UserRole;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name="password")
     private String password;
@@ -43,4 +43,7 @@ public class UserEntity {
     @Column(name="is_therapist")
     private boolean isTherapist; // therapist is ONE , we have only one therapist
 
+    @ManyToOne
+    @JoinColumn(name="public_chat_id", referencedColumnName = "id")
+    private PublicChatEntity publicChat;
 }

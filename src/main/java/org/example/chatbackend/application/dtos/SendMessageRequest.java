@@ -1,8 +1,9 @@
 package org.example.chatbackend.application.dtos;
 
-public class SendMessageRequest {
+import lombok.Data;
 
-    private Long chatId;
+@Data
+public class SendMessageRequest {
 
     private Long senderId;
 

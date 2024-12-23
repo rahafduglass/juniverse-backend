@@ -6,44 +6,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.chatbackend.domain.enums.UserRole;
 
-@Entity
+@Entity (name="user")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Table(name="user")
 public class UserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="password")
+    private String username;
+
     private String password;
 
-    @Column(name="email")
+    private String firstName;
+
+    private String lastName;
+
     private String email;
 
-    @Column(name="fullname")
-    private String fullname;
-
-    @Column(name="phone_number")
-    private String phoneNumber;
-
-    @Column(name="user_role")
-    private UserRole userRole;
-
-    @Column(name="year_of_study")
-    private int yearOfStudy;
-
-    @Column(name="major")
-    private String major;
-
-    @Column(name="bio")
-    private String bio;
-
-    @Column(name="is_therapist")
-    private boolean isTherapist; // therapist is ONE , we have only one therapist
-
-    @ManyToOne
-    @JoinColumn(name="public_chat_id", referencedColumnName = "id")
-    private PublicChatEntity publicChat;
+    private UserRole Role;
 }

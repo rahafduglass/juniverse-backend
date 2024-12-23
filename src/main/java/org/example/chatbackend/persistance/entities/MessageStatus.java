@@ -5,24 +5,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name="private_chat")
+@Entity(name="message_status")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="private_chat")
-public class PrivateChatEntity {
-
+@Table(name="message_status")
+public class MessageStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne //each user has one private chat
+    @ManyToOne
+    @JoinColumn(name = "message_id", nullable = false)
+    private MessageEntity message;
+
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @ManyToOne //one therapist has many private chats
-    @JoinColumn(name = "therapist_id", nullable = false)
-    private UserEntity therapist; //it'll be set from model as lookup data
-
+    @Column(nullable = false)
+    private boolean isRead;
 
 }

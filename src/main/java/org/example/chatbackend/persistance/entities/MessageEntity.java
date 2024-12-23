@@ -2,38 +2,40 @@ package org.example.chatbackend.persistance.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.chatbackend.domain.enums.MessageStatus;
+import org.apache.catalina.User;
+import org.example.chatbackend.domain.enums.ChatType;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name="message")
-@NoArgsConstructor
+@Entity(name="message")
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Table(name="message")
 public class MessageEntity {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="content")
     private String content;
 
-    @Column(name="time_stamp")
-    private LocalDateTime localDateTime;
+    @Column(nullable = false)
+    private LocalDateTime timestamp;
+
+    private boolean isRead;
+
+    @Enumerated(EnumType.STRING)
+    private ChatType chatType; // Enum for chat type: PUBLIC or PRIVATE
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sender_id")
+    private UserEntity senderId; //always needed either a user to public OR user to therapist OR therapist to user
 
     @ManyToOne
-    @JoinColumn(name="sender_id", referencedColumnName = "id")
-    private UserEntity senderId;
+    @JoinColumn(name = "receiver_id", nullable = true)
+    private UserEntity receiverId; //nullable for public chat
 
-    @ManyToOne
-    @JoinColumn(name="public_chat_id",referencedColumnName = "id")
-    private PublicChatEntity PublicChatId; //
-
-    @ManyToOne
-    @JoinColumn(name="private_chat_id",referencedColumnName = "id")
-    private PrivateChatEntity privateChatId;
-
-    @Column(name="status")
-    private MessageStatus status;
 }

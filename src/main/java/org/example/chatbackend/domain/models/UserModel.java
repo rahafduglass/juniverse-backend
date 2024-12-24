@@ -1,23 +1,17 @@
-package org.example.chatbackend.persistance.entities;
+package org.example.chatbackend.domain.models;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.chatbackend.domain.enums.UserRole;
 
-@Entity (name="user")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="user")
-public class UserEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserModel {
     private Long id;
-
-    private String username;
 
     private String password;
 

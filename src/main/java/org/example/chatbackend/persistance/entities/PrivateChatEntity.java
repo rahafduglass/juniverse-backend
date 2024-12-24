@@ -18,11 +18,12 @@ public class PrivateChatEntity {
 
     @OneToOne //each user has one private chat
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private SysUserEntity user;
 
     @ManyToOne //one therapist has many private chats
     @JoinColumn(name = "therapist_id", nullable = false)
-    private UserEntity therapist; //it'll be set from model as lookup data
+    private SysUserEntity therapist; //it'll be set from model as lookup data
+
 
 
 }

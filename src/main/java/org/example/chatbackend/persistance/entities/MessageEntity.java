@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.User;
 import org.example.chatbackend.domain.enums.ChatType;
 
 import java.time.LocalDateTime;
@@ -25,6 +24,7 @@ public class MessageEntity {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
+    @Column(nullable = true) // nullable for public chat
     private boolean isRead;
 
     @Enumerated(EnumType.STRING)
@@ -32,10 +32,10 @@ public class MessageEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sender_id")
-    private UserEntity senderId; //always needed either a user to public OR user to therapist OR therapist to user
+    private SysUserEntity senderId; //always needed either a user to public OR user to therapist OR therapist to user
 
     @ManyToOne
     @JoinColumn(name = "receiver_id", nullable = true)
-    private UserEntity receiverId; //nullable for public chat
+    private SysUserEntity receiverId; //nullable for public chat
 
 }

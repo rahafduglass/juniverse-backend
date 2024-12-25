@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/chat/private")
 public class PrivateChatController {
 
-
-
 }
 
 // api endpoints for chat/private/ =>

@@ -23,7 +23,6 @@ public class SysUserEntity {
 
     private String lastName;
 
-    @Column(nullable = false)
     private String email;
 
     @Enumerated(EnumType.STRING)

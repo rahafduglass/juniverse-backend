@@ -16,4 +16,6 @@ public interface UserMapper {
     LoginResponse modelToResponse(UserModel userModel);
 
     UserModel entityToModel(SysUserEntity sysUserEntity);
+
+    SysUserEntity modelToEntity(UserModel userModel);
 }

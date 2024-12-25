@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.chatbackend.domain.enums.ChatType;
+import org.example.chatbackend.persistance.entities.PrivateChatEntity;
 
 import java.time.LocalDateTime;
 
@@ -27,5 +28,7 @@ public class MessageModel {
     private Long senderId; //always needed either a user to public OR user to therapist OR therapist to user
 
     private Long receiverId; //nullable for public chat
+
+    private Long privateChatId; //nullable for public chat
 
 }

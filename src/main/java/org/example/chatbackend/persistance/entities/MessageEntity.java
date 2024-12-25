@@ -30,12 +30,17 @@ public class MessageEntity {
     @Enumerated(EnumType.STRING)
     private ChatType chatType; // Enum for chat type: PUBLIC or PRIVATE
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "sender_id")
-    private SysUserEntity senderId; //always needed either a user to public OR user to therapist OR therapist to user
+    private SysUserEntity sender; //always needed either a user to public OR user to therapist OR therapist to user
 
     @ManyToOne
     @JoinColumn(name = "receiver_id", nullable = true)
-    private SysUserEntity receiverId; //nullable for public chat
+    private SysUserEntity receiver; //nullable for public chat
+
+    @ManyToOne
+    @JoinColumn(name="private_chat_id",nullable = true)//null if its public chat
+    private PrivateChatEntity privateChat;
+
 
 }

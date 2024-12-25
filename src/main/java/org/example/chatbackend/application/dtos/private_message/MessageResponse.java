@@ -1,4 +1,4 @@
-package org.example.chatbackend.application.dtos;
+package org.example.chatbackend.application.dtos.private_message;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +22,10 @@ public class MessageResponse {
 
     private Long senderId;
 
-    private Long chatId;
+    private Long receiverId;
 
-    private MessageStatus status;
+    private Long privateChatId;
+
+    private boolean isRead;
 
 }

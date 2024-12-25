@@ -21,5 +21,5 @@ public class UserModel {
 
     private String email;
 
-    private UserRole Role;
+    private UserRole role;
 }

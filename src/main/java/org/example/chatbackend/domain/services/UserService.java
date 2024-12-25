@@ -16,16 +16,14 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-
+    private final Long therapistId= 2L;
     public UserModel authenticateUser(UserModel userModel) {
         Optional<SysUserEntity> optionalUserEntity = userRepository.findUserById(userModel.getId());
         if (optionalUserEntity.isEmpty())
             return null; // user doesnt exist
         UserModel userModel1 = userMapper.entityToModel(optionalUserEntity.get());
-        if (!userModel1.getPassword().equals(userModel.getPassword()))
+        if (userModel1.getPassword().equals(userModel.getPassword()))
             return userModel1;
         else return null; //wrong password
-
     }
-
 }

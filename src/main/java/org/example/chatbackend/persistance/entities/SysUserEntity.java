@@ -23,7 +23,9 @@ public class SysUserEntity {
 
     private String lastName;
 
+    @Column(nullable = false)
     private String email;
 
-    private UserRole Role;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 }

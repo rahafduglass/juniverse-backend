@@ -1,16 +1,12 @@
 package org.example.chatbackend.application.controllers;
 
-import lombok.RequiredArgsConstructor;
-import org.example.chatbackend.application.dtos.MessageResponse;
-import org.example.chatbackend.application.dtos.SendMessageRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/chat/private")
 public class PrivateChatController {
+
 
 
 }

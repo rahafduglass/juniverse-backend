@@ -2,7 +2,6 @@ package org.example.chatbackend.domain.services;
 
 
 import lombok.RequiredArgsConstructor;
-import org.example.chatbackend.application.dtos.private_message.MessageResponse;
 import org.example.chatbackend.domain.enums.ChatType;
 import org.example.chatbackend.domain.models.MessageModel;
 import org.example.chatbackend.domain.models.PrivateChatModel;
@@ -12,14 +11,12 @@ import org.example.chatbackend.persistance.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class MessageService {
 
     private final MessageRepository messageRepository;
-    private final Long therapistId = 2L;
     private final PrivateChatRepository privateChatRepository;
     private final UserRepository userRepository;
     private final PrivateChatService privateChatService; //this is not too good but yea lets keep it for now
@@ -27,6 +24,7 @@ public class MessageService {
     public MessageModel sendPrivateMessage(MessageModel messageModel) {
         //chat exists? send: create chat THEN send;
         PrivateChatModel privateChat;
+        Long therapistId = 2L;
         if (messageModel.getSenderId().equals(therapistId)) {
             privateChat = privateChatRepository.findPrivateChatByUser(userRepository.findUserById(messageModel.getReceiverId()));
         } else {

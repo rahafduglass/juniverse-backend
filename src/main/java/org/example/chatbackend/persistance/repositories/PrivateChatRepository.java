@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface PrivateChatRepository {
 
-    PrivateChatModel findPrivateChatByTherapistAndUser(UserModel senderId, UserModel receiverId);
 
     PrivateChatModel findPrivateChatByUser(UserModel senderId);
 

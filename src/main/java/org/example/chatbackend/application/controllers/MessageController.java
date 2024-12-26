@@ -1,15 +1,13 @@
 package org.example.chatbackend.application.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.example.chatbackend.application.dtos.private_message.MessageResponse;
 import org.example.chatbackend.application.dtos.private_message.MessageRequest;
+import org.example.chatbackend.application.dtos.private_message.MessageResponse;
 import org.example.chatbackend.domain.mappers.MessageMapper;
 import org.example.chatbackend.domain.models.MessageModel;
 import org.example.chatbackend.domain.services.MessageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

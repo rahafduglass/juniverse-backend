@@ -11,9 +11,10 @@ import org.example.chatbackend.persistance.jpa.PrivateChatJpaRepository;
 import org.example.chatbackend.persistance.repositories.PrivateChatRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
-
 public class PrivateChatAdapter implements PrivateChatRepository {
 
     private final PrivateChatJpaRepository privateChatJpaRepository;
@@ -33,6 +34,11 @@ public class PrivateChatAdapter implements PrivateChatRepository {
     @Override
     public PrivateChatModel createPrivateChat(PrivateChatModel privateChat) {
         return privateChatMapper.entityToModel(privateChatJpaRepository.save(privateChatMapper.modelToEntity(privateChat)));
+    }
+
+    @Override
+    public List<PrivateChatModel> findAllByTherapistId(Long therapistId) {
+        return privateChatMapper.listOfEntitiesToListOfModels(privateChatJpaRepository.findAllByTherapistId(therapistId));
     }
 
 

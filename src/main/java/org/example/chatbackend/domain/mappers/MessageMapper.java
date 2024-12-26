@@ -7,6 +7,8 @@ import org.example.chatbackend.persistance.entities.MessageEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface MessageMapper {
 
@@ -23,4 +25,8 @@ public interface MessageMapper {
     @Mapping(source = "receiver.id", target = "receiverId")
     @Mapping(source = "privateChat.id", target = "privateChatId")
     MessageModel entityToModel(MessageEntity messageEntity);
+
+    List<MessageResponse> listOfModelsToListOfResponses(List<MessageModel> listOfMessages);
+
+    List<MessageModel> listOfEntitiesToListOfModels(List<MessageEntity> listOfMessages);
 }

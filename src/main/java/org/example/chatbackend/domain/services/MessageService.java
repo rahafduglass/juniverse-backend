@@ -2,6 +2,7 @@ package org.example.chatbackend.domain.services;
 
 
 import lombok.RequiredArgsConstructor;
+import org.example.chatbackend.application.dtos.private_message.MessageResponse;
 import org.example.chatbackend.domain.enums.ChatType;
 import org.example.chatbackend.domain.models.MessageModel;
 import org.example.chatbackend.domain.models.PrivateChatModel;
@@ -11,6 +12,7 @@ import org.example.chatbackend.persistance.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,20 +29,22 @@ public class MessageService {
         PrivateChatModel privateChat;
         if (messageModel.getSenderId().equals(therapistId)) {
             privateChat = privateChatRepository.findPrivateChatByUser(userRepository.findUserById(messageModel.getReceiverId()));
-            //send
-
-        }
-        else {
+        } else {
             privateChat = privateChatRepository.findPrivateChatByUser(userRepository.findUserById(messageModel.getSenderId()));
             if (privateChat == null)
-                privateChat=privateChatService.createPrivateChat(messageModel.getSenderId());
+                privateChat = privateChatService.createPrivateChat(messageModel.getSenderId());
         }
-        //send
         messageModel.setChatType(ChatType.PRIVATE);
         messageModel.setRead(false);
         messageModel.setTimestamp(LocalDateTime.now());
         messageModel.setPrivateChatId(privateChat.getId()); //this may cause a problemmmmmmmmm if it was null yayyy but nvm for now
         return sendMessage(messageModel);
+    }
+
+    public Long readMessage(Long id) {
+        MessageModel messageModel = messageRepository.findById(id);
+        messageModel.setRead(true);
+        return messageRepository.updateMessageStatus(messageModel).getId();
     }
 
     private MessageModel sendMessage(MessageModel messageModel) {

@@ -24,8 +24,4 @@ public class AuthenticationController {
         return ResponseEntity.ok(userMapper.modelToResponse(sysUserService.authenticateUser(userModel)));
     }
 
-    @GetMapping("/name")
-    public ResponseEntity<String> getUserName(){
-        return ResponseEntity.ok("rahaf");
-    }
 }

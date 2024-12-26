@@ -1,17 +1,46 @@
 package org.example.chatbackend.application.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.AllArgsConstructor;
+import org.example.chatbackend.application.dtos.private_chat.PrivateChatResponse;
+import org.example.chatbackend.application.dtos.private_message.MessageResponse;
+import org.example.chatbackend.domain.services.PrivateChatService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/v1/chat/private")
 public class PrivateChatController {
 
+    private final PrivateChatService privateChatService;
+
+
+
+    @Operation(
+            summary = "Get all messages for a private chat(therapist-user)",
+            description = "fetches all messages associated with the userId only not therapistId."
+    )
+    @GetMapping("/users/{userId}/chat-messages")
+    public ResponseEntity<List<MessageResponse>> getUserChatMessages(@PathVariable Long userId){
+        return ResponseEntity.ok(privateChatService.getUserChatMessages(userId));
+    }
+
+
+
+    @Operation(
+            summary = "Get all chats for a therapist",
+            description = "Fetches all chat sessions associated with a specific therapist by their ID which is for now only 2."
+    )
+    @GetMapping("/therapists/{therapistId}/chats")
+    public ResponseEntity<List<PrivateChatResponse>> getTherapistChats(@PathVariable Long therapistId){
+        return ResponseEntity.ok(privateChatService.getTherapistChats(therapistId));
+    }
+
 }
 
-// api endpoints for chat/private/ =>
-// 1. readMessage => mark message as read
-// 2. getAllMessages => check first if chat exists connected to the requester id if requester isn't therapist? (check in model) id is userID otherwise its therapistID which depends on either chatID or receieverID (frontend state)
-// 3. sendMessage => check first if chat exists , create new one, or send to existing chat.
-// 4. getTherapistChats => by using his id (the only user that's connected to many private chats) I return all chats connected to therapist type
-// 5. getChatUnreadMessagesNumber => how many isRead = false in a private chat, depends on getAllMessages.

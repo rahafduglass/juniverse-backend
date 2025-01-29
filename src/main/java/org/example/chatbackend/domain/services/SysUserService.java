@@ -16,11 +16,11 @@ public class SysUserService {
 
     private final UserRepository userRepository;
 
-    public UserModel authenticateUser(UserModel userModel) {
+    public UserModel authenticateUser(UserModel userModel) throws Exception  {
         UserModel userModel1 = userRepository.findUserById(userModel.getId());
-        if (userModel1 == null) return null;//user not found
+        if (userModel1 == null) throw new Exception("Wrong ID");//user not found
         else if (userModel1.getPassword().equals(userModel.getPassword())) return userModel1;
-        else return null;
+        else throw new Exception("wrong Password");// wrong Password
     }
 
 

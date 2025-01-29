@@ -20,6 +20,8 @@ public class MessageController {
     private final MessageService messageService;
     private final MessageMapper messageMapper;
 
+
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/private/send")
     public ResponseEntity<ApiResponse<MessageResponse>> sendPrivateMessage(@RequestBody MessageRequest messageRequest) {
         try {
@@ -48,7 +50,7 @@ public class MessageController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response); // HTTP 417: Expectation Failed
         }
     }
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/private/read/{messageId}")
     public ResponseEntity<ApiResponse<Long>> readMessage(@PathVariable Long messageId) {
         try {

@@ -10,10 +10,7 @@ import org.example.chatbackend.domain.models.UserModel;
 import org.example.chatbackend.domain.services.PrivateChatService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,6 +27,7 @@ public class PrivateChatController {
             summary = "Get all messages for a private chat(therapist-user)",
             description = "fetches all messages associated with the userId only not therapistId."
     )
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/users/{userId}/chat-messages")
     public ResponseEntity<ApiResponse<List<MessageResponse>>> getUserChatMessages(@PathVariable Long userId) {
         try {
@@ -65,6 +63,7 @@ public class PrivateChatController {
             summary = "Get all chats for a therapist",
             description = "Fetches all chat sessions associated with a specific therapist by their ID which is for now only 2."
     )
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/therapists/{therapistId}/chats")
     public ResponseEntity<ApiResponse<List<PrivateChatResponse>>> getTherapistChats(@PathVariable Long therapistId) {
         try {

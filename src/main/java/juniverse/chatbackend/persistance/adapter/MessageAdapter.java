@@ -17,6 +17,11 @@ public class MessageAdapter implements MessageRepository {
     private final MessageMapper messageMapper;
 
     @Override
+    public Integer getNumOfUnreadMessagesByChatId(Long id) {
+        return messageJpaRepository.getNumOfUnreadMessagesByChatId(id);
+    }
+
+    @Override
     public MessageModel sendMessage(MessageModel messageModel) {
         return messageMapper.entityToModel(messageJpaRepository.save(messageMapper.modelToEntity(messageModel)));
     }

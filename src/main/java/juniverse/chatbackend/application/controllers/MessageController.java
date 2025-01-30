@@ -1,5 +1,6 @@
 package juniverse.chatbackend.application.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.application.dtos.private_message.MessageRequest;
 import juniverse.chatbackend.application.dtos.private_message.MessageResponse;
@@ -21,6 +22,11 @@ public class MessageController {
     private final MessageMapper messageMapper;
 
 
+    @Operation(
+            summary = "if a user wants to initialize a chat or resume an already initialized chat they send their ID ",
+            description = "1. if the sender is a regular user the receiver id=2 because we have one therapist, " +
+                    "2. if the sender is a therapist, the receiver id depends on the userId that was already fetched in therapist chats."
+    )
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/private/send")
     public ResponseEntity<ApiResponse<MessageResponse>> sendPrivateMessage(@RequestBody MessageRequest messageRequest) {
@@ -50,6 +56,12 @@ public class MessageController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response); // HTTP 417: Expectation Failed
         }
     }
+
+    @Operation(
+            summary = "when the receiver enters the private chat all the sent messages in that chat are marked read",
+            description = "1. when the therapist enters a private chat the messages sent from the user will be marked as read" +
+                    "2. when the user enters a private chat the messages sent from the therapist will be marked as read."
+    )
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/private/read/{messageId}")
     public ResponseEntity<ApiResponse<Long>> readMessage(@PathVariable Long messageId) {

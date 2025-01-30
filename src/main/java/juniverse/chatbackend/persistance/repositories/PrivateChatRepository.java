@@ -14,5 +14,5 @@ public interface PrivateChatRepository {
 
     PrivateChatModel createPrivateChat(PrivateChatModel privateChat);
 
-    List<PrivateChatModel> findAllByTherapistId(Long therapistId);
+    List<Object[]> findAllByTherapistId(Long therapistId);
 }

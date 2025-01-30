@@ -31,8 +31,8 @@ public class PrivateChatAdapter implements PrivateChatRepository {
     }
 
     @Override
-    public List<PrivateChatModel> findAllByTherapistId(Long therapistId) {
-        return privateChatMapper.listOfEntitiesToListOfModels(privateChatJpaRepository.findAllByTherapistId(therapistId));
+    public List<Object[]> findAllByTherapistId(Long therapistId) {
+        return privateChatJpaRepository.findChatsWithUserDetails(therapistId);
     }
 
 

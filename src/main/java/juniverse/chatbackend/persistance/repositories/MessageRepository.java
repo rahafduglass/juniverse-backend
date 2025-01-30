@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface MessageRepository {
 
+     Integer getNumOfUnreadMessagesByChatId(Long id);
+
     MessageModel sendMessage(MessageModel messageModel);
 
     MessageModel updateMessageStatus(MessageModel messageModel);

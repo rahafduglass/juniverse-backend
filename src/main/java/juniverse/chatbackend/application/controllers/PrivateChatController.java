@@ -59,7 +59,7 @@ public class PrivateChatController {
 
     @Operation(
             summary = "Get all chats for a therapist",
-            description = "Fetches all chat sessions associated with a specific therapist by their ID which is for now only 2."
+            description = "Fetches all chats associated with the therapist by their ID which is id=2 because we have only one therapist."
     )
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/therapists/{therapistId}/chats")
@@ -93,4 +93,4 @@ public class PrivateChatController {
     }
 
 }
-
+//

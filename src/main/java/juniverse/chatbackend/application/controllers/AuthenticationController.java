@@ -1,6 +1,7 @@
 package juniverse.chatbackend.application.controllers;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.application.dtos.authentication.LoginRequest;
 import juniverse.chatbackend.application.dtos.ApiResponse;
@@ -20,6 +21,9 @@ public class AuthenticationController {
     private final SysUserService sysUserService;
     private final UserMapper userMapper;
 
+    @Operation(
+            summary = "user send their credentials to authenticate their identity and give them access to the system."
+    )
     @PostMapping("/authenticate")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<ApiResponse<LoginResponse>> authenticateUser(@RequestBody LoginRequest loginRequest){

@@ -1,5 +1,7 @@
 package juniverse.chatbackend.domain.services;
 
+import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
+import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.application.dtos.private_chat.PrivateChatResponse;
 import juniverse.chatbackend.application.dtos.private_message.MessageResponse;
@@ -12,7 +14,9 @@ import juniverse.chatbackend.persistance.repositories.PrivateChatRepository;
 import juniverse.chatbackend.persistance.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +43,15 @@ public class PrivateChatService {
     }
 
     public List<PrivateChatResponse> getTherapistChats(Long therapistId) {
-        return privateChatMapper.listOfModelsToListOfResponses(privateChatRepository.findAllByTherapistId(therapistId));
+        List<Object[]> results= privateChatRepository.findAllByTherapistId(therapistId);
+        return results.stream().map(row -> {
+            PrivateChatEntity chat = (PrivateChatEntity) row[0];  // Extract PrivateChatEntity
+            SysUserEntity user = (SysUserEntity) row[1];  // Extract SysUserEntity
+            Integer unreadMessagesCount = messageRepository.getNumOfUnreadMessagesByChatId(chat.getTherapist().getId()); // Extract unread messages count
+
+            return privateChatMapper.entityToResponse(chat, user, unreadMessagesCount);
+        }).collect(Collectors.toList());
+        //map list of
+
     }
 }

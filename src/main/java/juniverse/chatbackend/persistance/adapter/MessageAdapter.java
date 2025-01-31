@@ -17,8 +17,8 @@ public class MessageAdapter implements MessageRepository {
     private final MessageMapper messageMapper;
 
     @Override
-    public Integer getNumOfUnreadMessagesByChatId(Long id) {
-        return messageJpaRepository.getNumOfUnreadMessagesByChatId(id);
+    public Integer getNumOfUnreadMessagesByChatIdAndReceiverId(Long chatId,Long receiverId) {
+        return messageJpaRepository.getNumOfUnreadMessagesByChatIdAndReceiverId(chatId,receiverId);
     }
 
     @Override

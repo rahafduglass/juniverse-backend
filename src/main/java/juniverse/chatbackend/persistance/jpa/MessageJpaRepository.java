@@ -12,8 +12,8 @@ import java.util.List;
 public interface MessageJpaRepository extends JpaRepository<MessageEntity, Long> {
     List<MessageEntity> findAllByPrivateChatId(Long privateChatId);
 
-    @Query("SELECT COUNT(m) FROM message m WHERE m.privateChat.id = :chatId AND m.isRead = false")
-    Integer getNumOfUnreadMessagesByChatId(@Param("chatId") Long chatId);
+    @Query("SELECT COUNT(m) FROM message m WHERE m.privateChat.id = :chatId AND m.receiver.id= :receiverId AND m.isRead = false")
+    Integer getNumOfUnreadMessagesByChatIdAndReceiverId(@Param("chatId") Long chatId, @Param("receiverId") Long receiverId);
 
 
 }

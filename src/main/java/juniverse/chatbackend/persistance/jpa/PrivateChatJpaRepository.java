@@ -21,4 +21,5 @@ public interface PrivateChatJpaRepository extends JpaRepository<PrivateChatEntit
     List<Object[]> findChatsWithUserDetails(@Param("therapistId") Long therapistId);
 
 
+    PrivateChatEntity findPrivateChatEntityById(Long chatId);
 }

@@ -27,7 +27,7 @@ public interface PrivateChatMapper {
     @Mapping(source = "chat.therapist.id", target = "therapistId")
     @Mapping(source = "user.firstName", target = "userFirstName")
     @Mapping(source = "user.lastName", target = "userLastName")
-    PrivateChatResponse entityToResponse(PrivateChatEntity chat, SysUserEntity user,
-                                   @Context Integer unreadMessagesCount);
+    PrivateChatResponse entityToResponse(PrivateChatEntity chat, SysUserEntity user);
+
 
 }

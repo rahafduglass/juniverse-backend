@@ -20,7 +20,6 @@ public class PrivateChatController {
     private final PrivateChatService privateChatService;
 
 
-
     @Operation(
             summary = "Get all messages for a private chat(therapist-user)",
             description = "fetches all messages associated with the userId only not therapistId."
@@ -69,7 +68,7 @@ public class PrivateChatController {
             List<PrivateChatResponse> chatResponses = privateChatService.getTherapistChats(therapistId);
 
             // Determine if no chats are found
-            boolean isNoChatsFound = chatResponses == null || chatResponses.isEmpty();
+            boolean isNoChatsFound = (chatResponses == null || chatResponses.isEmpty());
 
             // Build the API response
             ApiResponse<List<PrivateChatResponse>> response = ApiResponse.<List<PrivateChatResponse>>builder()
@@ -92,5 +91,40 @@ public class PrivateChatController {
         }
     }
 
+
+
+    @Operation(
+            summary = "Get chat info by chat id"
+    )
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/chat/{chatId}")
+    public ResponseEntity<ApiResponse<PrivateChatResponse>> getPrivateChatById(@PathVariable Long chatId) {
+        try {
+            //Retrieve chat by id
+            PrivateChatResponse chatResponse = privateChatService.getPrivateChatById(chatId);
+
+            // Determine if no chat is found
+            boolean isChatNotFound = (chatResponse == null);
+
+            //build api response
+            ApiResponse<PrivateChatResponse> response = ApiResponse.<PrivateChatResponse>builder()
+                    .success(!isChatNotFound)
+                    .message(isChatNotFound ? "No chat is found for the given id" : "Chats retrieved successfully")
+                    .data(chatResponse)
+                    .build();
+
+            // Set the appropriate HTTP status
+            HttpStatus status = isChatNotFound ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+            return ResponseEntity.status(status).body(response);
+        } catch (Exception e) {
+            // Handle exceptions and return error response
+            ApiResponse<PrivateChatResponse> response = ApiResponse.<PrivateChatResponse>builder()
+                    .success(false)
+                    .message("An error occurred: " + e.getMessage())
+                    .data(null)
+                    .build();
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response);
+        }
+    }
 }
 //

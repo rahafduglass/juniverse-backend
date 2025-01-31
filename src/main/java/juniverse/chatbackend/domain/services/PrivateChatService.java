@@ -14,7 +14,6 @@ import juniverse.chatbackend.persistance.repositories.PrivateChatRepository;
 import juniverse.chatbackend.persistance.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +25,7 @@ public class PrivateChatService {
     private final UserRepository userRepository;
     private final MessageRepository messageRepository;
     private final MessageMapper messageMapper;
+    private final SysUserService sysUserService;
 
     public PrivateChatModel createPrivateChat(Long senderId) {
         PrivateChatModel privateChatTemp = new PrivateChatModel();
@@ -43,15 +43,30 @@ public class PrivateChatService {
     }
 
     public List<PrivateChatResponse> getTherapistChats(Long therapistId) {
-        List<Object[]> results= privateChatRepository.findAllByTherapistId(therapistId);
+        List<Object[]> results = privateChatRepository.findAllByTherapistId(therapistId);
         return results.stream().map(row -> {
             PrivateChatEntity chat = (PrivateChatEntity) row[0];  // Extract PrivateChatEntity
             SysUserEntity user = (SysUserEntity) row[1];  // Extract SysUserEntity
-            Integer unreadMessagesCount = messageRepository.getNumOfUnreadMessagesByChatId(chat.getTherapist().getId()); // Extract unread messages count
 
-            return privateChatMapper.entityToResponse(chat, user, unreadMessagesCount);
+            //mapping chat & user to dto
+            PrivateChatResponse privateChatResponse = privateChatMapper.entityToResponse(chat, user);
+
+            //manually map unreadMessagesCount -- fix this and map it inside the mapper
+            privateChatResponse.setUnreadMessagesCount(messageRepository.getNumOfUnreadMessagesByChatIdAndReceiverId(chat.getId(), therapistId));
+            return privateChatResponse;
         }).collect(Collectors.toList());
         //map list of
 
     }
+
+
+    public PrivateChatResponse getPrivateChatById(Long chatId) {
+        PrivateChatEntity chat = privateChatRepository.findPrivateChatById(chatId);
+        if (chat == null) {
+            return null;
+        }
+        return privateChatMapper.entityToResponse(chat, chat.getUser());
+    }
+
+
 }

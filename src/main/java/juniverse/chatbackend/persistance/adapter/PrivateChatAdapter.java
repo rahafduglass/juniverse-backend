@@ -1,5 +1,6 @@
 package juniverse.chatbackend.persistance.adapter;
 
+import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
 import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.domain.mappers.PrivateChatMapper;
 import juniverse.chatbackend.domain.mappers.UserMapper;
@@ -33,6 +34,11 @@ public class PrivateChatAdapter implements PrivateChatRepository {
     @Override
     public List<Object[]> findAllByTherapistId(Long therapistId) {
         return privateChatJpaRepository.findChatsWithUserDetails(therapistId);
+    }
+
+    @Override
+    public PrivateChatEntity findPrivateChatById(Long chatId) {
+        return privateChatJpaRepository.findPrivateChatEntityById(chatId);
     }
 
 

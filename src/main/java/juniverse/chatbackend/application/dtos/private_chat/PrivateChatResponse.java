@@ -25,9 +25,6 @@ public class PrivateChatResponse {
 
     private Integer unreadMessagesCount;
 
-    private String lastMessage;
-
-    private LocalDateTime lastMessageTime;
 
 }
 // user first and last name.

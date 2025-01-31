@@ -1,5 +1,6 @@
 package juniverse.chatbackend.persistance.adapter;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.domain.mappers.MessageMapper;
 import juniverse.chatbackend.domain.models.MessageModel;
@@ -39,5 +40,11 @@ public class MessageAdapter implements MessageRepository {
     @Override
     public List<MessageModel> findAllByPrivateChatId(Long chatId) {
         return messageMapper.listOfEntitiesToListOfModels(messageJpaRepository.findAllByPrivateChatId(chatId));
+    }
+
+    @Transactional
+    @Override
+    public Boolean markMessagesAsRead(Long userId, Long chatId) {
+        return messageJpaRepository.markMessagesAsRead(userId,chatId)>0;
     }
 }

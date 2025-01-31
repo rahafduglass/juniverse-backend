@@ -21,7 +21,6 @@ public class MessageController {
     private final MessageService messageService;
     private final MessageMapper messageMapper;
 
-
     @Operation(
             summary = "if a user wants to initialize a chat or resume an already initialized chat they send their ID ",
             description = "1. if the sender is a regular user the receiver id=2 because we have one therapist, " +
@@ -62,8 +61,6 @@ public class MessageController {
             description = "1. when the therapist enters a private chat the messages sent from the user will be marked as read" +
                     "2. when the user enters a private chat the messages sent from the therapist will be marked as read."
     )
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PutMapping("/private/read/{messageId}")
     public ResponseEntity<ApiResponse<Long>> readMessage(@PathVariable Long messageId) {
         try {
             // Mark the message as read and retrieve the ID of the read message

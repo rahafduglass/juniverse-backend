@@ -55,7 +55,6 @@ public class PrivateChatController {
         }
     }
 
-
     @Operation(
             summary = "Get all chats for a therapist",
             description = "Fetches all chats associated with the therapist by their ID which is id=2 because we have only one therapist."
@@ -91,14 +90,12 @@ public class PrivateChatController {
         }
     }
 
-
-
     @Operation(
             summary = "Get chat info by chat id"
     )
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/chat/{chatId}")
-    public ResponseEntity<ApiResponse<PrivateChatResponse>> getPrivateChatById(@PathVariable Long chatId) {
+    @GetMapping("users/{userId}/chats/{chatId}/chat")
+    public ResponseEntity<ApiResponse<PrivateChatResponse>> getPrivateChatById(@PathVariable Long chatId, @PathVariable Long userId) {
         try {
             //Retrieve chat by id
             PrivateChatResponse chatResponse = privateChatService.getPrivateChatById(chatId);
@@ -126,5 +123,37 @@ public class PrivateChatController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response);
         }
     }
+
+    @Operation(
+            summary = "update and mark a private chat received messages as READ when a user enters the chat"
+    )
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping("users/{userId}/chats/{chatId}/mark-read")
+    public ResponseEntity<ApiResponse<Boolean>> markChatMessagesAsRead(@PathVariable Long userId,@PathVariable Long chatId) {
+        try {
+            //determine if message is updated as read
+            Boolean isUpdated = privateChatService.markMessagesAsRead(userId, chatId);
+
+            //build api response
+            ApiResponse<Boolean> response = ApiResponse.<Boolean>builder()
+                    .success(isUpdated)
+                    .message(!isUpdated ? "something went wrong" : "messages marked as read successfully")
+                    .data(true)
+                    .build();
+
+            // Set the appropriate HTTP status
+            HttpStatus status = !isUpdated ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+            return ResponseEntity.status(status).body(response);
+        }catch (Exception e){
+            // Handle exceptions and return error response
+            ApiResponse<Boolean> response = ApiResponse.<Boolean>builder()
+                    .success(false)
+                    .message("An error occurred: " + e.getMessage())
+                    .data(null)
+                    .build();
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response);
+        }
+    }
+
 }
 //

@@ -21,4 +21,5 @@ public interface MessageRepository {
     List<MessageModel> findAllByPrivateChatId(Long id);
 
 
+    Boolean markMessagesAsRead(Long userId, Long chatId);
 }

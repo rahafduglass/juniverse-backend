@@ -69,4 +69,7 @@ public class PrivateChatService {
     }
 
 
+    public Boolean markMessagesAsRead(Long userId, Long chatId) {
+        return messageRepository.markMessagesAsRead(userId,chatId);
+    }
 }

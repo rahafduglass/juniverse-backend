@@ -26,11 +26,7 @@ public class PrivateChatController {
     private final MessageMapper messageMapper;
     private final ApiResponseHelper apiResponseHelper;
 
-    @Operation(
-            summary = "Get all messages for a private chat(therapist-user) by userId",
-            description = "fetches all messages associated with the userId only not therapistId."
-    )
-    @CrossOrigin(origins = "http://localhost:3000")
+
     @GetMapping("/{userId}/messages")
     public ResponseEntity<ApiResponse<List<MessageResponse>>> getUserChatMessages(@PathVariable Long userId) {
         try {
@@ -49,11 +45,6 @@ public class PrivateChatController {
     }
 
 
-    @Operation(
-            summary = "Get all chats for a therapist",
-            description = "Fetches all chats associated with the therapist by their ID which is id=2 because we have only one therapist."
-    )
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/therapists/{therapistId}/chats")
     public ResponseEntity<ApiResponse<List<PrivateChatResponse>>> getTherapistChats(@PathVariable Long therapistId) {
         try {
@@ -73,8 +64,6 @@ public class PrivateChatController {
     }
 
 
-    @Operation(summary = "Get chat info by chat id")
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/{chatId}")
     public ResponseEntity<ApiResponse<PrivateChatResponse>> getPrivateChatById(@PathVariable Long chatId) {
         try {
@@ -94,8 +83,6 @@ public class PrivateChatController {
 
 
     @PutMapping("/{chatId}/{userId}/mark-as-read")
-    @Operation(summary = "update and mark a private chat received messages as READ when a user enters the chat")
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<ApiResponse<Boolean>> markChatMessagesAsRead(@PathVariable Long userId, @PathVariable Long chatId) {
         try {
             Boolean isUpdated = privateChatService.markMessagesAsRead(userId, chatId);
@@ -107,11 +94,6 @@ public class PrivateChatController {
 
 
     @PostMapping("/send-message")
-    @Operation(
-            summary = "if a user wants to initialize a chat or resume an already initialized chat ",
-            description = "1. if the sender is a regular user the receiver id=2 because we have one therapist, " +
-                    "2. if the sender is a therapist, the receiver id depends on the userId that was already fetched in therapist chats.")
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<ApiResponse<MessageResponse>> sendPrivateMessage(@RequestBody MessageRequest messageRequest) {
         try {
             MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendPrivateMessage(messageMapper.requestToModel(messageRequest)));

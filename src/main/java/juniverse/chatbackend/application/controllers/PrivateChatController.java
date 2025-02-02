@@ -2,8 +2,8 @@ package juniverse.chatbackend.application.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import juniverse.chatbackend.application.dtos.private_message.MessageRequest;
+import juniverse.chatbackend.application.helpers.ApiResponseHelper;
 import juniverse.chatbackend.domain.mappers.MessageMapper;
-import juniverse.chatbackend.domain.models.MessageModel;
 import juniverse.chatbackend.domain.services.MessageService;
 import lombok.AllArgsConstructor;
 import juniverse.chatbackend.application.dtos.ApiResponse;
@@ -24,7 +24,7 @@ public class PrivateChatController {
     private final PrivateChatService privateChatService;
     private final MessageService messageService;
     private final MessageMapper messageMapper;
-
+    private final ApiResponseHelper apiResponseHelper;
 
     @Operation(
             summary = "Get all messages for a private chat(therapist-user) by userId",
@@ -35,29 +35,16 @@ public class PrivateChatController {
     public ResponseEntity<ApiResponse<List<MessageResponse>>> getUserChatMessages(@PathVariable Long userId) {
         try {
             // Retrieve chat messages for the user
-            List<MessageResponse> messageResponses = privateChatService.getUserChatMessages(userId);
-
-
-            boolean isGetUserChatMessagesFailed = messageResponses == null || messageResponses.isEmpty();
-
-            // Build the API response
-            ApiResponse<List<MessageResponse>> response = ApiResponse.<List<MessageResponse>>builder()
-                    .success(!isGetUserChatMessagesFailed)
-                    .message(isGetUserChatMessagesFailed ? "No message found for the user" : "Messages retrieved successfully")
-                    .data(messageResponses)
-                    .build();
-
-            // Set the appropriate HTTP status
-            HttpStatus status = isGetUserChatMessagesFailed ? HttpStatus.NOT_FOUND : HttpStatus.OK;
-            return ResponseEntity.status(status).body(response);
+            List<MessageResponse> messageListResponse = privateChatService.getUserChatMessages(userId);
+            //check if retrieval succeeded
+            boolean isGetUserChatMessagesFailed = messageListResponse == null || messageListResponse.isEmpty();
+            //build response
+            return apiResponseHelper.buildApiResponse(messageListResponse, !isGetUserChatMessagesFailed
+                    , (isGetUserChatMessagesFailed ? "No message found for the user" : "Messages retrieved successfully")
+                    , (isGetUserChatMessagesFailed ? HttpStatus.NOT_FOUND : HttpStatus.OK));
         } catch (Exception e) {
             // Handle exceptions and return error response
-            ApiResponse<List<MessageResponse>> response = ApiResponse.<List<MessageResponse>>builder()
-                    .success(false)
-                    .message("An error occurred: " + e.getMessage())
-                    .data(null)
-                    .build();
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response);
+            return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
@@ -76,24 +63,12 @@ public class PrivateChatController {
             // Determine if no chats are found
             boolean isNoChatsFound = (chatResponses == null || chatResponses.isEmpty());
 
-            // Build the API response
-            ApiResponse<List<PrivateChatResponse>> response = ApiResponse.<List<PrivateChatResponse>>builder()
-                    .success(!isNoChatsFound)
-                    .message(isNoChatsFound ? "No chats found for the therapist" : "Chats retrieved successfully")
-                    .data(chatResponses)
-                    .build();
-
-            // Set the appropriate HTTP status
-            HttpStatus status = isNoChatsFound ? HttpStatus.NOT_FOUND : HttpStatus.OK;
-            return ResponseEntity.status(status).body(response);
+            //build response
+            return apiResponseHelper.buildApiResponse(chatResponses, !isNoChatsFound
+                    , (isNoChatsFound ? "No chats found for the therapist" : "Chats retrieved successfully")
+                    , (isNoChatsFound ? HttpStatus.NOT_FOUND : HttpStatus.OK));
         } catch (Exception e) {
-            // Handle exceptions and return error response
-            ApiResponse<List<PrivateChatResponse>> response = ApiResponse.<List<PrivateChatResponse>>builder()
-                    .success(false)
-                    .message("An error occurred: " + e.getMessage())
-                    .data(null)
-                    .build();
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response);
+            return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
@@ -108,25 +83,12 @@ public class PrivateChatController {
 
             // Determine if no chat is found
             boolean isChatNotFound = (chatResponse == null);
-
-            //build api response
-            ApiResponse<PrivateChatResponse> response = ApiResponse.<PrivateChatResponse>builder()
-                    .success(!isChatNotFound)
-                    .message(isChatNotFound ? "No chat is found for the given id" : "Chats retrieved successfully")
-                    .data(chatResponse)
-                    .build();
-
-            // Set the appropriate HTTP status
-            HttpStatus status = isChatNotFound ? HttpStatus.NOT_FOUND : HttpStatus.OK;
-            return ResponseEntity.status(status).body(response);
+            //build response
+            return apiResponseHelper.buildApiResponse(chatResponse,!isChatNotFound
+                    , (isChatNotFound ? "No chat is found" : "Chat retrieved successfully")
+                    ,isChatNotFound ? HttpStatus.NOT_FOUND : HttpStatus.OK);
         } catch (Exception e) {
-            // Handle exceptions and return error response
-            ApiResponse<PrivateChatResponse> response = ApiResponse.<PrivateChatResponse>builder()
-                    .success(false)
-                    .message("An error occurred: " + e.getMessage())
-                    .data(null)
-                    .build();
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response);
+            return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
@@ -136,27 +98,10 @@ public class PrivateChatController {
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<ApiResponse<Boolean>> markChatMessagesAsRead(@PathVariable Long userId, @PathVariable Long chatId) {
         try {
-            //determine if message is updated as read
             Boolean isUpdated = privateChatService.markMessagesAsRead(userId, chatId);
-
-            //build api response
-            ApiResponse<Boolean> response = ApiResponse.<Boolean>builder()
-                    .success(isUpdated)
-                    .message(!isUpdated ? "something went wrong" : "messages marked as read successfully")
-                    .data(true)
-                    .build();
-
-            // Set the appropriate HTTP status
-            HttpStatus status = !isUpdated ? HttpStatus.NOT_FOUND : HttpStatus.OK;
-            return ResponseEntity.status(status).body(response);
+            return apiResponseHelper.buildApiResponse(isUpdated, true, (!isUpdated ? "something went wrong" : "messages marked as read successfully"), (!isUpdated ? HttpStatus.NOT_FOUND : HttpStatus.OK));
         } catch (Exception e) {
-            // Handle exceptions and return error response
-            ApiResponse<Boolean> response = ApiResponse.<Boolean>builder()
-                    .success(false)
-                    .message("An error occurred: " + e.getMessage())
-                    .data(null)
-                    .build();
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response);
+            return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
@@ -169,29 +114,10 @@ public class PrivateChatController {
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<ApiResponse<MessageResponse>> sendPrivateMessage(@RequestBody MessageRequest messageRequest) {
         try {
-            // Convert the request to a model
-            MessageModel messageModel = messageMapper.requestToModel(messageRequest);
-
-            // Send the private message and map the result to the response
-            MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendPrivateMessage(messageModel));
-
-            // Build the API response
-            ApiResponse<MessageResponse> response = ApiResponse.<MessageResponse>builder()
-                    .success(true)
-                    .message("Message sent successfully")
-                    .data(messageResponse)
-                    .build();
-
-            return ResponseEntity.ok(response); // HTTP 200: OK
+            MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendPrivateMessage(messageMapper.requestToModel(messageRequest)));
+            return apiResponseHelper.buildApiResponse(messageResponse, true, "Message sent successfully", HttpStatus.OK);
         } catch (Exception e) {
-            // Handle exceptions and return an error response
-            ApiResponse<MessageResponse> response = ApiResponse.<MessageResponse>builder()
-                    .success(false)
-                    .message("Failed to send message: " + e.getMessage())
-                    .data(null)
-                    .build();
-
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response); // HTTP 417: Expectation Failed
+            return apiResponseHelper.buildApiResponse(null, false, "Failed to send message: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 }

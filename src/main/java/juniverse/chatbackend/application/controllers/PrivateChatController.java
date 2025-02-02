@@ -131,7 +131,7 @@ public class PrivateChatController {
     }
 
 
-    @PutMapping("/{chatId}/users/{userId}/mark-as-read")
+    @PutMapping("/{chatId}/{userId}/mark-as-read")
     @Operation(summary = "update and mark a private chat received messages as READ when a user enters the chat")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<ApiResponse<Boolean>> markChatMessagesAsRead(@PathVariable Long userId, @PathVariable Long chatId) {

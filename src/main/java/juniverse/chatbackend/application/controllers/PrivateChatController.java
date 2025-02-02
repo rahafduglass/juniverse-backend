@@ -1,6 +1,10 @@
 package juniverse.chatbackend.application.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import juniverse.chatbackend.application.dtos.private_message.MessageRequest;
+import juniverse.chatbackend.domain.mappers.MessageMapper;
+import juniverse.chatbackend.domain.models.MessageModel;
+import juniverse.chatbackend.domain.services.MessageService;
 import lombok.AllArgsConstructor;
 import juniverse.chatbackend.application.dtos.ApiResponse;
 import juniverse.chatbackend.application.dtos.private_chat.PrivateChatResponse;
@@ -14,18 +18,20 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/chat/private")
+@RequestMapping("/api/v1/private/chat")
 public class PrivateChatController {
 
     private final PrivateChatService privateChatService;
+    private final MessageService messageService;
+    private final MessageMapper messageMapper;
 
 
     @Operation(
-            summary = "Get all messages for a private chat(therapist-user)",
+            summary = "Get all messages for a private chat(therapist-user) by userId",
             description = "fetches all messages associated with the userId only not therapistId."
     )
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/users/{userId}/chat-messages")
+    @GetMapping("/{userId}/messages")
     public ResponseEntity<ApiResponse<List<MessageResponse>>> getUserChatMessages(@PathVariable Long userId) {
         try {
             // Retrieve chat messages for the user
@@ -54,6 +60,7 @@ public class PrivateChatController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response);
         }
     }
+
 
     @Operation(
             summary = "Get all chats for a therapist",
@@ -90,12 +97,11 @@ public class PrivateChatController {
         }
     }
 
-    @Operation(
-            summary = "Get chat info by chat id"
-    )
+
+    @Operation(summary = "Get chat info by chat id")
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("users/{userId}/chats/{chatId}/chat")
-    public ResponseEntity<ApiResponse<PrivateChatResponse>> getPrivateChatById(@PathVariable Long chatId, @PathVariable Long userId) {
+    @GetMapping("/{chatId}")
+    public ResponseEntity<ApiResponse<PrivateChatResponse>> getPrivateChatById(@PathVariable Long chatId) {
         try {
             //Retrieve chat by id
             PrivateChatResponse chatResponse = privateChatService.getPrivateChatById(chatId);
@@ -124,12 +130,11 @@ public class PrivateChatController {
         }
     }
 
-    @Operation(
-            summary = "update and mark a private chat received messages as READ when a user enters the chat"
-    )
+
+    @PutMapping("/{chatId}/users/{userId}/mark-as-read")
+    @Operation(summary = "update and mark a private chat received messages as READ when a user enters the chat")
     @CrossOrigin(origins = "http://localhost:3000")
-    @PutMapping("users/{userId}/chats/{chatId}/mark-read")
-    public ResponseEntity<ApiResponse<Boolean>> markChatMessagesAsRead(@PathVariable Long userId,@PathVariable Long chatId) {
+    public ResponseEntity<ApiResponse<Boolean>> markChatMessagesAsRead(@PathVariable Long userId, @PathVariable Long chatId) {
         try {
             //determine if message is updated as read
             Boolean isUpdated = privateChatService.markMessagesAsRead(userId, chatId);
@@ -144,7 +149,7 @@ public class PrivateChatController {
             // Set the appropriate HTTP status
             HttpStatus status = !isUpdated ? HttpStatus.NOT_FOUND : HttpStatus.OK;
             return ResponseEntity.status(status).body(response);
-        }catch (Exception e){
+        } catch (Exception e) {
             // Handle exceptions and return error response
             ApiResponse<Boolean> response = ApiResponse.<Boolean>builder()
                     .success(false)
@@ -155,5 +160,39 @@ public class PrivateChatController {
         }
     }
 
+
+    @PostMapping("/send-message")
+    @Operation(
+            summary = "if a user wants to initialize a chat or resume an already initialized chat ",
+            description = "1. if the sender is a regular user the receiver id=2 because we have one therapist, " +
+                    "2. if the sender is a therapist, the receiver id depends on the userId that was already fetched in therapist chats.")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<ApiResponse<MessageResponse>> sendPrivateMessage(@RequestBody MessageRequest messageRequest) {
+        try {
+            // Convert the request to a model
+            MessageModel messageModel = messageMapper.requestToModel(messageRequest);
+
+            // Send the private message and map the result to the response
+            MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendPrivateMessage(messageModel));
+
+            // Build the API response
+            ApiResponse<MessageResponse> response = ApiResponse.<MessageResponse>builder()
+                    .success(true)
+                    .message("Message sent successfully")
+                    .data(messageResponse)
+                    .build();
+
+            return ResponseEntity.ok(response); // HTTP 200: OK
+        } catch (Exception e) {
+            // Handle exceptions and return an error response
+            ApiResponse<MessageResponse> response = ApiResponse.<MessageResponse>builder()
+                    .success(false)
+                    .message("Failed to send message: " + e.getMessage())
+                    .data(null)
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response); // HTTP 417: Expectation Failed
+        }
+    }
 }
 //

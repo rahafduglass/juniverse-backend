@@ -24,7 +24,7 @@ public class AuthenticationController {
     @Operation(
             summary = "user send their credentials to authenticate their identity to be given access to the system."
     )
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<ApiResponse<LoginResponse>> authenticateUser(@RequestBody LoginRequest loginRequest){
    try {

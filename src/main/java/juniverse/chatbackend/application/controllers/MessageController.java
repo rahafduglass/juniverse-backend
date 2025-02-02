@@ -21,40 +21,6 @@ public class MessageController {
     private final MessageService messageService;
     private final MessageMapper messageMapper;
 
-    @Operation(
-            summary = "if a user wants to initialize a chat or resume an already initialized chat they send their ID ",
-            description = "1. if the sender is a regular user the receiver id=2 because we have one therapist, " +
-                    "2. if the sender is a therapist, the receiver id depends on the userId that was already fetched in therapist chats."
-    )
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/private/send")
-    public ResponseEntity<ApiResponse<MessageResponse>> sendPrivateMessage(@RequestBody MessageRequest messageRequest) {
-        try {
-            // Convert the request to a model
-            MessageModel messageModel = messageMapper.requestToModel(messageRequest);
-
-            // Send the private message and map the result to the response
-            MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendPrivateMessage(messageModel));
-
-            // Build the API response
-            ApiResponse<MessageResponse> response = ApiResponse.<MessageResponse>builder()
-                    .success(true)
-                    .message("Message sent successfully")
-                    .data(messageResponse)
-                    .build();
-
-            return ResponseEntity.ok(response); // HTTP 200: OK
-        } catch (Exception e) {
-            // Handle exceptions and return an error response
-            ApiResponse<MessageResponse> response = ApiResponse.<MessageResponse>builder()
-                    .success(false)
-                    .message("Failed to send message: " + e.getMessage())
-                    .data(null)
-                    .build();
-
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response); // HTTP 417: Expectation Failed
-        }
-    }
 
     @Operation(
             summary = "when the receiver enters the private chat all the sent messages in that chat are marked read",

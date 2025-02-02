@@ -12,21 +12,22 @@ public class OpenApiConfig {
             return (operation, handlerMethod) -> {
 
                 if (handlerMethod.getMethod().getName().equals("getUserChatMessages")) {
-                    operation.summary("Get all messages for a private chat(therapist-user) by userId")
+                    operation.summary("retrieve all messages for a private chat by userId")
                             .description("fetches all messages associated with the userId only not therapistId.");
                 }
                 if (handlerMethod.getMethod().getName().equals("getTherapistChats")) {
-                    operation.summary("Get all private chats initialized with the therapist")
+                    operation.summary("Get all the therapist's private chats")
                             .description("Fetches all private chat conversations that have been initialized with the therapist.");
                 }
                 if (handlerMethod.getMethod().getName().equals("getPrivateChatById")) {
-                    operation.summary("Get chat info by chat id");
+                    operation.summary("Get private chat metadata")
+                            .description("response will be schema PrivateChatResponse except PrivateChatResponse.unreadMessagesCount");
                 }
                 if (handlerMethod.getMethod().getName().equals("markChatMessagesAsRead")) {
-                    operation.summary("update and mark a private chat received messages as READ when a user enters the chat");
+                    operation.summary("mark a private chat as READ");
                 }
                 if (handlerMethod.getMethod().getName().equals("sendPrivateMessage")) {
-                    operation.summary("if a user wants to initialize a chat or resume an already initialized chat ")
+                    operation.summary("sending a message to a private chat")
                             .description("1. if the sender is a regular user the receiver id=2 because we have one therapist, " +
                                     "2. if the sender is a therapist, the receiver id depends on the userId that was already fetched in therapist chats.");
                 }

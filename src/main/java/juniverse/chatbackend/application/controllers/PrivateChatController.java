@@ -93,7 +93,7 @@ public class PrivateChatController {
     }
 
 
-    @PostMapping("/send-message")
+    @PostMapping("/message")
     public ResponseEntity<ApiResponse<MessageResponse>> sendPrivateMessage(@RequestBody MessageRequest messageRequest) {
         try {
             MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendPrivateMessage(messageMapper.requestToModel(messageRequest)));

@@ -2,6 +2,7 @@ package juniverse.chatbackend.application.controllers;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import juniverse.chatbackend.application.helpers.ApiResponseHelper;
 import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.application.dtos.authentication.LoginRequest;
 import juniverse.chatbackend.application.dtos.ApiResponse;
@@ -20,7 +21,7 @@ public class AuthenticationController {
 
     private final SysUserService sysUserService;
     private final UserMapper userMapper;
-
+    private final ApiResponseHelper apiResponseHelper;
     @Operation(
             summary = "user send their credentials to authenticate their identity to be given access to the system."
     )
@@ -28,27 +29,15 @@ public class AuthenticationController {
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<ApiResponse<LoginResponse>> authenticateUser(@RequestBody LoginRequest loginRequest){
    try {
-       UserModel userModel= userMapper.requestToModel(loginRequest);
-       LoginResponse loginResponse= userMapper.modelToResponse(sysUserService.authenticateUser(userModel));
+       LoginResponse loginResponse= userMapper.modelToResponse(sysUserService.authenticateUser(userMapper.requestToModel(loginRequest)));
        boolean  isLoginFailed = loginResponse == null;
 
-
        // Build the API response
-       ApiResponse<LoginResponse> response = ApiResponse.<LoginResponse>builder()
-               .success(!isLoginFailed)
-               .message(isLoginFailed ? "Login failed" : "Login successful")
-               .data(loginResponse)
-               .build();
-
-       // Return the appropriate HTTP status and response
-       HttpStatus status = isLoginFailed ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK;
-       return ResponseEntity.status(status).body(response);
+       return apiResponseHelper.buildApiResponse(loginResponse,!isLoginFailed
+               ,(isLoginFailed ? "Login failed" : "Login successful")
+               , isLoginFailed ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
    } catch (Exception e) {
-       ApiResponse<LoginResponse> response = ApiResponse.<LoginResponse>builder()
-               .success(false)
-               .message(e.getMessage())
-               .build();
-       return ResponseEntity.status(417).body(response);
+       return apiResponseHelper.buildApiResponse(null, false, "an error occurred " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
    }
 
     }

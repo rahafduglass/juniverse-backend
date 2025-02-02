@@ -1,6 +1,7 @@
 package juniverse.chatbackend.application.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import juniverse.chatbackend.application.helpers.ApiResponseHelper;
 import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.application.dtos.private_message.MessageRequest;
 import juniverse.chatbackend.application.dtos.private_message.MessageResponse;
@@ -20,7 +21,7 @@ public class MessageController {
 
     private final MessageService messageService;
     private final MessageMapper messageMapper;
-
+    private final ApiResponseHelper apiResponseHelper;
 
     @Operation(
             summary = "when the receiver enters the private chat all the sent messages in that chat are marked read",
@@ -32,23 +33,10 @@ public class MessageController {
             // Mark the message as read and retrieve the ID of the read message
             Long readMessageId = messageService.readMessage(messageId);
 
-            // Build the API response
-            ApiResponse<Long> response = ApiResponse.<Long>builder()
-                    .success(true)
-                    .message("Message marked as read successfully")
-                    .data(readMessageId)
-                    .build();
-
-            return ResponseEntity.ok(response); // HTTP 200: OK
+            return apiResponseHelper.buildApiResponse(readMessageId,true, "Message marked as read successfully" , HttpStatus.OK);
         } catch (Exception e) {
             // Handle case where the message ID does not exist
-            ApiResponse<Long> response = ApiResponse.<Long>builder()
-                    .success(false)
-                    .message("Message not found: " + e.getMessage())
-                    .data(null)
-                    .build();
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response); // HTTP 404: Not Found
+            return apiResponseHelper.buildApiResponse(null, false, "an error occurred " + e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
     }

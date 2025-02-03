@@ -73,9 +73,9 @@ public class PrivateChatController {
             // Determine if no chat is found
             boolean isChatNotFound = (chatResponse == null);
             //build response
-            return apiResponseHelper.buildApiResponse(chatResponse,!isChatNotFound
+            return apiResponseHelper.buildApiResponse(chatResponse, !isChatNotFound
                     , (isChatNotFound ? "No chat is found" : "Chat retrieved successfully")
-                    ,isChatNotFound ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+                    , isChatNotFound ? HttpStatus.NOT_FOUND : HttpStatus.OK);
         } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
@@ -96,6 +96,7 @@ public class PrivateChatController {
     @PostMapping("/message")
     public ResponseEntity<ApiResponse<MessageResponse>> sendPrivateMessage(@RequestBody MessageRequest messageRequest) {
         try {
+            if (messageRequest.getContent().isEmpty()) throw new Exception("message content is empty");
             MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendPrivateMessage(messageMapper.requestToModel(messageRequest)));
             return apiResponseHelper.buildApiResponse(messageResponse, true, "Message sent successfully", HttpStatus.OK);
         } catch (Exception e) {

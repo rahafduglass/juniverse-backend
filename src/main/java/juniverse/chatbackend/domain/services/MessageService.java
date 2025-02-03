@@ -25,6 +25,7 @@ public class MessageService {
 
     public MessageModel sendPrivateMessage(MessageModel messageModel) {
 
+
         //chat exists? send: create chat THEN send;
         PrivateChatModel privateChat;
         Long therapistId = 2L;

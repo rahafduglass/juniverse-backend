@@ -20,8 +20,6 @@ public class MessageModel {
 
     private LocalDateTime timestamp;
 
-    private boolean isRead;
-
     private ChatType chatType; // Enum for chat type: PUBLIC or PRIVATE
 
     private Long senderId; //always needed either a user to public OR user to therapist OR therapist to user
@@ -30,4 +28,5 @@ public class MessageModel {
 
     private Long privateChatId; //nullable for public chat
 
+    private Boolean isRead;
 }

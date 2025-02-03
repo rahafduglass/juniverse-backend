@@ -17,7 +17,7 @@ public class MessageResponse {
 
     private String content;
 
-    private LocalDateTime localDateTime;
+    private LocalDateTime timestamp;
 
     private Long senderId;
 
@@ -25,6 +25,6 @@ public class MessageResponse {
 
     private Long privateChatId;
 
-    private boolean isRead;
+    private Boolean isRead;
 
 }

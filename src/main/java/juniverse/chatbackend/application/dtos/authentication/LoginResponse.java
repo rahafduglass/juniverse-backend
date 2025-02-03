@@ -14,8 +14,6 @@ public class LoginResponse {
 
     private Long id;
 
-    private String password;
-
     private UserRole role;
 
     private String firstName;

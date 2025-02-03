@@ -16,32 +16,42 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class MessageService {
 
+
     private final MessageRepository messageRepository;
     private final PrivateChatRepository privateChatRepository;
     private final UserRepository userRepository;
-    private final PrivateChatService privateChatService; //this is not too good but yea lets keep it for now
+    private final PrivateChatService privateChatService;
+
 
     public MessageModel sendPrivateMessage(MessageModel messageModel) {
+
         //chat exists? send: create chat THEN send;
         PrivateChatModel privateChat;
         Long therapistId = 2L;
+
+        //retrieve chat using userId in a user-therapist chat
         if (messageModel.getSenderId().equals(therapistId)) {
             privateChat = privateChatRepository.findPrivateChatByUser(userRepository.findUserById(messageModel.getReceiverId()));
         } else {
             privateChat = privateChatRepository.findPrivateChatByUser(userRepository.findUserById(messageModel.getSenderId()));
-            if (privateChat == null)
-                privateChat = privateChatService.createPrivateChat(messageModel.getSenderId());
         }
+
+        //check if it doesn't exist? create.
+        if (privateChat == null)
+            privateChat = privateChatService.createPrivateChat(messageModel.getSenderId());
+
+        //set default values
         messageModel.setChatType(ChatType.PRIVATE);
-        messageModel.setRead(false);
+        messageModel.setIsRead(false);
         messageModel.setTimestamp(LocalDateTime.now());
-        messageModel.setPrivateChatId(privateChat.getId()); //this may cause a problemmmmmmmmm if it was null yayyy but nvm for now
+        messageModel.setPrivateChatId(privateChat.getId());
+
         return sendMessage(messageModel);
     }
 
     public Long readMessage(Long id) {
         MessageModel messageModel = messageRepository.findById(id);
-        messageModel.setRead(true);
+        messageModel.setIsRead(true);
         return messageRepository.updateMessageStatus(messageModel).getId();
     }
 

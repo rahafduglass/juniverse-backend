@@ -9,17 +9,15 @@ import java.util.List;
 @Repository
 public interface MessageRepository {
 
-     Integer getNumOfUnreadMessagesByChatIdAndReceiverId(Long chatId,Long receiverId);
+    Integer getNumOfUnreadMessagesByChatIdAndReceiverId(Long chatId,Long receiverId);
 
     MessageModel sendMessage(MessageModel messageModel);
 
     MessageModel updateMessageStatus(MessageModel messageModel);
 
-
     MessageModel findById(Long id);
 
     List<MessageModel> findAllByPrivateChatId(Long id);
-
 
     Boolean markMessagesAsRead(Long userId, Long chatId);
 }

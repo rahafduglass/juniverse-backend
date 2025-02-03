@@ -51,7 +51,7 @@ public class PrivateChatService {
             //mapping chat & user to dto
             PrivateChatResponse privateChatResponse = privateChatMapper.entityToResponse(chat, user);
 
-            //manually map unreadMessagesCount -- fix this and map it inside the mapper
+            //manually map unreadMessagesCount -- fix this and map it inside the mapper :(
             privateChatResponse.setUnreadMessagesCount(messageRepository.getNumOfUnreadMessagesByChatIdAndReceiverId(chat.getId(), therapistId));
             return privateChatResponse;
         }).collect(Collectors.toList());

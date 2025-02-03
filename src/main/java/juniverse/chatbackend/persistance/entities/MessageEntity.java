@@ -25,7 +25,7 @@ public class MessageEntity {
     private LocalDateTime timestamp;
 
     @Column(nullable = true) // nullable for public chat
-    private boolean isRead;
+    private Boolean isRead;
 
     @Enumerated(EnumType.STRING)
     private ChatType chatType; // Enum for chat type: PUBLIC or PRIVATE

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.domain.mappers.PrivateChatMapper;
 import juniverse.chatbackend.domain.mappers.UserMapper;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
-import juniverse.chatbackend.domain.models.UserModel;
+import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.persistance.jpa.PrivateChatJpaRepository;
 import juniverse.chatbackend.persistance.repositories.PrivateChatRepository;
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ public class PrivateChatAdapter implements PrivateChatRepository {
 
 
     @Override
-    public PrivateChatModel findPrivateChatByUser(UserModel sender) {
+    public PrivateChatModel findPrivateChatByUser(SysUserModel sender) {
         return privateChatMapper.entityToModel(privateChatJpaRepository.findPrivateChatEntityByUser(userMapper.modelToEntity(sender)));
     }
 

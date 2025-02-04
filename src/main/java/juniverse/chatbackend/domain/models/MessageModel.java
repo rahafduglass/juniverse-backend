@@ -1,5 +1,6 @@
 package juniverse.chatbackend.domain.models;
 
+import juniverse.chatbackend.domain.enums.MessageStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,8 @@ public class MessageModel {
     private LocalDateTime timestamp;
 
     private ChatType chatType; // Enum for chat type: PUBLIC or PRIVATE
+
+    private MessageStatus status;
 
     private Long senderId; //always needed either a user to public OR user to therapist OR therapist to user
 

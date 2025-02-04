@@ -1,14 +1,12 @@
 package juniverse.chatbackend.application.controllers;
 
 
-import io.swagger.v3.oas.annotations.Operation;
 import juniverse.chatbackend.application.helpers.ApiResponseHelper;
 import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.application.dtos.authentication.LoginRequest;
 import juniverse.chatbackend.application.dtos.ApiResponse;
 import juniverse.chatbackend.application.dtos.authentication.LoginResponse;
 import juniverse.chatbackend.domain.mappers.UserMapper;
-import juniverse.chatbackend.domain.models.UserModel;
 import juniverse.chatbackend.domain.services.SysUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

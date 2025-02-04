@@ -1,7 +1,7 @@
 package juniverse.chatbackend.persistance.repositories;
 
 import juniverse.chatbackend.domain.models.PrivateChatModel;
-import juniverse.chatbackend.domain.models.UserModel;
+import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public interface PrivateChatRepository {
 
 
-    PrivateChatModel findPrivateChatByUser(UserModel senderId);
+    PrivateChatModel findPrivateChatByUser(SysUserModel senderId);
 
     PrivateChatModel createPrivateChat(PrivateChatModel privateChat);
 

@@ -1,9 +1,9 @@
 package juniverse.chatbackend.persistance.repositories;
 
-import juniverse.chatbackend.domain.models.UserModel;
+import juniverse.chatbackend.domain.models.SysUserModel;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository {
-    UserModel findUserById(Long id);
+    SysUserModel findUserById(Long id);
 }

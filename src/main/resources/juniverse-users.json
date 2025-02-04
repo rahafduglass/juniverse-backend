@@ -1,0 +1,182 @@
+[
+  {
+    "username": "ali_ahmad",
+    "password": "Pass1234!",
+    "email": "ali.ahmad@example.com",
+    "firstName": "Ali",
+    "lastName": "Ahmad",
+    "role": "ADMIN",
+    "major": "CIS"
+  },
+  {
+    "username": "fatima_salem",
+    "password": "SecurePass567!",
+    "email": "fatima.salem@example.com",
+    "firstName": "Fatima",
+    "lastName": "Salem",
+    "role": "STUDENT",
+    "major": "CS"
+  },
+  {
+    "username": "omar_khaled",
+    "password": "OmarPass789!",
+    "email": "omar.khaled@example.com",
+    "firstName": "Omar",
+    "lastName": "Khaled",
+    "role": "MODERATOR",
+    "major": "BIT"
+  },
+  {
+    "username": "layla_hassan",
+    "password": "Layla@2024",
+    "email": "layla.hassan@example.com",
+    "firstName": "Layla",
+    "lastName": "Hassan",
+    "role": "THERAPIST",
+    "major": "MENTAL_HEALTH"
+  },
+  {
+    "username": "youssef_mohamed",
+    "password": "Youssef!456",
+    "email": "youssef.mohamed@example.com",
+    "firstName": "Youssef",
+    "lastName": "Mohamed",
+    "role": "STUDENT",
+    "major": "DS"
+  },
+  {
+    "username": "hana_nour",
+    "password": "Hana#789",
+    "email": "hana.nour@example.com",
+    "firstName": "Hana",
+    "lastName": "Nour",
+    "role": "MODERATOR",
+    "major": "CyS"
+  },
+  {
+    "username": "kareem_samir",
+    "password": "Kareem@123",
+    "email": "kareem.samir@example.com",
+    "firstName": "Kareem",
+    "lastName": "Samir",
+    "role": "ADMIN",
+    "major": "CIS"
+  },
+  {
+    "username": "sara_tariq",
+    "password": "Sara!Pass456",
+    "email": "sara.tariq@example.com",
+    "firstName": "Sara",
+    "lastName": "Tariq",
+    "role": "THERAPIST",
+    "major": "MENTAL_HEALTH"
+  },
+  {
+    "username": "mohamed_adel",
+    "password": "Moh@med456",
+    "email": "mohamed.adel@example.com",
+    "firstName": "Mohamed",
+    "lastName": "Adel",
+    "role": "STUDENT",
+    "major": "CIS"
+  },
+  {
+    "username": "amal_rami",
+    "password": "Amal$2024",
+    "email": "amal.rami@example.com",
+    "firstName": "Amal",
+    "lastName": "Rami",
+    "role": "ADMIN",
+    "major": "CS"
+  },
+  {
+    "username": "hassan_fadi",
+    "password": "Hassan@888",
+    "email": "hassan.fadi@example.com",
+    "firstName": "Hassan",
+    "lastName": "Fadi",
+    "role": "MODERATOR",
+    "major": "CyS"
+  },
+  {
+    "username": "noor_lina",
+    "password": "Noor#555",
+    "email": "noor.lina@example.com",
+    "firstName": "Noor",
+    "lastName": "Lina",
+    "role": "THERAPIST",
+    "major": "MENTAL_HEALTH"
+  },
+  {
+    "username": "tamer_nabil",
+    "password": "Tamer!999",
+    "email": "tamer.nabil@example.com",
+    "firstName": "Tamer",
+    "lastName": "Nabil",
+    "role": "STUDENT",
+    "major": "BIT"
+  },
+  {
+    "username": "dina_mahmoud",
+    "password": "Dina@654",
+    "email": "dina.mahmoud@example.com",
+    "firstName": "Dina",
+    "lastName": "Mahmoud",
+    "role": "MODERATOR",
+    "major": "AI"
+  },
+  {
+    "username": "fady_ibrahim",
+    "password": "Fady#777",
+    "email": "fady.ibrahim@example.com",
+    "firstName": "Fady",
+    "lastName": "Ibrahim",
+    "role": "ADMIN",
+    "major": "DS"
+  },
+  {
+    "username": "reham_samir",
+    "password": "Reham$321",
+    "email": "reham.samir@example.com",
+    "firstName": "Reham",
+    "lastName": "Samir",
+    "role": "THERAPIST",
+    "major": "MENTAL_HEALTH"
+  },
+  {
+    "username": "ahmed_zaki",
+    "password": "Ahmed!852",
+    "email": "ahmed.zaki@example.com",
+    "firstName": "Ahmed",
+    "lastName": "Zaki",
+    "role": "STUDENT",
+    "major": "CyS"
+  },
+  {
+    "username": "salma_malek",
+    "password": "Salma@741",
+    "email": "salma.malek@example.com",
+    "firstName": "Salma",
+    "lastName": "Malek",
+    "role": "ADMIN",
+    "major": "CIS"
+  },
+  {
+    "username": "mustafa_rafik",
+    "password": "Mustafa#963",
+    "email": "mustafa.rafik@example.com",
+    "firstName": "Mustafa",
+    "lastName": "Rafik",
+    "role": "MODERATOR",
+    "major": "AI"
+  },
+  {
+    "username": "nadia_hisham",
+    "password": "Nadia@852",
+    "email": "nadia.hisham@example.com",
+    "firstName": "Nadia",
+    "lastName": "Hisham",
+    "role": "THERAPIST",
+    "major": "MENTAL_HEALTH"
+  }
+]

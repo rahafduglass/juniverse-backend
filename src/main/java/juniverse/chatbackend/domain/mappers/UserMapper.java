@@ -2,19 +2,19 @@ package juniverse.chatbackend.domain.mappers;
 
 import juniverse.chatbackend.application.dtos.authentication.LoginRequest;
 import juniverse.chatbackend.application.dtos.authentication.LoginResponse;
-import juniverse.chatbackend.domain.models.UserModel;
+import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import org.mapstruct.Mapper;
 
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    UserModel requestToModel(LoginRequest loginRequest);
+    SysUserModel requestToModel(LoginRequest loginRequest);
 
 
-    LoginResponse modelToResponse(UserModel userModel);
+    LoginResponse modelToResponse(SysUserModel sysUserModel);
 
-    UserModel entityToModel(SysUserEntity sysUserEntity);
+    SysUserModel entityToModel(SysUserEntity sysUserEntity);
 
-    SysUserEntity modelToEntity(UserModel userModel);
+    SysUserEntity modelToEntity(SysUserModel sysUserModel);
 }

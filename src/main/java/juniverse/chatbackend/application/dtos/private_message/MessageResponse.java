@@ -1,5 +1,6 @@
 package juniverse.chatbackend.application.dtos.private_message;
 
+import juniverse.chatbackend.domain.enums.MessageStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,8 @@ public class MessageResponse {
     private LocalDateTime timestamp;
 
     private Long senderId;
+
+    private MessageStatus status;
 
     private Long receiverId;
 

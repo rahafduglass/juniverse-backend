@@ -2,7 +2,7 @@ package juniverse.chatbackend.persistance.adapter;
 
 import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.domain.mappers.UserMapper;
-import juniverse.chatbackend.domain.models.UserModel;
+import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import juniverse.chatbackend.persistance.jpa.UserJpaRepository;
 import juniverse.chatbackend.persistance.repositories.UserRepository;
@@ -18,7 +18,7 @@ public class UserAdapter implements UserRepository {
     private final UserMapper userMapper;
 
     @Override
-    public UserModel findUserById(Long id) {
+    public SysUserModel findUserById(Long id) {
         Optional<SysUserEntity> userEntity=userJpaRepository.findById(id);
 
         if(userEntity.isEmpty()) {return null;}

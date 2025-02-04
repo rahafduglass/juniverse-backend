@@ -5,14 +5,14 @@ import juniverse.chatbackend.domain.mappers.UserMapper;
 import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import juniverse.chatbackend.persistance.jpa.UserJpaRepository;
-import juniverse.chatbackend.persistance.repositories.UserRepository;
+import juniverse.chatbackend.persistance.repositories.SysUserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class UserAdapter implements UserRepository {
+public class SysUserAdapter implements SysUserRepository {
 
     private final UserJpaRepository userJpaRepository;
     private final UserMapper userMapper;

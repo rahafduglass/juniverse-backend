@@ -7,7 +7,7 @@ import juniverse.chatbackend.domain.models.MessageModel;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
 import juniverse.chatbackend.persistance.repositories.MessageRepository;
 import juniverse.chatbackend.persistance.repositories.PrivateChatRepository;
-import juniverse.chatbackend.persistance.repositories.UserRepository;
+import juniverse.chatbackend.persistance.repositories.SysUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
     private final PrivateChatRepository privateChatRepository;
-    private final UserRepository userRepository;
+    private final SysUserRepository sysUserRepository;
     private final PrivateChatService privateChatService;
 
 
@@ -32,9 +32,9 @@ public class MessageService {
 
         //retrieve chat using userId in a user-therapist chat
         if (messageModel.getSenderId().equals(therapistId)) {
-            privateChat = privateChatRepository.findPrivateChatByUser(userRepository.findUserById(messageModel.getReceiverId()));
+            privateChat = privateChatRepository.findPrivateChatByUser(sysUserRepository.findUserById(messageModel.getReceiverId()));
         } else {
-            privateChat = privateChatRepository.findPrivateChatByUser(userRepository.findUserById(messageModel.getSenderId()));
+            privateChat = privateChatRepository.findPrivateChatByUser(sysUserRepository.findUserById(messageModel.getSenderId()));
         }
 
         //check if it doesn't exist? create.

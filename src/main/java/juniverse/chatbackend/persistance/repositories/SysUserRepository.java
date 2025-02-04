@@ -4,6 +4,6 @@ import juniverse.chatbackend.domain.models.SysUserModel;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository {
+public interface SysUserRepository {
     SysUserModel findUserById(Long id);
 }

@@ -11,7 +11,7 @@ import juniverse.chatbackend.domain.models.MessageModel;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
 import juniverse.chatbackend.persistance.repositories.MessageRepository;
 import juniverse.chatbackend.persistance.repositories.PrivateChatRepository;
-import juniverse.chatbackend.persistance.repositories.UserRepository;
+import juniverse.chatbackend.persistance.repositories.SysUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,10 +22,9 @@ import java.util.stream.Collectors;
 public class PrivateChatService {
     private final PrivateChatRepository privateChatRepository;
     private final PrivateChatMapper privateChatMapper;
-    private final UserRepository userRepository;
+    private final SysUserRepository sysUserRepository;
     private final MessageRepository messageRepository;
     private final MessageMapper messageMapper;
-    private final SysUserService sysUserService;
 
     public PrivateChatModel createPrivateChat(Long senderId) {
         PrivateChatModel privateChatTemp = new PrivateChatModel();
@@ -36,7 +35,7 @@ public class PrivateChatService {
     }
 
     public List<MessageResponse> getUserChatMessages(Long userId) {
-        PrivateChatModel privateChatModel = privateChatRepository.findPrivateChatByUser(userRepository.findUserById(userId));
+        PrivateChatModel privateChatModel = privateChatRepository.findPrivateChatByUser(sysUserRepository.findUserById(userId));
         List<MessageModel> listOfMessages = messageRepository.findAllByPrivateChatId(privateChatModel.getId());
         return messageMapper.listOfModelsToListOfResponses(listOfMessages);
 

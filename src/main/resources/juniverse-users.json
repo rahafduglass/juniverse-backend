@@ -23,8 +23,8 @@
     "email": "omar.khaled@example.com",
     "firstName": "Omar",
     "lastName": "Khaled",
-    "role": "MODERATOR",
-    "major": "BIT"
+    "role": "THERAPIST",
+    "major": "MENTAL_HEALTH"
   },
   {
     "username": "layla_hassan",
@@ -32,8 +32,8 @@
     "email": "layla.hassan@example.com",
     "firstName": "Layla",
     "lastName": "Hassan",
-    "role": "THERAPIST",
-    "major": "MENTAL_HEALTH"
+    "role": "STUDENT",
+    "major": "BIT"
   },
   {
     "username": "youssef_mohamed",
@@ -41,7 +41,7 @@
     "email": "youssef.mohamed@example.com",
     "firstName": "Youssef",
     "lastName": "Mohamed",
-    "role": "STUDENT",
+    "role": "MODERATOR",
     "major": "DS"
   },
   {
@@ -50,7 +50,7 @@
     "email": "hana.nour@example.com",
     "firstName": "Hana",
     "lastName": "Nour",
-    "role": "MODERATOR",
+    "role": "STUDENT",
     "major": "CyS"
   },
   {
@@ -68,8 +68,8 @@
     "email": "sara.tariq@example.com",
     "firstName": "Sara",
     "lastName": "Tariq",
-    "role": "THERAPIST",
-    "major": "MENTAL_HEALTH"
+    "role": "STUDENT",
+    "major": "AI"
   },
   {
     "username": "mohamed_adel",
@@ -77,8 +77,8 @@
     "email": "mohamed.adel@example.com",
     "firstName": "Mohamed",
     "lastName": "Adel",
-    "role": "STUDENT",
-    "major": "CIS"
+    "role": "ADMIN",
+    "major": "DS"
   },
   {
     "username": "amal_rami",
@@ -86,7 +86,7 @@
     "email": "amal.rami@example.com",
     "firstName": "Amal",
     "lastName": "Rami",
-    "role": "ADMIN",
+    "role": "MODERATOR",
     "major": "CS"
   },
   {
@@ -95,8 +95,8 @@
     "email": "hassan.fadi@example.com",
     "firstName": "Hassan",
     "lastName": "Fadi",
-    "role": "MODERATOR",
-    "major": "CyS"
+    "role": "STUDENT",
+    "major": "BIT"
   },
   {
     "username": "noor_lina",
@@ -104,8 +104,8 @@
     "email": "noor.lina@example.com",
     "firstName": "Noor",
     "lastName": "Lina",
-    "role": "THERAPIST",
-    "major": "MENTAL_HEALTH"
+    "role": "ADMIN",
+    "major": "CIS"
   },
   {
     "username": "tamer_nabil",
@@ -113,8 +113,8 @@
     "email": "tamer.nabil@example.com",
     "firstName": "Tamer",
     "lastName": "Nabil",
-    "role": "STUDENT",
-    "major": "BIT"
+    "role": "MODERATOR",
+    "major": "AI"
   },
   {
     "username": "dina_mahmoud",
@@ -122,8 +122,8 @@
     "email": "dina.mahmoud@example.com",
     "firstName": "Dina",
     "lastName": "Mahmoud",
-    "role": "MODERATOR",
-    "major": "AI"
+    "role": "STUDENT",
+    "major": "DS"
   },
   {
     "username": "fady_ibrahim",
@@ -131,8 +131,8 @@
     "email": "fady.ibrahim@example.com",
     "firstName": "Fady",
     "lastName": "Ibrahim",
-    "role": "ADMIN",
-    "major": "DS"
+    "role": "MODERATOR",
+    "major": "CyS"
   },
   {
     "username": "reham_samir",
@@ -140,8 +140,8 @@
     "email": "reham.samir@example.com",
     "firstName": "Reham",
     "lastName": "Samir",
-    "role": "THERAPIST",
-    "major": "MENTAL_HEALTH"
+    "role": "STUDENT",
+    "major": "AI"
   },
   {
     "username": "ahmed_zaki",
@@ -149,8 +149,8 @@
     "email": "ahmed.zaki@example.com",
     "firstName": "Ahmed",
     "lastName": "Zaki",
-    "role": "STUDENT",
-    "major": "CyS"
+    "role": "MODERATOR",
+    "major": "CIS"
   },
   {
     "username": "salma_malek",
@@ -159,7 +159,7 @@
     "firstName": "Salma",
     "lastName": "Malek",
     "role": "ADMIN",
-    "major": "CIS"
+    "major": "DS"
   },
   {
     "username": "mustafa_rafik",
@@ -167,8 +167,8 @@
     "email": "mustafa.rafik@example.com",
     "firstName": "Mustafa",
     "lastName": "Rafik",
-    "role": "MODERATOR",
-    "major": "AI"
+    "role": "STUDENT",
+    "major": "CIS"
   },
   {
     "username": "nadia_hisham",
@@ -176,7 +176,7 @@
     "email": "nadia.hisham@example.com",
     "firstName": "Nadia",
     "lastName": "Hisham",
-    "role": "THERAPIST",
-    "major": "MENTAL_HEALTH"
+    "role": "MODERATOR",
+    "major": "CyS"
   }
 ]

@@ -34,9 +34,9 @@ public class SysUserModel {
 
     private UserRole role;
 
-    private String profilePicture;
+    private String profilePicturePath;
 
-    private String coverPicture;
+    private String coverPicturePath;
 
     private String bio;
 }

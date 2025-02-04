@@ -1,6 +1,7 @@
 package juniverse.chatbackend.domain.services;
 
 
+import juniverse.chatbackend.domain.enums.MessageStatus;
 import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.domain.enums.ChatType;
 import juniverse.chatbackend.domain.models.MessageModel;
@@ -46,6 +47,7 @@ public class MessageService {
         messageModel.setIsRead(false);
         messageModel.setTimestamp(LocalDateTime.now());
         messageModel.setPrivateChatId(privateChat.getId());
+        messageModel.setStatus(MessageStatus.SENT);
 
         return sendMessage(messageModel);
     }

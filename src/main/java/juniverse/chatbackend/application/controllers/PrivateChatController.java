@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/private/chat")
+@RequestMapping("/api/v1/private-chat")
 public class PrivateChatController {
 
     private final PrivateChatService privateChatService;

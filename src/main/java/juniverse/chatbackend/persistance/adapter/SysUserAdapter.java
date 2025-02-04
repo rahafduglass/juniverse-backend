@@ -26,7 +26,7 @@ public class SysUserAdapter implements SysUserRepository {
     }
 
     @Override
-    public Optional<Object> findByUsername(String username) {
+    public Optional<SysUserEntity> findByUsername(String username) {
         return userJpaRepository.findByUsername(username);
     }
 }

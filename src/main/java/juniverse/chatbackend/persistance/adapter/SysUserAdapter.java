@@ -24,4 +24,9 @@ public class SysUserAdapter implements SysUserRepository {
         if(userEntity.isEmpty()) {return null;}
         return userMapper.entityToModel(userEntity.get());
     }
+
+    @Override
+    public Optional<Object> findByUsername(String username) {
+        return userJpaRepository.findByUsername(username);
+    }
 }

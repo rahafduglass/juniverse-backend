@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserJpaRepository extends JpaRepository<SysUserEntity, Long> {
+public interface SysUserJpaRepository extends JpaRepository<SysUserEntity, Long> {
     Optional<SysUserEntity> findByUsername(String username);
 }

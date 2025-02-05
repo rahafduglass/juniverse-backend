@@ -38,6 +38,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**")
                         .permitAll()
                         .requestMatchers("/api/v1/private-chat/**").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/webjars/**"
+                        ).permitAll()  // Allow Swagger access without authentication
                         .anyRequest().authenticated())
 
                 // application will not use HTTP sessions to store authentication details -- we'll use JWT

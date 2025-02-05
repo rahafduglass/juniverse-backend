@@ -13,7 +13,6 @@ public class PrivateChatModel {
 
     private Long id;
 
-
     private Long userId;
 
     private Long therapistId;

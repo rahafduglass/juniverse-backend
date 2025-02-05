@@ -5,19 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PrivateChatResponse {
+public class TherapistChatResponse {
 
     private Long id;
 
-    private Long userId;
+    private String userUsername;
 
-    private Long therapistId;
+    private String therapistUsername;
 
     private String userFirstName;
 
@@ -27,7 +25,6 @@ public class PrivateChatResponse {
 
 
 }
-// user first and last name.
-// number of unread messages in that chat
+// TO BE ADDED:
 // last message in that chat
 // the date of the last message

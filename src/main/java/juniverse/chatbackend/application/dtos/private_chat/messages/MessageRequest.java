@@ -1,4 +1,4 @@
-package juniverse.chatbackend.application.dtos.private_message;
+package juniverse.chatbackend.application.dtos.private_chat.messages;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

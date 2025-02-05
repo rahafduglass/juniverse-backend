@@ -1,7 +1,7 @@
 package juniverse.chatbackend.domain.services;
 
 
-import juniverse.chatbackend.application.dtos.private_message.MessageResponseNew;
+import juniverse.chatbackend.application.dtos.private_chat.messages.MessageResponseNew;
 import juniverse.chatbackend.domain.enums.ChatType;
 import juniverse.chatbackend.domain.enums.MessageStatus;
 import juniverse.chatbackend.domain.mappers.MessageMapper;

@@ -1,8 +1,8 @@
 package juniverse.chatbackend.domain.mappers;
 
-import juniverse.chatbackend.application.dtos.private_message.MessageRequest;
-import juniverse.chatbackend.application.dtos.private_message.MessageResponse;
-import juniverse.chatbackend.application.dtos.private_message.MessageResponseNew;
+import juniverse.chatbackend.application.dtos.private_chat.messages.MessageRequest;
+import juniverse.chatbackend.application.dtos.private_chat.messages.MessageResponse;
+import juniverse.chatbackend.application.dtos.private_chat.messages.MessageResponseNew;
 import juniverse.chatbackend.domain.models.MessageModel;
 import juniverse.chatbackend.persistance.entities.MessageEntity;
 import org.mapstruct.Mapper;

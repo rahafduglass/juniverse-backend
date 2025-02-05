@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface MessageRepository {
 
-    Integer getNumOfUnreadMessagesByChatIdAndReceiverId(Long chatId,Long receiverId);
+    Integer getNumOfUnreadMessagesByChatAndReceiver(Long chatId, Long receiverId);
 
     MessageModel sendMessage(MessageModel messageModel);
 

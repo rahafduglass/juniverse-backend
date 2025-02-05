@@ -43,7 +43,7 @@ public class OpenApiConfig {
             }
             if (handlerMethod.getMethod().getName().equals("getPrivateChatById")) {
                 operation.summary("Get private chat metadata")
-                        .description("response will be schema PrivateChatResponse except PrivateChatResponse.unreadMessagesCount");
+                        .description("response will be schema TherapistChatResponse except TherapistChatResponse.unreadMessagesCount");
             }
             if (handlerMethod.getMethod().getName().equals("markChatMessagesAsRead")) {
                 operation.summary("mark a private chat as READ");

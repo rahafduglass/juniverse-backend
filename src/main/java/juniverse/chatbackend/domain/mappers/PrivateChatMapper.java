@@ -1,15 +1,11 @@
 package juniverse.chatbackend.domain.mappers;
 
-import juniverse.chatbackend.application.dtos.private_chat.PrivateChatResponse;
+import juniverse.chatbackend.application.dtos.private_chat.TherapistChatResponse;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
 import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
-import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PrivateChatMapper {
@@ -23,11 +19,11 @@ public interface PrivateChatMapper {
 
 
     @Mapping(source = "chat.id", target = "id")
-    @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "chat.therapist.id", target = "therapistId")
+    @Mapping(source = "user.username", target = "userUsername")
+    @Mapping(source = "chat.therapist.username", target = "therapistUsername")
     @Mapping(source = "user.firstName", target = "userFirstName")
     @Mapping(source = "user.lastName", target = "userLastName")
-    PrivateChatResponse entityToResponse(PrivateChatEntity chat, SysUserEntity user);
+    TherapistChatResponse entityToResponse(PrivateChatEntity chat, SysUserEntity user);
 
 
 }

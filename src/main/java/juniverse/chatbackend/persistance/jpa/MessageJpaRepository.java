@@ -14,7 +14,7 @@ public interface MessageJpaRepository extends JpaRepository<MessageEntity, Long>
     List<MessageEntity> findAllByPrivateChatId(Long privateChatId);
 
     @Query("SELECT COUNT(m) FROM message m WHERE m.privateChat.id = :chatId AND m.receiver.id= :receiverId AND m.isRead = false")
-    Integer getNumOfUnreadMessagesByChatIdAndReceiverId(@Param("chatId") Long chatId, @Param("receiverId") Long receiverId);
+    Integer getNumOfUnreadMessagesByChatAndReceiver(@Param("chatId") Long chatId, @Param("receiverId") Long receiverId);
 
 
     @Modifying

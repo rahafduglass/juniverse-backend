@@ -1,4 +1,4 @@
-package juniverse.chatbackend.application.dtos.private_message;
+package juniverse.chatbackend.application.dtos.private_chat.messages;
 
 import juniverse.chatbackend.domain.enums.ChatType;
 import juniverse.chatbackend.domain.enums.MessageStatus;

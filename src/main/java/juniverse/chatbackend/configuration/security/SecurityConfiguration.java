@@ -35,15 +35,35 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
 
                 //permission & access control
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**")
-                        .permitAll()
-                        .requestMatchers("/api/v1/private-chat/**").permitAll()
+                .authorizeHttpRequests(request -> request
+                        //auth endpoints access control
+                        .requestMatchers("/api/v1/auth/**")
+                        .permitAll()  // Allow authentication controller access without authentication
+
+
+                         //swagger access control
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/webjars/**"
                         ).permitAll()  // Allow Swagger access without authentication
+
+
+                        //therapist endpoints access control
+                        .requestMatchers(
+                                "/api/v1/private-chat/therapists/{therapistId}/chats"
+                        ).hasAuthority(UserRole.THERAPIST.name())
+
+
+                        //common Juniverse users endpoints access control
+                        .requestMatchers(
+                                //private-chat
+                                "/api/v1/private-chat/{chatId}",
+                                "/api/v1/private-chat/{userId}/messages",
+                                "/api/v1/private-chat/message",
+                                "/api/v1/private-chat/{chatId}/{userId}/mark-as-read"
+                        ).hasAnyAuthority(UserRole.THERAPIST.name(), UserRole.ADMIN.name(),UserRole.STUDENT.name(),UserRole.MODERATOR.name())
                         .anyRequest().authenticated())
 
                 // application will not use HTTP sessions to store authentication details -- we'll use JWT

@@ -3,6 +3,7 @@ package juniverse.chatbackend.domain.services;
 import juniverse.chatbackend.application.dtos.RegisterRequest;
 import juniverse.chatbackend.application.dtos.authentication.UserAuthenticationRequest;
 import juniverse.chatbackend.application.dtos.authentication.UserAuthenticationResponse;
+import juniverse.chatbackend.domain.services.security.JwtService;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import juniverse.chatbackend.persistance.repositories.SysUserRepository;
 import lombok.RequiredArgsConstructor;

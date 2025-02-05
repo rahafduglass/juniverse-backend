@@ -1,4 +1,4 @@
-package juniverse.chatbackend.domain.services;
+package juniverse.chatbackend.domain.services.security;
 
 
 import juniverse.chatbackend.persistance.repositories.SysUserRepository;

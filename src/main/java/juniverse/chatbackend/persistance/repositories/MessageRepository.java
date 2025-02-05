@@ -13,10 +13,6 @@ public interface MessageRepository {
 
     MessageModel sendMessage(MessageModel messageModel);
 
-    MessageModel updateMessageStatus(MessageModel messageModel);
-
-    MessageModel findById(Long id);
-
     List<MessageModel> findAllByPrivateChatId(Long id);
 
     Boolean markMessagesAsRead(Long userId, Long chatId);

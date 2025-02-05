@@ -3,9 +3,8 @@ package juniverse.chatbackend.application.controllers;
 
 import juniverse.chatbackend.application.dtos.ApiResponse;
 import juniverse.chatbackend.application.dtos.RegisterRequest;
-import juniverse.chatbackend.application.dtos.authentication.UserAuthenticationResponse;
 import juniverse.chatbackend.application.dtos.authentication.UserAuthenticationRequest;
-import juniverse.chatbackend.application.dtos.private_message.MessageResponse;
+import juniverse.chatbackend.application.dtos.authentication.UserAuthenticationResponse;
 import juniverse.chatbackend.application.helpers.ApiResponseHelper;
 import juniverse.chatbackend.domain.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;

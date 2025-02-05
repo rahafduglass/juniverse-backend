@@ -1,4 +1,4 @@
-package juniverse.chatbackend.domain.services;
+package juniverse.chatbackend.domain.services.security;
 
 
 import io.jsonwebtoken.Claims;

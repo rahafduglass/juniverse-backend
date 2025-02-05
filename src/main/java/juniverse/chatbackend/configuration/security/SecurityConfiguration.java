@@ -2,7 +2,7 @@ package juniverse.chatbackend.configuration.security;
 
 
 import juniverse.chatbackend.domain.enums.UserRole;
-import juniverse.chatbackend.domain.services.SysUserService;
+import juniverse.chatbackend.domain.services.security.SysUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,19 +50,13 @@ public class SecurityConfiguration {
                         ).permitAll()  // Allow Swagger access without authentication
 
 
-                        //therapist endpoints access control
-                        .requestMatchers(
-                                "/api/v1/private-chat/therapists/{therapistId}/chats"
-                        ).hasAuthority(UserRole.THERAPIST.name())
+                        //THERAPIST endpoints access control
 
 
-                        //common Juniverse users endpoints access control
+                        //Juniverse ALL ROLES endpoints access control
                         .requestMatchers(
                                 //private-chat
-                                "/api/v1/private-chat/{chatId}",
-                                "/api/v1/private-chat/{userId}/messages",
-                                "/api/v1/private-chat/message",
-                                "/api/v1/private-chat/{chatId}/{userId}/mark-as-read"
+                                "/api/v1/private-chat/allMessages"
                         ).hasAnyAuthority(UserRole.THERAPIST.name(), UserRole.ADMIN.name(),UserRole.STUDENT.name(),UserRole.MODERATOR.name())
                         .anyRequest().authenticated())
 

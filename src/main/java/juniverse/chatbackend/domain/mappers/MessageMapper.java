@@ -2,6 +2,7 @@ package juniverse.chatbackend.domain.mappers;
 
 import juniverse.chatbackend.application.dtos.private_message.MessageRequest;
 import juniverse.chatbackend.application.dtos.private_message.MessageResponse;
+import juniverse.chatbackend.application.dtos.private_message.MessageResponseNew;
 import juniverse.chatbackend.domain.models.MessageModel;
 import juniverse.chatbackend.persistance.entities.MessageEntity;
 import org.mapstruct.Mapper;
@@ -17,17 +18,23 @@ public interface MessageMapper {
 
     MessageResponse modelToResponse(MessageModel messageModel);
 
-    @Mapping(source = "senderId", target = "sender.id")
-    @Mapping(source = "receiverId", target = "receiver.id")
+    @Mapping(source="senderUsername", target= "sender.username")
+    @Mapping(source="receiverUsername", target="receiver.username")
+    @Mapping(source="receiverId", target="receiver.id")
+    @Mapping(source="senderId", target="sender.id")
     @Mapping(source = "privateChatId", target = "privateChat.id")
     MessageEntity modelToEntity(MessageModel messageModel);
 
-    @Mapping(source = "sender.id", target = "senderId")
-    @Mapping(source = "receiver.id", target = "receiverId")
+    @Mapping(source = "sender.username", target = "senderUsername")
+    @Mapping(source = "receiver.username", target = "receiverUsername")
+    @Mapping(source="receiver.id", target="receiverId")
+    @Mapping(source="sender.id", target="senderId")
     @Mapping(source = "privateChat.id", target = "privateChatId")
     MessageModel entityToModel(MessageEntity messageEntity);
 
     List<MessageResponse> listOfModelsToListOfResponses(List<MessageModel> listOfMessages);
 
     List<MessageModel> listOfEntitiesToListOfModels(List<MessageEntity> listOfMessages);
+
+    List<MessageResponseNew> listOfModelsToListOfResponsesNew(List<MessageModel> listOfMessages);
 }

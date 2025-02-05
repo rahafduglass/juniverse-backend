@@ -1,9 +1,10 @@
 package juniverse.chatbackend.persistance.adapter;
 
+import juniverse.chatbackend.domain.mappers.SysUserMapper;
 import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
+import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.domain.mappers.PrivateChatMapper;
-import juniverse.chatbackend.domain.mappers.UserMapper;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
 import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.persistance.jpa.PrivateChatJpaRepository;
@@ -17,13 +18,13 @@ import java.util.List;
 public class PrivateChatAdapter implements PrivateChatRepository {
 
     private final PrivateChatJpaRepository privateChatJpaRepository;
-    private final UserMapper userMapper;
+    private final SysUserMapper sysUserMapper;
     private final PrivateChatMapper privateChatMapper;
 
 
     @Override
     public PrivateChatModel findPrivateChatByUser(SysUserModel sender) {
-        return privateChatMapper.entityToModel(privateChatJpaRepository.findPrivateChatEntityByUser(userMapper.modelToEntity(sender)));
+        return privateChatMapper.entityToModel(privateChatJpaRepository.findPrivateChatEntityByUser(sysUserMapper.modelToEntity(sender)));
     }
 
     @Override
@@ -39,6 +40,11 @@ public class PrivateChatAdapter implements PrivateChatRepository {
     @Override
     public PrivateChatEntity findPrivateChatById(Long chatId) {
         return privateChatJpaRepository.findPrivateChatEntityById(chatId);
+    }
+
+    @Override
+    public PrivateChatModel findByUser(SysUserEntity sysUserEntity) {
+        return privateChatMapper.entityToModel(privateChatJpaRepository.findByUser(sysUserEntity));
     }
 
 

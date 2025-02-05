@@ -1,11 +1,11 @@
-package juniverse.chatbackend.domain.models;
+package juniverse.chatbackend.application.dtos.private_message;
 
+import juniverse.chatbackend.domain.enums.ChatType;
 import juniverse.chatbackend.domain.enums.MessageStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import juniverse.chatbackend.domain.enums.ChatType;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageModel {
+public class MessageResponseNew {
 
     private Long id;
 
@@ -21,19 +21,16 @@ public class MessageModel {
 
     private LocalDateTime timestamp;
 
-    private ChatType chatType;
+    private String senderUsername;
 
     private MessageStatus status;
 
-    private String senderUsername;
+    private ChatType chatType;
 
     private String receiverUsername;
-
-    private Long receiverId;
-
-    private Long senderId;
 
     private Long privateChatId;
 
     private Boolean isRead;
+
 }

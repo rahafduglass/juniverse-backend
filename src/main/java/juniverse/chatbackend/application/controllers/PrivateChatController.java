@@ -2,6 +2,7 @@ package juniverse.chatbackend.application.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import juniverse.chatbackend.application.dtos.private_message.MessageRequest;
+import juniverse.chatbackend.application.dtos.private_message.MessageResponseNew;
 import juniverse.chatbackend.application.helpers.ApiResponseHelper;
 import juniverse.chatbackend.domain.mappers.MessageMapper;
 import juniverse.chatbackend.domain.services.MessageService;
@@ -26,23 +27,6 @@ public class PrivateChatController {
     private final MessageMapper messageMapper;
     private final ApiResponseHelper apiResponseHelper;
 
-
-    @GetMapping("/{userId}/messages")
-    public ResponseEntity<ApiResponse<List<MessageResponse>>> getUserChatMessages(@PathVariable Long userId) {
-        try {
-            // Retrieve chat messages for the user
-            List<MessageResponse> messageListResponse = privateChatService.getUserChatMessages(userId);
-            //check if retrieval succeeded
-            boolean isGetUserChatMessagesFailed = messageListResponse == null || messageListResponse.isEmpty();
-            //build response
-            return apiResponseHelper.buildApiResponse(messageListResponse, !isGetUserChatMessagesFailed
-                    , (isGetUserChatMessagesFailed ? "No message found for the user" : "Messages retrieved successfully")
-                    , (isGetUserChatMessagesFailed ? HttpStatus.NOT_FOUND : HttpStatus.OK));
-        } catch (Exception e) {
-            // Handle exceptions and return error response
-            return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
-        }
-    }
 
 
     @GetMapping("/therapists/{therapistId}/chats")
@@ -103,5 +87,30 @@ public class PrivateChatController {
             return apiResponseHelper.buildApiResponse(null, false, "Failed to send message: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
+
+
+
+    //updated endpoints bcz IDK what the hell I was thinking about when I wrote the previous ones XD
+    @GetMapping("/allMessages")
+        public ResponseEntity<ApiResponse<List<MessageResponseNew>>> getAllMessages() {
+            try {
+                // Retrieve all messages
+                List<MessageResponseNew> messageListResponse = messageService.getAllMessages();
+
+                //check if retrieval succeeded
+                boolean isFail = messageListResponse == null || messageListResponse.isEmpty();
+
+                //build response
+                return apiResponseHelper.buildApiResponse(messageListResponse, !isFail
+                        , (isFail ? "No message found for the user" : "Messages retrieved successfully")
+                        , (isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK));
+            } catch (Exception e) {
+                // Handle exceptions and return error response
+                return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+            }
+        }
+
+
+
 }
 //

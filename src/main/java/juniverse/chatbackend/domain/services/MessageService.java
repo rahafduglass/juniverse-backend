@@ -1,17 +1,22 @@
 package juniverse.chatbackend.domain.services;
 
 
-import juniverse.chatbackend.domain.enums.MessageStatus;
-import lombok.RequiredArgsConstructor;
+import juniverse.chatbackend.application.dtos.private_message.MessageResponseNew;
 import juniverse.chatbackend.domain.enums.ChatType;
+import juniverse.chatbackend.domain.enums.MessageStatus;
+import juniverse.chatbackend.domain.mappers.MessageMapper;
 import juniverse.chatbackend.domain.models.MessageModel;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
+import juniverse.chatbackend.domain.provider.IdentityProvider;
+import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import juniverse.chatbackend.persistance.repositories.MessageRepository;
 import juniverse.chatbackend.persistance.repositories.PrivateChatRepository;
 import juniverse.chatbackend.persistance.repositories.SysUserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +27,8 @@ public class MessageService {
     private final PrivateChatRepository privateChatRepository;
     private final SysUserRepository sysUserRepository;
     private final PrivateChatService privateChatService;
+    private final MessageMapper messageMapper;
+    private final IdentityProvider identityProvider;
 
 
     public MessageModel sendPrivateMessage(MessageModel messageModel) {
@@ -52,16 +59,17 @@ public class MessageService {
         return sendMessage(messageModel);
     }
 
-    public Long readMessage(Long id) {
-        MessageModel messageModel = messageRepository.findById(id);
-        messageModel.setIsRead(true);
-        return messageRepository.updateMessageStatus(messageModel).getId();
-    }
-
     private MessageModel sendMessage(MessageModel messageModel) {
         return messageRepository.sendMessage(messageModel);
     }
 
+    public List<MessageResponseNew> getAllMessages() {
+        SysUserEntity sysUserEntity=  identityProvider.currentIdentity();
+        SysUserEntity currentUser=sysUserRepository.findByUsername(sysUserEntity.getUsername()).get();
 
+        PrivateChatModel privateChatModel = privateChatRepository.findByUser(currentUser);
+        List<MessageModel> listOfMessages = messageRepository.findAllByPrivateChatId(privateChatModel.getId());
+        return messageMapper.listOfModelsToListOfResponsesNew(listOfMessages);
+    }
 }
 

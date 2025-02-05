@@ -1,17 +1,15 @@
 package juniverse.chatbackend.domain.services;
 
-import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
-import juniverse.chatbackend.persistance.entities.SysUserEntity;
-import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.application.dtos.private_chat.PrivateChatResponse;
-import juniverse.chatbackend.application.dtos.private_message.MessageResponse;
 import juniverse.chatbackend.domain.mappers.MessageMapper;
 import juniverse.chatbackend.domain.mappers.PrivateChatMapper;
-import juniverse.chatbackend.domain.models.MessageModel;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
+import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
+import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import juniverse.chatbackend.persistance.repositories.MessageRepository;
 import juniverse.chatbackend.persistance.repositories.PrivateChatRepository;
 import juniverse.chatbackend.persistance.repositories.SysUserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +20,8 @@ import java.util.stream.Collectors;
 public class PrivateChatService {
     private final PrivateChatRepository privateChatRepository;
     private final PrivateChatMapper privateChatMapper;
-    private final SysUserRepository sysUserRepository;
     private final MessageRepository messageRepository;
-    private final MessageMapper messageMapper;
+
 
     public PrivateChatModel createPrivateChat(Long senderId) {
         PrivateChatModel privateChatTemp = new PrivateChatModel();
@@ -32,13 +29,6 @@ public class PrivateChatService {
         Long therapistId = 2L;
         privateChatTemp.setTherapistId(therapistId);
         return privateChatRepository.createPrivateChat(privateChatTemp);
-    }
-
-    public List<MessageResponse> getUserChatMessages(Long userId) {
-        PrivateChatModel privateChatModel = privateChatRepository.findPrivateChatByUser(sysUserRepository.findUserById(userId));
-        List<MessageModel> listOfMessages = messageRepository.findAllByPrivateChatId(privateChatModel.getId());
-        return messageMapper.listOfModelsToListOfResponses(listOfMessages);
-
     }
 
     public List<PrivateChatResponse> getTherapistChats(Long therapistId) {
@@ -58,7 +48,6 @@ public class PrivateChatService {
 
     }
 
-
     public PrivateChatResponse getPrivateChatById(Long chatId) {
         PrivateChatEntity chat = privateChatRepository.findPrivateChatById(chatId);
         if (chat == null) {
@@ -66,7 +55,6 @@ public class PrivateChatService {
         }
         return privateChatMapper.entityToResponse(chat, chat.getUser());
     }
-
 
     public Boolean markMessagesAsRead(Long userId, Long chatId) {
         return messageRepository.markMessagesAsRead(userId,chatId);

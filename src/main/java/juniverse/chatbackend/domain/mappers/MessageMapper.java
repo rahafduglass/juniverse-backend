@@ -32,8 +32,6 @@ public interface MessageMapper {
     @Mapping(source = "privateChat.id", target = "privateChatId")
     MessageModel entityToModel(MessageEntity messageEntity);
 
-    List<MessageResponse> listOfModelsToListOfResponses(List<MessageModel> listOfMessages);
-
     List<MessageModel> listOfEntitiesToListOfModels(List<MessageEntity> listOfMessages);
 
     List<MessageResponseNew> listOfModelsToListOfResponsesNew(List<MessageModel> listOfMessages);

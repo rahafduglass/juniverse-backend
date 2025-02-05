@@ -18,7 +18,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private String secretKey = "T6lBXXy6IFPfTeXjygHQI20SWUH1gcx3rwdDfU7WVjRbD4YAlbQoS6YAB9dD3yjyl+LzZJOKVpVJeRZ0+Ys6tg==";
+    private final String secretKey = "T6lBXXy6IFPfTeXjygHQI20SWUH1gcx3rwdDfU7WVjRbD4YAlbQoS6YAB9dD3yjyl+LzZJOKVpVJeRZ0+Ys6tg==";
 
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder().setSubject(userDetails.getUsername())

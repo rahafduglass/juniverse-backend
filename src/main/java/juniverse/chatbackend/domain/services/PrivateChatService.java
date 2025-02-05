@@ -1,14 +1,12 @@
 package juniverse.chatbackend.domain.services;
 
 import juniverse.chatbackend.application.dtos.private_chat.PrivateChatResponse;
-import juniverse.chatbackend.domain.mappers.MessageMapper;
 import juniverse.chatbackend.domain.mappers.PrivateChatMapper;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
 import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import juniverse.chatbackend.persistance.repositories.MessageRepository;
 import juniverse.chatbackend.persistance.repositories.PrivateChatRepository;
-import juniverse.chatbackend.persistance.repositories.SysUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

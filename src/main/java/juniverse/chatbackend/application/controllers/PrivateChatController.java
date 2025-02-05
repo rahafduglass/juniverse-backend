@@ -1,16 +1,15 @@
 package juniverse.chatbackend.application.controllers;
 
-import io.swagger.v3.oas.annotations.Operation;
+import juniverse.chatbackend.application.dtos.ApiResponse;
+import juniverse.chatbackend.application.dtos.private_chat.PrivateChatResponse;
 import juniverse.chatbackend.application.dtos.private_message.MessageRequest;
+import juniverse.chatbackend.application.dtos.private_message.MessageResponse;
 import juniverse.chatbackend.application.dtos.private_message.MessageResponseNew;
 import juniverse.chatbackend.application.helpers.ApiResponseHelper;
 import juniverse.chatbackend.domain.mappers.MessageMapper;
 import juniverse.chatbackend.domain.services.MessageService;
-import lombok.AllArgsConstructor;
-import juniverse.chatbackend.application.dtos.ApiResponse;
-import juniverse.chatbackend.application.dtos.private_chat.PrivateChatResponse;
-import juniverse.chatbackend.application.dtos.private_message.MessageResponse;
 import juniverse.chatbackend.domain.services.PrivateChatService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

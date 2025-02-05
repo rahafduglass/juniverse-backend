@@ -9,10 +9,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface SysUserMapper {
-    SysUserModel requestToModel(LoginRequest loginRequest);
-
-
-    LoginResponse modelToResponse(SysUserModel sysUserModel);
 
     SysUserModel entityToModel(SysUserEntity sysUserEntity);
 

@@ -1,6 +1,5 @@
 package juniverse.chatbackend.persistance.jpa;
 
-import juniverse.chatbackend.domain.models.PrivateChatModel;
 import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

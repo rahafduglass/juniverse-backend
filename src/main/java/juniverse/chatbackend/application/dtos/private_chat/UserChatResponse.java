@@ -9,19 +9,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TherapistChatResponse {
+public class UserChatResponse {
 
     private Long id;
 
     private String userUsername;
 
-    private String userFirstName;
+    private String therapistUsername;
 
-    private String userLastName;
+    private String therapistFirstName;
 
-    private Integer unreadMessagesCount;
+    private String therapistLastName;
+
+    private Integer userUnreadMessagesCount;
 
 }
-// TO BE ADDED:
-// last message in that chat
-// the date of the last message

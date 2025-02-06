@@ -23,7 +23,7 @@ public class JwtService {
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder().setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) // one day
+                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // one day
                 .signWith(SignatureAlgorithm.HS512, getSignKey())
                 .compact();
     }
@@ -38,7 +38,8 @@ public class JwtService {
     }
 
     public String extractUserName(String token) {
-        return extractClaim(token, Claims::getSubject); //returning the username
+        //returning the username
+        return extractClaim(token, Claims::getSubject);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

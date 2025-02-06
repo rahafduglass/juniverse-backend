@@ -5,6 +5,8 @@ import juniverse.chatbackend.application.dtos.private_chat.messages.MessageRespo
 import juniverse.chatbackend.domain.enums.ChatType;
 import juniverse.chatbackend.domain.enums.MessageStatus;
 import juniverse.chatbackend.domain.mappers.MessageMapper;
+import juniverse.chatbackend.domain.mappers.PrivateChatMapper;
+import juniverse.chatbackend.domain.mappers.PrivateChatMapperImpl;
 import juniverse.chatbackend.domain.models.MessageModel;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
 import juniverse.chatbackend.domain.provider.IdentityProvider;
@@ -29,6 +31,7 @@ public class MessageService {
     private final PrivateChatService privateChatService;
     private final MessageMapper messageMapper;
     private final IdentityProvider identityProvider;
+    private final PrivateChatMapper privateChatMapper;
 
 
     public MessageModel sendPrivateMessage(MessageModel messageModel) {
@@ -40,9 +43,9 @@ public class MessageService {
 
         //retrieve chat using userId in a user-therapist chat
         if (messageModel.getSenderId().equals(therapistId)) {
-            privateChat = privateChatRepository.findPrivateChatByUser(sysUserRepository.findUserById(messageModel.getReceiverId()));
+            privateChat = privateChatRepository.findByUser(sysUserRepository.findById(messageModel.getReceiverId()));
         } else {
-            privateChat = privateChatRepository.findPrivateChatByUser(sysUserRepository.findUserById(messageModel.getSenderId()));
+            privateChat = privateChatRepository.findByUser(sysUserRepository.findById(messageModel.getSenderId()));
         }
 
         //check if it doesn't exist? create.
@@ -67,7 +70,7 @@ public class MessageService {
         SysUserEntity sysUserEntity=  identityProvider.currentIdentity();
         SysUserEntity currentUser=sysUserRepository.findByUsername(sysUserEntity.getUsername()).get();
 
-        PrivateChatModel privateChatModel = privateChatRepository.findByUser(currentUser);
+        PrivateChatModel privateChatModel = privateChatMapper.entityToModel(privateChatRepository.findByUser(currentUser));
         List<MessageModel> listOfMessages = messageRepository.findAllByPrivateChatId(privateChatModel.getId());
         return messageMapper.listOfModelsToListOfResponsesNew(listOfMessages);
     }

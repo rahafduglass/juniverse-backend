@@ -2,11 +2,14 @@ package juniverse.chatbackend.application.controllers;
 
 import juniverse.chatbackend.application.dtos.ApiResponse;
 import juniverse.chatbackend.application.dtos.private_chat.TherapistChatResponse;
+import juniverse.chatbackend.application.dtos.private_chat.UserChatResponse;
 import juniverse.chatbackend.application.dtos.private_chat.messages.MessageRequest;
 import juniverse.chatbackend.application.dtos.private_chat.messages.MessageResponse;
 import juniverse.chatbackend.application.dtos.private_chat.messages.MessageResponseNew;
 import juniverse.chatbackend.application.helpers.ApiResponseHelper;
 import juniverse.chatbackend.domain.mappers.MessageMapper;
+import juniverse.chatbackend.domain.mappers.PrivateChatMapper;
+import juniverse.chatbackend.domain.models.PrivateChatModel;
 import juniverse.chatbackend.domain.services.MessageService;
 import juniverse.chatbackend.domain.services.PrivateChatService;
 import lombok.AllArgsConstructor;
@@ -25,25 +28,7 @@ public class PrivateChatController {
     private final MessageService messageService;
     private final MessageMapper messageMapper;
     private final ApiResponseHelper apiResponseHelper;
-
-
-
-    @GetMapping("/{chatId}")
-    public ResponseEntity<ApiResponse<TherapistChatResponse>> getPrivateChatById(@PathVariable Long chatId) {
-        try {
-            //Retrieve chat by id
-            TherapistChatResponse therapistChatResponse = privateChatService.getPrivateChatById(chatId);
-
-            // Determine if no chat is found
-            boolean isChatNotFound = (therapistChatResponse == null);
-            //build response
-            return apiResponseHelper.buildApiResponse(therapistChatResponse, !isChatNotFound
-                    , (isChatNotFound ? "No chat is found" : "Chat retrieved successfully")
-                    , isChatNotFound ? HttpStatus.NOT_FOUND : HttpStatus.OK);
-        } catch (Exception e) {
-            return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
-        }
-    }
+    private final PrivateChatMapper privateChatMapper;
 
 
     @PutMapping("/{chatId}/{userId}/mark-as-read")
@@ -69,7 +54,9 @@ public class PrivateChatController {
     }
 
 
-    //updated endpoints bcz IDK what the hell I was thinking about when I wrote the previous ones XD
+
+
+    //UPDATED
     @GetMapping("/allMessages")
     public ResponseEntity<ApiResponse<List<MessageResponseNew>>> getAllMessages() {
         try {
@@ -93,13 +80,13 @@ public class PrivateChatController {
     public ResponseEntity<ApiResponse<List<TherapistChatResponse>>> getAllTherapistChats() {
         try {
             // Retrieve chats for the therapist
-            List<TherapistChatResponse> therapistChatRespons = privateChatService.getAllTherapistChats();
+            List<TherapistChatResponse> therapistChatResponse = privateChatService.getAllTherapistChats();
 
             // Determine if no chats are found
-            boolean isNoChatsFound = (therapistChatRespons == null || therapistChatRespons.isEmpty());
+            boolean isNoChatsFound = (therapistChatResponse == null || therapistChatResponse.isEmpty());
 
             //build response
-            return apiResponseHelper.buildApiResponse(therapistChatRespons, !isNoChatsFound
+            return apiResponseHelper.buildApiResponse(therapistChatResponse, !isNoChatsFound
                     , (isNoChatsFound ? "No chats found for the therapist" : "Chats retrieved successfully")
                     , (isNoChatsFound ? HttpStatus.NOT_FOUND : HttpStatus.OK));
         } catch (Exception e) {
@@ -107,5 +94,21 @@ public class PrivateChatController {
         }
     }
 
+    @GetMapping()
+    public ResponseEntity<ApiResponse<UserChatResponse>> getChat() {
+        try{
+            //retrieve chat
+            UserChatResponse userChatResponse = privateChatMapper.modelToUserChatResponse(privateChatService.getChat());
+
+            //build api response
+            if(userChatResponse!=null){
+                return apiResponseHelper.buildApiResponse(userChatResponse, true, "User chat retrieved successfully", HttpStatus.OK);
+            }else return apiResponseHelper.buildApiResponse(null, false, "No user chat found", HttpStatus.NOT_FOUND);
+
+        }catch(Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
 }
-//
+//getAllMessagesByChatId

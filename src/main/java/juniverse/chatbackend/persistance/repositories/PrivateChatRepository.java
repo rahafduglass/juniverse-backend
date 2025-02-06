@@ -12,13 +12,16 @@ import java.util.List;
 public interface PrivateChatRepository {
 
 
-    PrivateChatModel findPrivateChatByUser(SysUserModel senderId);
+    PrivateChatModel findByUser(SysUserModel senderId);
 
-    PrivateChatModel createPrivateChat(PrivateChatModel privateChat);
+    PrivateChatModel create(PrivateChatModel privateChat);
 
     List<Object[]> findAllByTherapistId(Long therapistId);
 
-    PrivateChatEntity findPrivateChatById(Long chatId);
+    PrivateChatEntity findById(Long chatId);
 
-    PrivateChatModel findByUser(SysUserEntity sysUserEntity);
+    //DELETE THIS
+    PrivateChatEntity findByUser(SysUserEntity sysUserEntity);
 }
+
+

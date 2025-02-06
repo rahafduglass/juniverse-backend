@@ -23,28 +23,28 @@ public class PrivateChatAdapter implements PrivateChatRepository {
 
 
     @Override
-    public PrivateChatModel findPrivateChatByUser(SysUserModel sender) {
+    public PrivateChatModel findByUser(SysUserModel sender) {
         return privateChatMapper.entityToModel(privateChatJpaRepository.findPrivateChatEntityByUser(sysUserMapper.modelToEntity(sender)));
     }
 
     @Override
-    public PrivateChatModel createPrivateChat(PrivateChatModel privateChat) {
+    public PrivateChatModel create(PrivateChatModel privateChat) {
         return privateChatMapper.entityToModel(privateChatJpaRepository.save(privateChatMapper.modelToEntity(privateChat)));
     }
 
     @Override
     public List<Object[]> findAllByTherapistId(Long therapistId) {
-        return privateChatJpaRepository.findChatsWithUserDetails(therapistId);
+        return privateChatJpaRepository.findChatsWithUserDetailsByTherapist(therapistId);
     }
 
     @Override
-    public PrivateChatEntity findPrivateChatById(Long chatId) {
+    public PrivateChatEntity findById(Long chatId) {
         return privateChatJpaRepository.findPrivateChatEntityById(chatId);
     }
 
     @Override
-    public PrivateChatModel findByUser(SysUserEntity sysUserEntity) {
-        return privateChatMapper.entityToModel(privateChatJpaRepository.findByUser(sysUserEntity));
+    public PrivateChatEntity findByUser(SysUserEntity sysUserEntity) {
+        return privateChatJpaRepository.findByUser(sysUserEntity);
     }
 
 

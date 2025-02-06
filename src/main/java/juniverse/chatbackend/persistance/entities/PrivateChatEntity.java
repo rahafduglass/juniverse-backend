@@ -16,14 +16,12 @@ public class PrivateChatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne //each user has one private chat
+    @OneToOne(fetch = FetchType.EAGER) //each user has one private chat
     @JoinColumn(name = "user_id", nullable = false)
     private SysUserEntity user;
 
-    @ManyToOne //one therapist has many private chats
+    @ManyToOne(fetch = FetchType.EAGER) //one therapist has many private chats
     @JoinColumn(name = "therapist_id", nullable = false)
     private SysUserEntity therapist; //it'll be set from model as lookup data
-
-
 
 }

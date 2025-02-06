@@ -2,12 +2,15 @@ package juniverse.chatbackend.domain.services;
 
 import juniverse.chatbackend.application.dtos.private_chat.TherapistChatResponse;
 import juniverse.chatbackend.domain.mappers.PrivateChatMapper;
+import juniverse.chatbackend.domain.mappers.SysUserMapper;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
+import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.domain.provider.IdentityProvider;
 import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import juniverse.chatbackend.persistance.repositories.MessageRepository;
 import juniverse.chatbackend.persistance.repositories.PrivateChatRepository;
+import juniverse.chatbackend.persistance.repositories.SysUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +24,8 @@ public class PrivateChatService {
     private final PrivateChatMapper privateChatMapper;
     private final MessageRepository messageRepository;
     private final IdentityProvider identityProvider;
-
-
+    private final SysUserMapper sysUserMapper;
+    private final SysUserRepository sysUserRepository;
 
 
     public PrivateChatModel createPrivateChat(Long senderId) {
@@ -30,16 +33,7 @@ public class PrivateChatService {
         privateChatTemp.setUserId(senderId);
         Long therapistId = 2L;
         privateChatTemp.setTherapistId(therapistId);
-        return privateChatRepository.createPrivateChat(privateChatTemp);
-    }
-
-
-    public TherapistChatResponse getPrivateChatById(Long chatId) {
-        PrivateChatEntity chat = privateChatRepository.findPrivateChatById(chatId);
-        if (chat == null) {
-            return null;
-        }
-        return privateChatMapper.entityToResponse(chat, chat.getUser());
+        return privateChatRepository.create(privateChatTemp);
     }
 
 
@@ -62,11 +56,8 @@ public class PrivateChatService {
             // Extract PrivateChatEntity from list row[0]
             PrivateChatEntity chat = (PrivateChatEntity) row[0];
 
-            // Extract SysUserEntity from list row[1]
-            SysUserEntity user = (SysUserEntity) row[1];
-
             //mapping
-            TherapistChatResponse therapistChatResponse = privateChatMapper.entityToResponse(chat, user);
+            TherapistChatResponse therapistChatResponse = privateChatMapper.entityToTherapistChatResponse(chat);
 
             //retrieve and manually map unreadMessagesCount ---> FIND A BETTER WAY
             therapistChatResponse.setUnreadMessagesCount(messageRepository.getNumOfUnreadMessagesByChatAndReceiver(chat.getId(), sysUserEntity.getId()));
@@ -75,4 +66,30 @@ public class PrivateChatService {
             return therapistChatResponse;
         }).collect(Collectors.toList());
     }
+
+    public PrivateChatModel getChat() {
+        //retrieve current user
+        SysUserEntity currentUser = identityProvider.currentIdentity();
+
+        //retrieve private chat using current user
+        PrivateChatEntity chat = privateChatRepository.findByUser(currentUser);
+
+        //check if not null
+        if (chat == null) throw new RuntimeException("private-chat not found");
+
+        //get therapist
+        SysUserEntity therapist= chat.getTherapist();
+
+        System.out.println(therapist.getUsername()+"PLEASEE ODNT PUT ME IN TEARS WHEN I JUST DID MY MAKE UP SO NICE HEART BREAK ");
+
+        //privateChatModel
+        PrivateChatModel privateChatModel=privateChatMapper.entityToModel(chat);
+
+        //retrieve and manually map unreadMessagesCount ---> FIND A BETTER WAY
+        privateChatModel.setUserUnreadMessagesCount(messageRepository.getNumOfUnreadMessagesByChatAndReceiver(chat.getId(), currentUser.getId()));
+
+        //mapping entity to our model
+        return privateChatModel;
+    }
+
 }

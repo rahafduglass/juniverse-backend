@@ -1,7 +1,5 @@
 package juniverse.chatbackend.domain.mappers;
 
-import juniverse.chatbackend.application.dtos.authentication.LoginRequest;
-import juniverse.chatbackend.application.dtos.authentication.LoginResponse;
 import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import org.mapstruct.Mapper;

@@ -19,7 +19,7 @@ public class SysUserAdapter implements SysUserRepository {
     private final SysUserMapper sysUserMapper;
 
     @Override
-    public SysUserModel findUserById(Long id) {
+    public SysUserModel findById(Long id) {
         Optional<SysUserEntity> userEntity= sysUserJpaRepository.findById(id);
 
         if(userEntity.isEmpty()) {return null;}

@@ -2,15 +2,12 @@ package juniverse.chatbackend.domain.services;
 
 import juniverse.chatbackend.application.dtos.private_chat.TherapistChatResponse;
 import juniverse.chatbackend.domain.mappers.PrivateChatMapper;
-import juniverse.chatbackend.domain.mappers.SysUserMapper;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
-import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.domain.provider.IdentityProvider;
 import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import juniverse.chatbackend.persistance.repositories.MessageRepository;
 import juniverse.chatbackend.persistance.repositories.PrivateChatRepository;
-import juniverse.chatbackend.persistance.repositories.SysUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,23 +21,15 @@ public class PrivateChatService {
     private final PrivateChatMapper privateChatMapper;
     private final MessageRepository messageRepository;
     private final IdentityProvider identityProvider;
-    private final SysUserMapper sysUserMapper;
-    private final SysUserRepository sysUserRepository;
 
 
-    public PrivateChatModel createPrivateChat(Long senderId) {
+    public PrivateChatModel createChat(Long userId) {
         PrivateChatModel privateChatTemp = new PrivateChatModel();
-        privateChatTemp.setUserId(senderId);
+        privateChatTemp.setUserId(userId);
         Long therapistId = 2L;
         privateChatTemp.setTherapistId(therapistId);
         return privateChatRepository.create(privateChatTemp);
     }
-
-
-    public Boolean markMessagesAsRead(Long userId, Long chatId) {
-        return messageRepository.markMessagesAsRead(userId, chatId);
-    }
-
 
     public List<TherapistChatResponse> getAllTherapistChats() {
 
@@ -77,11 +66,6 @@ public class PrivateChatService {
         //check if not null
         if (chat == null) throw new RuntimeException("private-chat not found");
 
-        //get therapist
-        SysUserEntity therapist= chat.getTherapist();
-
-        System.out.println(therapist.getUsername()+"PLEASEE ODNT PUT ME IN TEARS WHEN I JUST DID MY MAKE UP SO NICE HEART BREAK ");
-
         //privateChatModel
         PrivateChatModel privateChatModel=privateChatMapper.entityToModel(chat);
 
@@ -92,4 +76,11 @@ public class PrivateChatService {
         return privateChatModel;
     }
 
+    public Boolean marChatAsRead(Long chatId) {
+        return messageRepository.markMessagesAsRead(identityProvider.currentIdentity().getId(), chatId);
+    }
+
+    public PrivateChatModel getChatById(Long privateChatId) {
+        return privateChatMapper.entityToModel(privateChatRepository.findById(privateChatId));
+    }
 }

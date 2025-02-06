@@ -22,7 +22,6 @@ public interface PrivateChatJpaRepository extends JpaRepository<PrivateChatEntit
 
     PrivateChatEntity findPrivateChatEntityByUser(SysUserEntity userId);
 
-    PrivateChatEntity findPrivateChatEntityById(Long chatId);
 
     PrivateChatEntity findByUser(SysUserEntity sysUserEntity);
 }

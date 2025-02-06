@@ -39,7 +39,7 @@ public class PrivateChatAdapter implements PrivateChatRepository {
 
     @Override
     public PrivateChatEntity findById(Long chatId) {
-        return privateChatJpaRepository.findPrivateChatEntityById(chatId);
+        return privateChatJpaRepository.findById(chatId).get();
     }
 
     @Override

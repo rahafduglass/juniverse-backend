@@ -1,20 +1,15 @@
 package juniverse.chatbackend.application.dtos.private_chat.messages;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.RequiredArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MessageRequest {
 
-    private Long senderId;
+    private Long privateChatId;
 
-    private Long receiverId;
+    private String receiverUsername;
 
     private String content;
 

@@ -97,7 +97,8 @@ public class OpenApiConfig {
         return (operation, handlerMethod) -> {
             if (handlerMethod.getMethod().getName().equals("signIn")) {
                 operation.summary("sign in and get ur token!!")
-                        .description("bru just sign in :3");
+                        .description("bru just sign in :3")
+                        .setTags(Arrays.asList("LOGIN & REGISTER"));
             }
             if (handlerMethod.getMethod().getName().equals("registerListOfStudents")) {
                 operation.summary("USE ONCE ONLY")

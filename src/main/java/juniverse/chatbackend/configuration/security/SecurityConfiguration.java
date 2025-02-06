@@ -36,28 +36,40 @@ public class SecurityConfiguration {
 
                 //permission & access control
                 .authorizeHttpRequests(request -> request
-                        //auth endpoints access control
-                        .requestMatchers("/api/v1/auth/**")
-                        .permitAll()  // Allow authentication controller access without authentication
-
-
-                         //swagger access control
+                        //endpoints access control
+                        //accessible without authentication
                         .requestMatchers(
+                                //authentication controller
+                                "/api/v1/auth/**",
+                                //swagger access
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/webjars/**"
-                        ).permitAll()  // Allow Swagger access without authentication
-
-
-                        //THERAPIST endpoints access control
-
-
-                        //Juniverse ALL ROLES endpoints access control
+                        ).permitAll()
+                        // THERAPIST endpoints
                         .requestMatchers(
                                 //private-chat
-                                "/api/v1/private-chat/allMessages"
-                        ).hasAnyAuthority(UserRole.THERAPIST.name(), UserRole.ADMIN.name(),UserRole.STUDENT.name(),UserRole.MODERATOR.name())
+                                "/api/v1/private-chat/{chatId}/allMessages",
+                                "/api/v1/private-chat/allTherapistChats",
+                                "/api/v1/private-chat/messageFromTherapist"
+
+                        ).hasAnyAuthority(UserRole.THERAPIST.name())
+                        // COMMON MODERATOR,STUDENT,ADMIN endpoints
+                        .requestMatchers(
+                                //private-chat
+                                "/api/v1/private-chat/allMessages",
+                                "/api/v1/private-chat/messageToTherapist",
+                                "/api/v1/private-chat"
+
+                        ).hasAnyAuthority(UserRole.STUDENT.name(),UserRole.MODERATOR.name(),UserRole.ADMIN.name())
+
+                        //COMMON THERAPIST, MODERATOR,STUDENT,ADMIN endpoints
+                        .requestMatchers(
+                                //private-chat
+                                "/api/v1/private-chat/{chatId}/read}"
+                        ).hasAnyAuthority(UserRole.STUDENT.name(),UserRole.MODERATOR.name(),UserRole.ADMIN.name(),UserRole.THERAPIST.name())
+
                         .anyRequest().authenticated())
 
                 // application will not use HTTP sessions to store authentication details -- we'll use JWT

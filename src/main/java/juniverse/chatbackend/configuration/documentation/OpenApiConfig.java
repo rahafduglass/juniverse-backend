@@ -8,6 +8,8 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
+
 @Configuration
 public class OpenApiConfig {
 
@@ -33,26 +35,58 @@ public class OpenApiConfig {
     public OperationCustomizer privateChatControllerOperationCustomizer() {
         return (operation, handlerMethod) -> {
 
-            if (handlerMethod.getMethod().getName().equals("getUserChatMessages")) {
-                operation.summary("retrieve all messages for a private chat by userId")
-                        .description("fetches all messages associated with the userId only not therapistId.");
+            if (handlerMethod.getMethod().getName().equals("getAllMessages")) {
+                Class<?>[] parameterTypes = handlerMethod.getMethod().getParameterTypes();
+
+                if (parameterTypes.length == 0) {
+                    operation.summary("retrieve all messages")
+                            .description("retrieve ALL MESSAGES associated with specific user chat\n" +
+                                    " || ROLES permissions : STUDENT, ADMIN, MODERATOR.")
+                            .setTags(Arrays.asList("STUDENT","ADMIN","MODERATOR"));
+                } else if (parameterTypes.length == 1) {
+                    operation.summary("retrieve all messages by chatId")
+                            .description("retrieve ALL MESSAGES associated with therapist chats\n" +
+                                    " || we're requesting the chatId because therapist has multiple chats\n" +
+                                    " || ROLES permissions : THERAPIST")
+                            .setTags(Arrays.asList("THERAPIST"));
+                }
             }
-            if (handlerMethod.getMethod().getName().equals("getTherapistChats")) {
-                operation.summary("Get all the therapist's private chats")
-                        .description("Fetches all private chat conversations that have been initialized with the therapist.");
+            if (handlerMethod.getMethod().getName().equals("getAllTherapistChats")) {
+                operation.summary("retrieve ALL THERAPIST CHATS ")
+                        .description("retrieve ALL CHATS METADATA associated with a therapist\n" +
+                                " || NOTE: you can use the chatId to retrieve messages later\n" +
+                                " || ROLES permissions : THERAPIST")
+                        .setTags(Arrays.asList("THERAPIST"));
             }
-            if (handlerMethod.getMethod().getName().equals("getPrivateChatById")) {
-                operation.summary("Get private chat metadata")
-                        .description("response will be schema TherapistChatResponse except TherapistChatResponse.unreadMessagesCount");
+            if (handlerMethod.getMethod().getName().equals("getChat")) {
+                operation.summary("retrieve USER CHAT")
+                        .description("retrieve THE CHAT METADATA between the therapist and user\n" +
+                                " || NOTE: each user has one chat only with the therapist\n" +
+                                "|| ROLES permissions : STUDENT, MODERATOR, ADMIN")
+                        .setTags(Arrays.asList("STUDENT","ADMIN","MODERATOR"));
             }
-            if (handlerMethod.getMethod().getName().equals("markChatMessagesAsRead")) {
-                operation.summary("mark a private chat as READ");
+            if (handlerMethod.getMethod().getName().equals("sendMessageFromTherapist")) {
+                operation.summary("lets the therapist send a message")
+                        .description("use when a therapist want to reply to a message\n" +
+                                " || NOTE: therapist has many chats, so please give me the chatId that was fetched first in the GET allTherapistChats\n" +
+                                " || ROLES permissions : THERAPIST")
+                        .setTags(Arrays.asList("THERAPIST"));
             }
-            if (handlerMethod.getMethod().getName().equals("sendPrivateMessage")) {
-                operation.summary("sending a message to a private chat")
-                        .description("1. if the sender is a regular user the receiver id=2 because we have one therapist, " +
-                                "2. if the sender is a therapist, the receiver id depends on the userId that was already fetched in therapist chats.");
+            if (handlerMethod.getMethod().getName().equals("sendMessageToTherapist")) {
+                operation.summary("lets users talk to therapist")
+                        .description("use when a user want to initialize or continue chat with therapist\n" +
+                                " || ROLES permissions : ADMIN, STUDENT, MODERATOR")
+                        .setTags(Arrays.asList("STUDENT","ADMIN","MODERATOR"));
             }
+            if (handlerMethod.getMethod().getName().equals("markChatAsRead")) {
+                operation.summary("mark chat as READ")
+                        .description("client-side should manually request to read a chat after the user enters chat\n" +
+                                " || INTUITIVE NOTE: the count of unread messages will be zero \n" +
+                                " || ROLES permissions : ALL ROLES")
+                        .setTags(Arrays.asList("ALL ROLES"));
+            }
+
+
             // Return the modified operation object
             return operation;
         };
@@ -61,11 +95,16 @@ public class OpenApiConfig {
     @Bean
     public OperationCustomizer AuthenticationControllerOperationCustomizer() {
         return (operation, handlerMethod) -> {
-
-            if (handlerMethod.getMethod().getName().equals("authenticateUser")) {
-                operation.summary("user send their credentials to authenticate their identity to be given access to the system.");
+            if (handlerMethod.getMethod().getName().equals("signIn")) {
+                operation.summary("sign in and get ur token!!")
+                        .description("bru just sign in :3");
             }
+            if (handlerMethod.getMethod().getName().equals("registerListOfStudents")) {
+                operation.summary("USE ONCE ONLY")
+                        .description("this endpoint is for assigning the mock users we have in our resources folder juniverse-mock-users.json || YOU SHOULD use this ONLY ONCE when u run the app for the first time. || other entities and tables should be empty || CONCLUSION: EMPTY DATABASE ")
+                        .setTags(Arrays.asList("LOGIN & REGISTER"));
 
+            }
             return operation;
         };
     }

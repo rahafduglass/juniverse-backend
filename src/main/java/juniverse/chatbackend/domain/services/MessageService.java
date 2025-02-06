@@ -30,8 +30,6 @@ public class MessageService {
     private final PrivateChatService privateChatService;
     private final MessageMapper messageMapper;
     private final IdentityProvider identityProvider;
-    private final PrivateChatMapper privateChatMapper;
-
 
     public MessageModel sendMessageToTherapist(String content) throws Exception {
         //method logic: chat doesn't exist? create chat THEN send: send;

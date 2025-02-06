@@ -4,7 +4,6 @@ import juniverse.chatbackend.application.dtos.private_chat.TherapistChatResponse
 import juniverse.chatbackend.application.dtos.private_chat.UserChatResponse;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
 import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
-import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -1,6 +1,8 @@
 package juniverse.chatbackend.configuration.security;
 
 
+import juniverse.chatbackend.application.handlers.CustomAccessDeniedHandler;
+import juniverse.chatbackend.application.handlers.CustomAuthenticationEntryPoint;
 import juniverse.chatbackend.domain.enums.UserRole;
 import juniverse.chatbackend.domain.services.security.SysUserService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +35,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         //Disables Cross-Site Request Forgery (CSRF) protection.
         http.csrf(AbstractHttpConfigurer::disable)
-
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                        .accessDeniedHandler(new CustomAccessDeniedHandler())
+                )
                 //permission & access control
                 .authorizeHttpRequests(request -> request
 

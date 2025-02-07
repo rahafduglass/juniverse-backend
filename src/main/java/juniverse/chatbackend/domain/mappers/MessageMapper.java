@@ -34,5 +34,5 @@ public interface MessageMapper {
 
     List<MessageModel> listOfEntitiesToListOfModels(List<MessageEntity> listOfMessages);
 
-    List<MessageResponse> listOfModelsToListOfResponsesNew(List<MessageModel> listOfMessages);
+    List<MessageResponse> listOfModelsToListOfResponses(List<MessageModel> listOfMessages);
 }

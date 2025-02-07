@@ -3,6 +3,9 @@ package juniverse.chatbackend.domain.services;
 import juniverse.chatbackend.application.dtos.RegisterRequest;
 import juniverse.chatbackend.application.dtos.authentication.UserAuthenticationRequest;
 import juniverse.chatbackend.application.dtos.authentication.UserAuthenticationResponse;
+import juniverse.chatbackend.domain.mappers.SysUserMapper;
+import juniverse.chatbackend.domain.models.SysUserModel;
+import juniverse.chatbackend.domain.models.UserAuthenticationModel;
 import juniverse.chatbackend.domain.services.security.JwtService;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import juniverse.chatbackend.persistance.repositories.SysUserRepository;
@@ -27,39 +30,36 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     private final PasswordEncoder passwordEncoder;
+    private final SysUserMapper sysUserMapper;
 
 
+    public UserAuthenticationModel signIn(UserAuthenticationModel userAuthenticationModel) {
 
-    public UserAuthenticationResponse signIn(UserAuthenticationRequest userAuthenticationRequest) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userAuthenticationModel.getUsername(), userAuthenticationModel.getPassword()));
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userAuthenticationRequest.getUsername(), userAuthenticationRequest.getPassword()));
-
-        var user = sysUserRepository.findByUsername(userAuthenticationRequest.getUsername())
+        //authenticate user
+        var user = sysUserRepository.findByUsername(userAuthenticationModel.getUsername())
                 .orElseThrow(() -> new RuntimeException("invalid credentials"));
+        //generate token
         var jwt = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
 
+        //return model with token only
+        return new UserAuthenticationModel(null, null, jwt);
 
-        UserAuthenticationResponse userAuthenticationResponse = new UserAuthenticationResponse();
-        userAuthenticationResponse.setToken(jwt);
-        //userAuthenticationResponse.setRefreshToken(refreshToken);
-        return userAuthenticationResponse;
     }
 
-    public Boolean registerListOfUsers(List<RegisterRequest> registerRequests) {
-        List<SysUserEntity> users = registerRequests.stream().map(registerRequest -> {
-            SysUserEntity user = new SysUserEntity();
-            user.setUsername(registerRequest.getUsername());
-            user.setEmail(registerRequest.getEmail());
-            user.setFirstName(registerRequest.getFirstName());
-            user.setLastName(registerRequest.getLastName());
-            user.setRole(registerRequest.getRole());
-            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+    public Boolean registerListOfUsers(List<SysUserModel> sysUserModels) {
+
+        List<SysUserEntity> users = sysUserModels.stream().map(sysUserModel -> {
+            //map model to entity
+            SysUserEntity user= sysUserMapper.modelToEntity(sysUserModel);
+            //encode the password THEN map it.
+            user.setPassword(passwordEncoder.encode(sysUserModel.getPassword()));
             return user;
         }).collect(Collectors.toList());
 
         List<SysUserEntity> savedUsers = sysUserRepository.saveAll(users);
-
         return savedUsers!=null;
     }
+
 }

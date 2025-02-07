@@ -1,6 +1,5 @@
 package juniverse.chatbackend.domain.services;
 
-import juniverse.chatbackend.application.dtos.private_chat.TherapistChatResponse;
 import juniverse.chatbackend.domain.mappers.PrivateChatMapper;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
 import juniverse.chatbackend.domain.provider.IdentityProvider;
@@ -23,15 +22,14 @@ public class PrivateChatService {
     private final IdentityProvider identityProvider;
 
 
-    public PrivateChatModel createChat(Long userId) {
+    public PrivateChatModel createChatBetween(Long userId, Long therapistId) {
         PrivateChatModel privateChatTemp = new PrivateChatModel();
         privateChatTemp.setUserId(userId);
-        Long therapistId = 2L;
         privateChatTemp.setTherapistId(therapistId);
         return privateChatRepository.create(privateChatTemp);
     }
-
-    public List<TherapistChatResponse> getAllTherapistChats() {
+    //replace response
+    public List<PrivateChatModel> getAllTherapistChats() throws Exception{
 
         //retrieve therapist details
         SysUserEntity sysUserEntity = identityProvider.currentIdentity();
@@ -39,20 +37,20 @@ public class PrivateChatService {
         //retrieve all chats
         List<Object[]> results = privateChatRepository.findAllByTherapistId(sysUserEntity.getId());
 
-        //extracting then mapping results(entities) to (DTO(response)) --- > SHOULD BE FIXED to (models)
+        //preparing and mapping results
         return results.stream().map(row -> {
 
             // Extract PrivateChatEntity from list row[0]
             PrivateChatEntity chat = (PrivateChatEntity) row[0];
 
             //mapping
-            TherapistChatResponse therapistChatResponse = privateChatMapper.entityToTherapistChatResponse(chat);
+            PrivateChatModel privateChatModel= privateChatMapper.entityToModel(chat);
 
-            //retrieve and manually map unreadMessagesCount ---> FIND A BETTER WAY
-            therapistChatResponse.setUnreadMessagesCount(messageRepository.getNumOfUnreadMessagesByChatAndReceiver(chat.getId(), sysUserEntity.getId()));
+            //retrieve and manually map unreadMessagesCount
+            privateChatModel.setTherapistUnreadMessagesCount(messageRepository.getNumOfUnreadMessagesByChatAndReceiver(chat.getId(), sysUserEntity.getId()));
 
-            //return sing response to be collected in List<Response>
-            return therapistChatResponse;
+            //return model to be collected in List<Models>
+            return privateChatModel;
         }).collect(Collectors.toList());
     }
 
@@ -76,7 +74,7 @@ public class PrivateChatService {
         return privateChatModel;
     }
 
-    public Boolean marChatAsRead(Long chatId) {
+    public Boolean markChatAsRead(Long chatId) {
         return messageRepository.markMessagesAsRead(identityProvider.currentIdentity().getId(), chatId);
     }
 

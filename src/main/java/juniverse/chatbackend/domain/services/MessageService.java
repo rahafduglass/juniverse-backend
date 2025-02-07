@@ -1,11 +1,9 @@
 package juniverse.chatbackend.domain.services;
 
 
-import juniverse.chatbackend.application.dtos.private_chat.messages.MessageResponse;
 import juniverse.chatbackend.domain.enums.ChatType;
 import juniverse.chatbackend.domain.enums.MessageStatus;
-import juniverse.chatbackend.domain.mappers.MessageMapper;
-import juniverse.chatbackend.domain.mappers.PrivateChatMapper;
+import juniverse.chatbackend.domain.mappers.SysUserMapper;
 import juniverse.chatbackend.domain.models.MessageModel;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
 import juniverse.chatbackend.domain.provider.IdentityProvider;
@@ -28,8 +26,10 @@ public class MessageService {
     private final PrivateChatRepository privateChatRepository;
     private final SysUserRepository sysUserRepository;
     private final PrivateChatService privateChatService;
-    private final MessageMapper messageMapper;
     private final IdentityProvider identityProvider;
+
+    private final SysUserMapper sysUserMapper;
+
 
     public MessageModel sendMessageToTherapist(String content) throws Exception {
         //method logic: chat doesn't exist? create chat THEN send: send;
@@ -45,11 +45,11 @@ public class MessageService {
         SysUserEntity therapist = sysUserRepository.findByUsername("omar_khaled").get(); //it's a static value not recommended, but we'll just use this bcz we have one therapist
 
         //retrieve user's chat
-        PrivateChatModel privateChat = privateChatService.getChat();
+        PrivateChatModel privateChat = privateChatRepository.findByUser(sysUserMapper.entityToModel(currentUser));
 
         //check if it doesn't exist? create.
         if (privateChat == null) {
-            privateChat = privateChatService.createChat(currentUser.getId());
+            privateChat = privateChatService.createChatBetween(currentUser.getId(), therapist.getId());
         }
 
         //set default & generated values
@@ -73,16 +73,14 @@ public class MessageService {
         return messageRepository.sendMessage(messageModel);
     }
 
-    public List<MessageResponse> getAllMessages(Long chatId) {
+    public List<MessageModel> getAllMessages(Long chatId) {
 
-        List<MessageModel> listOfMessages = messageRepository.findAllByPrivateChatId(privateChatRepository.findById(chatId).getId());
-        return messageMapper.listOfModelsToListOfResponsesNew(listOfMessages);
+        return  messageRepository.findAllByPrivateChatId(privateChatRepository.findById(chatId).getId());
     }
 
-    public List<MessageResponse> getAllMessages() {
+    public List<MessageModel> getAllMessages() {
         SysUserEntity currentUser = identityProvider.currentIdentity();
-        List<MessageModel> listOfMessages = messageRepository.findAllByPrivateChatId(privateChatRepository.findByUser(currentUser).getId());
-        return messageMapper.listOfModelsToListOfResponsesNew(listOfMessages);
+        return messageRepository.findAllByPrivateChatId(privateChatRepository.findByUser(currentUser).getId());
     }
 
     public MessageModel sendMessageFromTherapist(MessageModel messageModel) throws Exception {
@@ -122,5 +120,5 @@ public class MessageService {
         return sendMessage(messageModel);
 
     }
-}
 
+}

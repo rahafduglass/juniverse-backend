@@ -13,8 +13,6 @@ public class UserChatResponse {
 
     private Long id;
 
-    private String userUsername;
-
     private String therapistUsername;
 
     private String therapistFirstName;

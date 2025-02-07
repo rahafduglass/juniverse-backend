@@ -7,6 +7,8 @@ import juniverse.chatbackend.persistance.entities.PrivateChatEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface PrivateChatMapper {
 
@@ -24,14 +26,7 @@ public interface PrivateChatMapper {
     @Mapping(source = "userId", target = "user.id")
     PrivateChatEntity modelToEntity(PrivateChatModel privateChatModel);
 
-
-    @Mapping(source = "chat.id", target = "id")
-    @Mapping(source = "chat.user.username", target = "userUsername")
-    @Mapping(source = "chat.user.firstName", target = "userFirstName")
-    @Mapping(source = "chat.user.lastName", target = "userLastName")
-    TherapistChatResponse entityToTherapistChatResponse(PrivateChatEntity chat);
-
-
-
     UserChatResponse modelToUserChatResponse(PrivateChatModel chat);
+
+    List<TherapistChatResponse> listOfModelsToListOfResponses(List<PrivateChatModel> privateChatModels);
 }

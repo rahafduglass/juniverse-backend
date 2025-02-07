@@ -18,11 +18,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SysUserModel {
 
-    private Long id;
-
-    private String password;
 
     private String firstName;
+
+    private String password;
 
     private String username;
 

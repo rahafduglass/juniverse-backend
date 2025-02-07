@@ -1,11 +1,14 @@
 package juniverse.chatbackend.application.controllers;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.chatbackend.application.dtos.ApiResponse;
 import juniverse.chatbackend.application.dtos.RegisterRequest;
 import juniverse.chatbackend.application.dtos.authentication.UserAuthenticationRequest;
 import juniverse.chatbackend.application.dtos.authentication.UserAuthenticationResponse;
 import juniverse.chatbackend.application.helpers.ApiResponseHelper;
+import juniverse.chatbackend.domain.mappers.SysUserMapper;
+import juniverse.chatbackend.domain.mappers.UserAuthenticationMapper;
 import juniverse.chatbackend.domain.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,17 +23,21 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
+@Tag(name="LOGIN & REGISTER")
 public class AuthenticationController {
 
     private final ApiResponseHelper apiResponseHelper;
 
     private final AuthenticationService authenticationService;
 
+    private final UserAuthenticationMapper userAuthenticationMapper;
+    private final SysUserMapper sysUserMapper;
+
     @PostMapping("/signIn")
     public ResponseEntity<ApiResponse<UserAuthenticationResponse>> signIn(@RequestBody UserAuthenticationRequest userAuthenticationRequest) {
         try {
             //sign user and retrieve token
-            UserAuthenticationResponse response=authenticationService.signIn(userAuthenticationRequest);
+            UserAuthenticationResponse response=userAuthenticationMapper.modelToResponse(authenticationService.signIn(userAuthenticationMapper.requestToModel(userAuthenticationRequest)));
             //check if login succeeded
             boolean isFail = response == null;
             //build response
@@ -41,11 +48,11 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/register-list-of-students") // run once "replaces integrating students data"
-    public ResponseEntity<ApiResponse<Boolean>> registerListOfStudents(@RequestBody List<RegisterRequest> registerRequests) {
+    @PostMapping("/register-list-of-users") // run once "replaces integrating user data"
+    public ResponseEntity<ApiResponse<Boolean>> registerListOfUsers(@RequestBody List<RegisterRequest> registerRequests) {
         try {
-
-            Boolean areRegistered=authenticationService.registerListOfUsers(registerRequests);
+            //register users
+            Boolean areRegistered=authenticationService.registerListOfUsers(sysUserMapper.listOfRequestsToListOfModel(registerRequests));
             //build response
             return apiResponseHelper.buildApiResponse(areRegistered, areRegistered, (!areRegistered ? "registration failed" : "successful registration"), (!areRegistered ? HttpStatus.NOT_FOUND : HttpStatus.OK));
         } catch (Exception e) {

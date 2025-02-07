@@ -36,7 +36,8 @@ public class SecurityConfiguration {
 
                 //permission & access control
                 .authorizeHttpRequests(request -> request
-                        //endpoints access control
+
+
                         //accessible without authentication
                         .requestMatchers(
                                 //authentication controller
@@ -55,7 +56,7 @@ public class SecurityConfiguration {
                                 "/api/v1/private-chat/messageFromTherapist"
 
                         ).hasAnyAuthority(UserRole.THERAPIST.name())
-                        // COMMON MODERATOR,STUDENT,ADMIN endpoints
+                        // COMMON MODERATOR, STUDENT, ADMIN endpoints
                         .requestMatchers(
                                 //private-chat
                                 "/api/v1/private-chat/allMessages",
@@ -64,10 +65,10 @@ public class SecurityConfiguration {
 
                         ).hasAnyAuthority(UserRole.STUDENT.name(),UserRole.MODERATOR.name(),UserRole.ADMIN.name())
 
-                        //COMMON THERAPIST, MODERATOR,STUDENT,ADMIN endpoints
+                        //COMMON THERAPIST, MODERATOR, STUDENT, ADMIN endpoints
                         .requestMatchers(
                                 //private-chat
-                                "/api/v1/private-chat/{chatId}/read}"
+                                "/api/v1/private-chat/{chatId}/read"
                         ).hasAnyAuthority(UserRole.STUDENT.name(),UserRole.MODERATOR.name(),UserRole.ADMIN.name(),UserRole.THERAPIST.name())
 
                         .anyRequest().authenticated())

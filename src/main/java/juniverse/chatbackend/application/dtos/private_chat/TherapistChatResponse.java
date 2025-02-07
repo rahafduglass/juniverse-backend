@@ -19,7 +19,7 @@ public class TherapistChatResponse {
 
     private String userLastName;
 
-    private Integer unreadMessagesCount;
+    private Integer therapistUnreadMessagesCount;
 
 }
 // TO BE ADDED:

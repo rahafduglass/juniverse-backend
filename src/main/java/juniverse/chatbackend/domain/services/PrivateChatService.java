@@ -29,7 +29,7 @@ public class PrivateChatService {
         return privateChatRepository.create(privateChatTemp);
     }
     //replace response
-    public List<PrivateChatModel> getAllTherapistChats() throws Exception{
+    public List<PrivateChatModel> getAllTherapistChats() {
 
         //retrieve therapist details
         SysUserEntity sysUserEntity = identityProvider.currentIdentity();

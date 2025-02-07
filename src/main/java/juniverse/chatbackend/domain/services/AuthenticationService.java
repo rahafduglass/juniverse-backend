@@ -1,8 +1,5 @@
 package juniverse.chatbackend.domain.services;
 
-import juniverse.chatbackend.application.dtos.RegisterRequest;
-import juniverse.chatbackend.application.dtos.authentication.UserAuthenticationRequest;
-import juniverse.chatbackend.application.dtos.authentication.UserAuthenticationResponse;
 import juniverse.chatbackend.domain.mappers.SysUserMapper;
 import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.domain.models.UserAuthenticationModel;
@@ -15,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 

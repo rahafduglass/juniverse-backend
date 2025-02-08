@@ -144,4 +144,9 @@ public class PrivateChatController {
         }
     }
 
+    //TO-DO
+    //make markAsRead implicitly implemented within getAllMessages
+    //NEW endpoint: deleteMessage
+
+
 }

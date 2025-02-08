@@ -22,6 +22,8 @@ public interface PrivateChatRepository {
 
     //DELETE THIS
     PrivateChatEntity findByUser(SysUserEntity sysUserEntity);
+
+    PrivateChatEntity findByUserId(Long id);
 }
 
 

@@ -3,6 +3,7 @@ package juniverse.chatbackend.domain.services;
 
 import juniverse.chatbackend.domain.enums.ChatType;
 import juniverse.chatbackend.domain.enums.MessageStatus;
+import juniverse.chatbackend.domain.mappers.PrivateChatMapper;
 import juniverse.chatbackend.domain.mappers.SysUserMapper;
 import juniverse.chatbackend.domain.models.MessageModel;
 import juniverse.chatbackend.domain.models.PrivateChatModel;
@@ -27,6 +28,7 @@ public class MessageService {
     private final SysUserRepository sysUserRepository;
     private final PrivateChatService privateChatService;
     private final IdentityProvider identityProvider;
+    private final PrivateChatMapper privateChatMapper;
 
     private final SysUserMapper sysUserMapper;
 
@@ -45,8 +47,8 @@ public class MessageService {
         SysUserEntity therapist = sysUserRepository.findByUsername("omar_khaled").get(); //it's a static value not recommended, but we'll just use this bcz we have one therapist
 
         //retrieve user's chat
-        PrivateChatModel privateChat = privateChatRepository.findByUser(sysUserMapper.entityToModel(currentUser));
-
+        PrivateChatModel privateChat = privateChatMapper.entityToModel(privateChatRepository.findByUserId(currentUser.getId()));
+        System.out.println(privateChat+"dddddddddddddddddddd");
         //check if it doesn't exist? create.
         if (privateChat == null) {
             privateChat = privateChatService.createChatBetween(currentUser.getId(), therapist.getId());

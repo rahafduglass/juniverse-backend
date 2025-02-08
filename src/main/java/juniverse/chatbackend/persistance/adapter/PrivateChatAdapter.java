@@ -51,5 +51,10 @@ public class PrivateChatAdapter implements PrivateChatRepository {
         return privateChatJpaRepository.findByUser(sysUserEntity);
     }
 
+    @Override
+    public PrivateChatEntity findByUserId(Long userId) {
+        return privateChatJpaRepository.findByUserId(userId);
+    }
+
 
 }

@@ -21,6 +21,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -33,63 +35,48 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        //Disables Cross-Site Request Forgery (CSRF) protection.
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.cors(cors -> cors
+                        .configurationSource(request -> {
+                            org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
+                            config.setAllowedOrigins(List.of("*"));
+                            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                            config.setAllowedHeaders(List.of("*"));
+                            config.setAllowCredentials(false);
+                            return config;
+                        })
+                )
+                .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                         .accessDeniedHandler(new CustomAccessDeniedHandler())
                 )
-                //permission & access control
                 .authorizeHttpRequests(request -> request
-
-
-                        //accessible without authentication
                         .requestMatchers(
-                                //authentication controller
                                 "/api/v1/auth/**",
-                                //swagger access
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/webjars/**"
                         ).permitAll()
-                        // THERAPIST endpoints
                         .requestMatchers(
-                                //private-chat
                                 "/api/v1/private-chat/{chatId}/allMessages",
                                 "/api/v1/private-chat/allTherapistChats",
                                 "/api/v1/private-chat/messageFromTherapist"
-
                         ).hasAnyAuthority(UserRole.THERAPIST.name())
-                        // COMMON MODERATOR, STUDENT, ADMIN endpoints
                         .requestMatchers(
-                                //private-chat
                                 "/api/v1/private-chat/allMessages",
                                 "/api/v1/private-chat/messageToTherapist",
                                 "/api/v1/private-chat"
-
-                        ).hasAnyAuthority(UserRole.STUDENT.name(),UserRole.MODERATOR.name(),UserRole.ADMIN.name())
-
-                        //COMMON THERAPIST, MODERATOR, STUDENT, ADMIN endpoints
+                        ).hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name())
                         .requestMatchers(
-                                //private-chat
                                 "/api/v1/private-chat/{chatId}/read"
-                        ).hasAnyAuthority(UserRole.STUDENT.name(),UserRole.MODERATOR.name(),UserRole.ADMIN.name(),UserRole.THERAPIST.name())
-
+                        ).hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name(), UserRole.THERAPIST.name())
                         .anyRequest().authenticated())
-
-                // application will not use HTTP sessions to store authentication details -- we'll use JWT
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-                // Adds a custom filter (jwtAuthenticationFilter) before the UsernamePasswordAuthenticationFilter
-                // (which is the default filter for authentication in Spring Security).
-                // This filter will be responsible for handling JWT-based authentication.
-                .authenticationProvider(authenticationProvider()).addFilterBefore(
-                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
-                );
-        //
         return http.build();
-
     }
 
     @Bean

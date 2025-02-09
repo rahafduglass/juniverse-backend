@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class UserAuthenticationService {
 
     private final SysUserRepository sysUserRepository;
 

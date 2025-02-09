@@ -7,7 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import juniverse.chatbackend.domain.services.security.JwtService;
-import juniverse.chatbackend.domain.services.security.SysUserService;
+import juniverse.chatbackend.domain.services.security.SysUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -25,7 +25,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
-    private final SysUserService sysUserService;
+    private final SysUserDetailsService sysUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.isNotEmpty(userName) && SecurityContextHolder.getContext().getAuthentication() == null) { // second condition means user is not logged in yet otherwise the context will hold user details and won't be null
 
             //Loading User Details from Database
-            UserDetails userDetails = sysUserService.userDetailsService().loadUserByUsername(userName);
+            UserDetails userDetails = sysUserDetailsService.userDetailsService().loadUserByUsername(userName);
 
             // Validating the JWT Token
             if(jwtService.isTokenValid(jwt, userDetails)){

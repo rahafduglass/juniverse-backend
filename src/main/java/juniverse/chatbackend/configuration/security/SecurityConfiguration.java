@@ -4,7 +4,7 @@ package juniverse.chatbackend.configuration.security;
 import juniverse.chatbackend.application.handlers.CustomAccessDeniedHandler;
 import juniverse.chatbackend.application.handlers.CustomAuthenticationEntryPoint;
 import juniverse.chatbackend.domain.enums.UserRole;
-import juniverse.chatbackend.domain.services.security.SysUserService;
+import juniverse.chatbackend.domain.services.security.SysUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +30,7 @@ public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private final SysUserService sysUserService;
+    private final SysUserDetailsService sysUserDetailsService;
 
 
     @Bean
@@ -84,7 +84,7 @@ public class SecurityConfiguration {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 
         //set the UserDetailsService to be used by the DaoAuthenticationProvider
-        authenticationProvider.setUserDetailsService(sysUserService.userDetailsService());
+        authenticationProvider.setUserDetailsService(sysUserDetailsService.userDetailsService());
 
         //set the password encoder to be used by the authentication provider
         authenticationProvider.setPasswordEncoder(passwordEncoder());

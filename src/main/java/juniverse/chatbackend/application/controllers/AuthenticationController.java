@@ -9,7 +9,7 @@ import juniverse.chatbackend.application.dtos.authentication.UserAuthenticationR
 import juniverse.chatbackend.application.helpers.ApiResponseHelper;
 import juniverse.chatbackend.domain.mappers.SysUserMapper;
 import juniverse.chatbackend.domain.mappers.UserAuthenticationMapper;
-import juniverse.chatbackend.domain.services.AuthenticationService;
+import juniverse.chatbackend.domain.services.UserAuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class AuthenticationController {
 
     private final ApiResponseHelper apiResponseHelper;
 
-    private final AuthenticationService authenticationService;
+    private final UserAuthenticationService authenticationService;
 
     private final UserAuthenticationMapper userAuthenticationMapper;
     private final SysUserMapper sysUserMapper;

@@ -1,7 +1,7 @@
 package juniverse.chatbackend.domain.mappers;
 
 import juniverse.chatbackend.application.dtos.private_chat.messages.MessageRequest;
-import juniverse.chatbackend.application.dtos.private_chat.messages.MessageResponse;
+import juniverse.chatbackend.application.dtos.private_chat.messages.TherapistMessageResponse;
 import juniverse.chatbackend.domain.models.MessageModel;
 import juniverse.chatbackend.persistance.entities.MessageEntity;
 import org.mapstruct.Mapper;
@@ -15,7 +15,7 @@ public interface MessageMapper {
 
     MessageModel requestToModel(MessageRequest messageRequest);
 
-    MessageResponse modelToResponse(MessageModel messageModel);
+    TherapistMessageResponse modelToResponse(MessageModel messageModel);
 
 
     @Mapping(source="senderUsername", target= "sender.username")
@@ -34,5 +34,5 @@ public interface MessageMapper {
 
     List<MessageModel> listOfEntitiesToListOfModels(List<MessageEntity> listOfMessages);
 
-    List<MessageResponse> listOfModelsToListOfResponses(List<MessageModel> listOfMessages);
+    List<TherapistMessageResponse> listOfModelsToListOfResponses(List<MessageModel> listOfMessages);
 }

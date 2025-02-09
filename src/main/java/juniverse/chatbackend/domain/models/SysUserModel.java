@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SysUserModel {
 
+    private Long id;
 
     private String firstName;
 

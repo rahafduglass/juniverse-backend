@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Service
 @RequiredArgsConstructor
-public class SysUserService {
+public class SysUserDetailsService {
 
     private final SysUserRepository sysUserRepository;
 

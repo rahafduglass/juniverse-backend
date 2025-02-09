@@ -20,9 +20,11 @@ public class SysUserAdapter implements SysUserRepository {
 
     @Override
     public SysUserModel findById(Long id) {
-        Optional<SysUserEntity> userEntity= sysUserJpaRepository.findById(id);
+        Optional<SysUserEntity> userEntity = sysUserJpaRepository.findById(id);
 
-        if(userEntity.isEmpty()) {return null;}
+        if (userEntity.isEmpty()) {
+            return null;
+        }
         return sysUserMapper.entityToModel(userEntity.get());
     }
 
@@ -34,5 +36,15 @@ public class SysUserAdapter implements SysUserRepository {
     @Override
     public List<SysUserEntity> saveAll(List<SysUserEntity> users) {
         return sysUserJpaRepository.saveAll(users);
+    }
+
+    @Override
+    public SysUserEntity update(SysUserEntity sysUserEntity) {
+        return sysUserJpaRepository.save(sysUserEntity);
+    }
+
+    @Override
+    public Boolean updateProfile(SysUserEntity sysUserEntity) {
+        return sysUserJpaRepository.updateProfileById(sysUserEntity.getBio(),sysUserEntity.getId())>0;
     }
 }

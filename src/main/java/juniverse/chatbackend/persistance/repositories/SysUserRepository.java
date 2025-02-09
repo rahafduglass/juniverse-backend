@@ -14,4 +14,8 @@ public interface SysUserRepository {
     Optional<SysUserEntity> findByUsername(String username);
 
     List<SysUserEntity> saveAll(List<SysUserEntity> users);
+
+    SysUserEntity update(SysUserEntity sysUserEntity);
+
+    Boolean updateProfile(SysUserEntity sysUserEntity);
 }

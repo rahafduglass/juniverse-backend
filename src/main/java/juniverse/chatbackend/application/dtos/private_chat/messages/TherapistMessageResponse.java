@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageResponse {
+public class TherapistMessageResponse {
 
     private Long id;
 

@@ -1,12 +1,11 @@
 package juniverse.chatbackend.persistance.adapter;
 
-import juniverse.chatbackend.domain.provider.IdentityProvider;
-import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.domain.mappers.SysUserMapper;
 import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import juniverse.chatbackend.persistance.jpa.SysUserJpaRepository;
 import juniverse.chatbackend.persistance.repositories.SysUserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,10 +37,6 @@ public class SysUserAdapter implements SysUserRepository {
         return sysUserJpaRepository.saveAll(users);
     }
 
-    @Override
-    public SysUserEntity update(SysUserEntity sysUserEntity) {
-        return sysUserJpaRepository.save(sysUserEntity);
-    }
 
     @Override
     public Boolean updateProfile(SysUserEntity sysUserEntity) {
@@ -56,5 +51,15 @@ public class SysUserAdapter implements SysUserRepository {
     @Override
     public String findProfilePicturePath(Long id) {
         return sysUserJpaRepository.findProfilePicturePath(id);
+    }
+
+    @Override
+    public String findCoverPicturePath(Long id) {
+        return sysUserJpaRepository.findCoverPicturePath(id);
+    }
+
+    @Override
+    public Boolean updateCoverPicturePath(Long id, String filePath) {
+        return sysUserJpaRepository.updateCoverPicturePath(id, filePath) > 0;
     }
 }

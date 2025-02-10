@@ -2,10 +2,8 @@ package juniverse.chatbackend.application.controllers;
 
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import juniverse.chatbackend.application.dtos.ApiResponse;
-import juniverse.chatbackend.application.dtos.SysUserProfileResponse;
-import juniverse.chatbackend.application.dtos.UpdateSysUserProfileRequest;
-import juniverse.chatbackend.application.dtos.UploadPhotoRequest;
+import juniverse.chatbackend.application.dtos.*;
+import juniverse.chatbackend.application.dtos.private_chat.UpdatePhotoRequest;
 import juniverse.chatbackend.application.helpers.ApiResponseHelper;
 import juniverse.chatbackend.domain.mappers.SysUserMapper;
 import juniverse.chatbackend.domain.services.SysUserService;
@@ -13,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @AllArgsConstructor
@@ -51,9 +50,9 @@ public class SysUserController {
     }
 
     @PutMapping("/profile-picture")
-    public ResponseEntity<ApiResponse<Boolean>> updateProfilePicture(@RequestBody UploadPhotoRequest request) {
+    public ResponseEntity<ApiResponse<Boolean>> updateProfilePicture(@RequestBody UpdatePhotoRequest request) {
         try {
-            boolean isUpdated = sysUserService.updateProfilePicture(request.getFileAsBase64());
+            boolean isUpdated = sysUserService.updateProfilePicture(request.getPhotoAsBase64());
             return apiResponseHelper.buildApiResponse(isUpdated, isUpdated
                     , (!isUpdated ? "couldn't update" : "profile picture updated successfully")
                     , (!isUpdated ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
@@ -62,13 +61,29 @@ public class SysUserController {
         }
     }
 
-    @GetMapping("/profile-picture")
-    public ResponseEntity<ApiResponse<String>>  getProfilePicture() {
+    @PutMapping("/cover-picture")
+    public ResponseEntity<ApiResponse<Boolean>> updateCoverPicture(@RequestBody UpdatePhotoRequest request) {
+        try {
+            boolean isUpdated = sysUserService.updateCoverPicture(request.getPhotoAsBase64());
+            return apiResponseHelper.buildApiResponse(isUpdated, isUpdated
+                    , (!isUpdated ? "couldn't update" : "cover picture updated successfully")
+                    , (!isUpdated ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+
+    @GetMapping("/profile-and-cover-picture")
+    public ResponseEntity<ApiResponse<ProfileAndCoverPicturesResponse>>  getProfileAndCoverPictures() {
         try{
-            String photoBase64=  sysUserService.getProfilePicture();
-            return apiResponseHelper.buildApiResponse(photoBase64, photoBase64!=null
-                    , (photoBase64==null ? "couldn't retrieve" : "profile picture retrieved successfully")
-                    , (photoBase64==null? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
+            String profilePhotoBase64=  sysUserService.getProfilePicture();
+            String coverPhotoBase64=sysUserService.getCoverPicture();
+            ProfileAndCoverPicturesResponse response= new ProfileAndCoverPicturesResponse(profilePhotoBase64,coverPhotoBase64);
+            boolean areNotFetched=(response.getCoverPicturesBase64()==null)&&(response.getProfilePictureBase64()==null);
+            return apiResponseHelper.buildApiResponse(response, !areNotFetched
+                    , (areNotFetched ? "couldn't retrieve" : "retrieved successfully")
+                    , (areNotFetched? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
 
         }catch(Exception e){
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);

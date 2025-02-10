@@ -15,11 +15,13 @@ public interface SysUserRepository {
 
     List<SysUserEntity> saveAll(List<SysUserEntity> users);
 
-    SysUserEntity update(SysUserEntity sysUserEntity);
-
     Boolean updateProfile(SysUserEntity sysUserEntity);
 
     Boolean updateProfilePicturePath(Long userId,String path);
 
     String findProfilePicturePath(Long id);
+
+    String findCoverPicturePath(Long id);
+
+    Boolean updateCoverPicturePath(Long id, String filePath);
 }

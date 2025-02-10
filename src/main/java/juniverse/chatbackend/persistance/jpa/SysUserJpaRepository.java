@@ -21,5 +21,11 @@ public interface SysUserJpaRepository extends JpaRepository<SysUserEntity, Long>
     @Query("UPDATE sys_user u SET u.bio = :bio WHERE u.id = :id")
     Integer updateProfileById(@Param("bio")String bio,@Param("id") Long id);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE sys_user u SET u.profilePicturePath = :path WHERE u.id = :id")
+    Integer updateProfilePicturePath(Long id, String path);
 
+    @Query("SELECT u.profilePicturePath FROM sys_user u WHERE u.id = :id")
+    String findProfilePicturePath(Long id);
 }

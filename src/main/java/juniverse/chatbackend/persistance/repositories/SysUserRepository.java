@@ -18,4 +18,8 @@ public interface SysUserRepository {
     SysUserEntity update(SysUserEntity sysUserEntity);
 
     Boolean updateProfile(SysUserEntity sysUserEntity);
+
+    Boolean updateProfilePicturePath(Long userId,String path);
+
+    String findProfilePicturePath(Long id);
 }

@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.chatbackend.application.dtos.ApiResponse;
 import juniverse.chatbackend.application.dtos.SysUserProfileResponse;
 import juniverse.chatbackend.application.dtos.UpdateSysUserProfileRequest;
+import juniverse.chatbackend.application.dtos.UploadPhotoRequest;
 import juniverse.chatbackend.application.helpers.ApiResponseHelper;
 import juniverse.chatbackend.domain.mappers.SysUserMapper;
 import juniverse.chatbackend.domain.services.SysUserService;
@@ -47,8 +48,30 @@ public class SysUserController {
         } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
-
     }
 
+    @PutMapping("/profile-picture")
+    public ResponseEntity<ApiResponse<Boolean>> updateProfilePicture(@RequestBody UploadPhotoRequest request) {
+        try {
+            boolean isUpdated = sysUserService.updateProfilePicture(request.getFileAsBase64());
+            return apiResponseHelper.buildApiResponse(isUpdated, isUpdated
+                    , (!isUpdated ? "couldn't update" : "profile picture updated successfully")
+                    , (!isUpdated ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 
+    @GetMapping("/profile-picture")
+    public ResponseEntity<ApiResponse<String>>  getProfilePicture() {
+        try{
+            String photoBase64=  sysUserService.getProfilePicture();
+            return apiResponseHelper.buildApiResponse(photoBase64, photoBase64!=null
+                    , (photoBase64==null ? "couldn't retrieve" : "profile picture retrieved successfully")
+                    , (photoBase64==null? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
+
+        }catch(Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 }

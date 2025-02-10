@@ -1,5 +1,6 @@
 package juniverse.chatbackend.persistance.adapter;
 
+import juniverse.chatbackend.domain.provider.IdentityProvider;
 import lombok.RequiredArgsConstructor;
 import juniverse.chatbackend.domain.mappers.SysUserMapper;
 import juniverse.chatbackend.domain.models.SysUserModel;
@@ -21,7 +22,6 @@ public class SysUserAdapter implements SysUserRepository {
     @Override
     public SysUserModel findById(Long id) {
         Optional<SysUserEntity> userEntity = sysUserJpaRepository.findById(id);
-
         if (userEntity.isEmpty()) {
             return null;
         }
@@ -45,6 +45,16 @@ public class SysUserAdapter implements SysUserRepository {
 
     @Override
     public Boolean updateProfile(SysUserEntity sysUserEntity) {
-        return sysUserJpaRepository.updateProfileById(sysUserEntity.getBio(),sysUserEntity.getId())>0;
+        return sysUserJpaRepository.updateProfileById(sysUserEntity.getBio(), sysUserEntity.getId()) > 0;
+    }
+
+    @Override
+    public Boolean updateProfilePicturePath(Long userId, String path) {
+        return sysUserJpaRepository.updateProfilePicturePath(userId, path) > 0;
+    }
+
+    @Override
+    public String findProfilePicturePath(Long id) {
+        return sysUserJpaRepository.findProfilePicturePath(id);
     }
 }

@@ -3,10 +3,8 @@ package juniverse.chatbackend.application.dtos;
 import lombok.Data;
 
 @Data
-public class UpdateSysUserProfileRequest {
+public class UploadPhotoRequest {
 
-    private String bio;
-
-
+    private String fileAsBase64;
 
 }

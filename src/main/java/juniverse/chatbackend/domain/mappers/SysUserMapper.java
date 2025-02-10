@@ -2,7 +2,7 @@ package juniverse.chatbackend.domain.mappers;
 
 import juniverse.chatbackend.application.dtos.RegisterRequest;
 import juniverse.chatbackend.application.dtos.SysUserProfileResponse;
-import juniverse.chatbackend.application.dtos.UpdateSysUserProfileRequest;
+import juniverse.chatbackend.application.dtos.UpdateBioRequest;
 import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import org.mapstruct.Mapper;
@@ -21,7 +21,7 @@ public interface SysUserMapper {
 
     SysUserProfileResponse modelToDTO(SysUserModel profile);
 
-    SysUserModel requestToModel(UpdateSysUserProfileRequest request);
+    SysUserModel requestToModel(UpdateBioRequest request);
 
 
 }

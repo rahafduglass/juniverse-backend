@@ -39,8 +39,8 @@ public class SysUserAdapter implements SysUserRepository {
 
 
     @Override
-    public Boolean updateProfile(SysUserEntity sysUserEntity) {
-        return sysUserJpaRepository.updateProfileById(sysUserEntity.getBio(), sysUserEntity.getId()) > 0;
+    public Boolean updateBio(SysUserEntity sysUserEntity) {
+        return sysUserJpaRepository.updateBio(sysUserEntity.getBio(), sysUserEntity.getId()) > 0;
     }
 
     @Override

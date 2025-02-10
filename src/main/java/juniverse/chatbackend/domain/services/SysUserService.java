@@ -3,13 +3,10 @@ package juniverse.chatbackend.domain.services;
 import juniverse.chatbackend.domain.mappers.SysUserMapper;
 import juniverse.chatbackend.domain.models.SysUserModel;
 import juniverse.chatbackend.domain.provider.IdentityProvider;
-import juniverse.chatbackend.persistance.entities.SysUserEntity;
 import juniverse.chatbackend.persistance.repositories.SysUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PutMapping;
 
-import javax.imageio.stream.ImageInputStream;
 import java.io.*;
 import java.util.Base64;
 
@@ -26,9 +23,9 @@ public class SysUserService {
     }
 
 
-    public Boolean updateProfile(SysUserModel sysUserModel) {
+    public Boolean updateBio(SysUserModel sysUserModel) {
         sysUserModel.setId(identityProvider.currentIdentity().getId());
-        return sysUserRepository.updateProfile(sysUserMapper.modelToEntity(sysUserModel));
+        return sysUserRepository.updateBio(sysUserMapper.modelToEntity(sysUserModel));
     }
 
     public boolean updateProfilePicture(String pictureAsBase64) throws IOException {

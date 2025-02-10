@@ -15,7 +15,7 @@ public interface SysUserRepository {
 
     List<SysUserEntity> saveAll(List<SysUserEntity> users);
 
-    Boolean updateProfile(SysUserEntity sysUserEntity);
+    Boolean updateBio(SysUserEntity sysUserEntity);
 
     Boolean updateProfilePicturePath(Long userId,String path);
 

@@ -19,7 +19,7 @@ public interface SysUserJpaRepository extends JpaRepository<SysUserEntity, Long>
     @Modifying
     @Transactional
     @Query("UPDATE sys_user u SET u.bio = :bio WHERE u.id = :id")
-    Integer updateProfileById(@Param("bio")String bio,@Param("id") Long id);
+    Integer updateBio(@Param("bio")String bio, @Param("id") Long id);
 
     @Modifying
     @Transactional

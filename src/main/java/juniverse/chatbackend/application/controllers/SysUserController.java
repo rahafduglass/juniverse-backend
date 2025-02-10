@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @AllArgsConstructor
@@ -37,10 +36,10 @@ public class SysUserController {
 
     }
 
-    @PutMapping("/profile")
-    public ResponseEntity<ApiResponse<Boolean>> updateProfile(@RequestBody UpdateSysUserProfileRequest request) {
+    @PutMapping("/bio")
+    public ResponseEntity<ApiResponse<Boolean>> updateBio(@RequestBody UpdateBioRequest request) {
         try {
-            Boolean isUpdated = sysUserService.updateProfile(sysUserMapper.requestToModel(request));
+            Boolean isUpdated = sysUserService.updateBio(sysUserMapper.requestToModel(request));
             return apiResponseHelper.buildApiResponse(isUpdated, isUpdated
                     , (!isUpdated ? "couldn't update" : "profile updated successfully")
                     , (!isUpdated ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));

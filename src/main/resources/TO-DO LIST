@@ -1,0 +1,20 @@
+===> PUBLIC CHAT FLOW <===
+
+
+-persistence-
+1. PublicChatEntity
+2. PublicChatRepository
+3. PublicChatAdapter
+4. PublicChatJpaRepository
+
+
+-domain-
+1. PublicChatService
+
+
+-endpoints-
+1. sendMessages (all users)
+2. getAllMessages (all users)
+3. deleteMessage (admins & mods)
+4. editMessage (all users)
+

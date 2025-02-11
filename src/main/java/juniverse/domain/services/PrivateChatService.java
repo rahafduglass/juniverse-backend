@@ -74,8 +74,8 @@ public class PrivateChatService {
         return privateChatModel;
     }
 
-    public Boolean markChatAsRead(Long chatId) {
-        return messageRepository.markMessagesAsRead(identityProvider.currentIdentity().getId(), chatId);
+    public void markChatAsRead(Long chatId) {
+        messageRepository.markMessagesAsRead(identityProvider.currentIdentity().getId(), chatId);
     }
 
     public PrivateChatModel getChatById(Long privateChatId) {

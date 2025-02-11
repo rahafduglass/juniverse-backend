@@ -98,7 +98,6 @@ public class PrivateChatController {
             if (userChatResponse != null) {
                 return apiResponseHelper.buildApiResponse(userChatResponse, true, "User chat retrieved successfully", HttpStatus.OK);
             } else return apiResponseHelper.buildApiResponse(null, false, "No user chat found", HttpStatus.NOT_FOUND);
-
         } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
@@ -132,12 +131,8 @@ public class PrivateChatController {
         }
     }
 
-
-
-
     //TO-DO
     //make markAsRead implicitly implemented within getAllMessages
     //NEW endpoint: deleteMessage
-
 
 }

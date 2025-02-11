@@ -75,18 +75,14 @@ public class SysUserController {
         }
     }
 
-
     @GetMapping("/profile-and-cover-picture")
     public ResponseEntity<ApiResponse<ProfileAndCoverPicturesResponse>>  getProfileAndCoverPictures() {
         try{
-            String profilePhotoBase64=  sysUserService.getProfilePicture();
-            String coverPhotoBase64=sysUserService.getCoverPicture();
-            ProfileAndCoverPicturesResponse response= new ProfileAndCoverPicturesResponse(profilePhotoBase64,coverPhotoBase64);
+            ProfileAndCoverPicturesResponse response= new ProfileAndCoverPicturesResponse(sysUserService.getProfilePicture(),sysUserService.getCoverPicture());
             boolean areNotFetched=(response.getCoverPicturesBase64()==null)&&(response.getProfilePictureBase64()==null);
             return apiResponseHelper.buildApiResponse(response, !areNotFetched
                     , (areNotFetched ? "couldn't retrieve" : "retrieved successfully")
                     , (areNotFetched? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
-
         }catch(Exception e){
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }

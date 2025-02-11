@@ -132,17 +132,7 @@ public class PrivateChatController {
         }
     }
 
- //   @PatchMapping("/{chatId}/read")
-    public ResponseEntity<ApiResponse<Boolean>> markChatAsRead(@PathVariable Long chatId) {
-        try {
 
-            //mark As Read
-            Boolean isRead = privateChatService.markChatAsRead(chatId);
-            return apiResponseHelper.buildApiResponse(isRead, isRead, !isRead ? "no messages to read" : "Chat read successfully", !isRead ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
-        } catch (Exception e) {
-            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
-        }
-    }
 
 
     //TO-DO

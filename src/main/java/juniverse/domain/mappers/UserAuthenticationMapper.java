@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface UserAuthenticationMapper {
 
-    public UserAuthenticationResponse modelToResponse(UserAuthenticationModel userAuthenticationModel);
+    UserAuthenticationResponse modelToResponse(UserAuthenticationModel userAuthenticationModel);
 
     UserAuthenticationModel requestToModel(UserAuthenticationRequest userAuthenticationRequest);
 }

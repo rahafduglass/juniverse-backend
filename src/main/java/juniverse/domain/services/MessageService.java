@@ -30,7 +30,6 @@ public class MessageService {
     private final IdentityProvider identityProvider;
     private final PrivateChatMapper privateChatMapper;
 
-    private final SysUserMapper sysUserMapper;
 
 
     public MessageModel sendMessageToTherapist(String content) throws Exception {
@@ -76,13 +75,16 @@ public class MessageService {
     }
 
     public List<MessageModel> getAllMessages(Long chatId) {
-
-        return  messageRepository.findAllByPrivateChatId(privateChatRepository.findById(chatId).getId());
+        List<MessageModel> data=messageRepository.findAllByPrivateChatId(privateChatRepository.findById(chatId).getId());
+        privateChatService.markChatAsRead(chatId);
+        return data;
     }
 
     public List<MessageModel> getAllMessages() {
-        SysUserEntity currentUser = identityProvider.currentIdentity();
-        return messageRepository.findAllByPrivateChatId(privateChatRepository.findByUser(currentUser).getId());
+        Long chatId=privateChatRepository.findByUser( identityProvider.currentIdentity()).getId();
+        List<MessageModel> data=messageRepository.findAllByPrivateChatId(chatId);
+        privateChatService.markChatAsRead(chatId);
+        return data;
     }
 
     public MessageModel sendMessageFromTherapist(MessageModel messageModel) throws Exception {
@@ -120,7 +122,6 @@ public class MessageService {
 
         //send message
         return sendMessage(messageModel);
-
     }
 
 }

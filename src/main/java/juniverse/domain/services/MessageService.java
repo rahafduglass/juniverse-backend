@@ -4,7 +4,6 @@ package juniverse.domain.services;
 import juniverse.domain.enums.ChatType;
 import juniverse.domain.enums.MessageStatus;
 import juniverse.domain.mappers.PrivateChatMapper;
-import juniverse.domain.mappers.SysUserMapper;
 import juniverse.domain.models.MessageModel;
 import juniverse.domain.models.PrivateChatModel;
 import juniverse.domain.provider.IdentityProvider;
@@ -29,7 +28,6 @@ public class MessageService {
     private final PrivateChatService privateChatService;
     private final IdentityProvider identityProvider;
     private final PrivateChatMapper privateChatMapper;
-
 
 
     public MessageModel sendMessageToTherapist(String content) throws Exception {

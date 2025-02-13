@@ -2,11 +2,11 @@ package juniverse.application.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.application.dtos.ApiResponse;
-import juniverse.application.dtos.private_chat.TherapistChatResponse;
-import juniverse.application.dtos.private_chat.UserChatResponse;
-import juniverse.application.dtos.private_chat.messages.TherapistMessageRequest;
-import juniverse.application.dtos.private_chat.messages.TherapistMessageResponse;
-import juniverse.application.dtos.private_chat.messages.UserMessageRequest;
+import juniverse.application.dtos.chats.private_chat.TherapistChatResponse;
+import juniverse.application.dtos.chats.private_chat.UserChatResponse;
+import juniverse.application.dtos.chats.private_chat.TherapistMessageRequest;
+import juniverse.application.dtos.chats.private_chat.TherapistMessageResponse;
+import juniverse.application.dtos.chats.UserMessageRequest;
 import juniverse.application.helpers.ApiResponseHelper;
 import juniverse.domain.mappers.MessageMapper;
 import juniverse.domain.mappers.PrivateChatMapper;
@@ -36,7 +36,7 @@ public class PrivateChatController {
     public ResponseEntity<ApiResponse<List<TherapistMessageResponse>>> getAllMessages(@PathVariable Long chatId) {
         try {
             // Retrieve all messages
-            List<TherapistMessageResponse> messageListResponse = messageMapper.listOfModelsToListOfResponses(messageService.getAllMessages(chatId));
+            List<TherapistMessageResponse> messageListResponse = messageMapper.listOfModelsToListOfTherapistResponses(messageService.getAllPrivateMessages(chatId));
 
             //check if retrieval succeeded
             boolean isFail = messageListResponse == null || messageListResponse.isEmpty();
@@ -55,7 +55,7 @@ public class PrivateChatController {
     public ResponseEntity<ApiResponse<List<TherapistMessageResponse>>> getAllMessages() {
         try {
             // Retrieve all messages
-            List<TherapistMessageResponse> messageListResponse = messageMapper.listOfModelsToListOfResponses(messageService.getAllMessages());
+            List<TherapistMessageResponse> messageListResponse = messageMapper.listOfModelsToListOfTherapistResponses(messageService.getAllPrivateMessages());
 
             //check if retrieval succeeded
             boolean isFail = messageListResponse == null || messageListResponse.isEmpty();

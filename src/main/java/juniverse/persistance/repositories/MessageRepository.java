@@ -1,6 +1,7 @@
 package juniverse.persistance.repositories;
 
 
+import juniverse.domain.enums.ChatType;
 import juniverse.domain.models.MessageModel;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,9 @@ public interface MessageRepository {
 
     List<MessageModel> findAllByPrivateChatId(Long id);
 
-    Boolean markMessagesAsRead(Long userId, Long chatId);
+    void markMessagesAsRead(Long userId, Long chatId);
+
+    List<MessageModel> findAllByChatType(ChatType chatType);
+
+    boolean deleteMessage(Long messageId);
 }

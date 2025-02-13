@@ -1,4 +1,4 @@
-package juniverse.application.dtos.private_chat;
+package juniverse.application.dtos.sys_user;
 
 import lombok.Data;
 

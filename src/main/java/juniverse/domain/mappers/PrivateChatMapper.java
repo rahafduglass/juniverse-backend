@@ -1,7 +1,7 @@
 package juniverse.domain.mappers;
 
-import juniverse.application.dtos.private_chat.TherapistChatResponse;
-import juniverse.application.dtos.private_chat.UserChatResponse;
+import juniverse.application.dtos.chats.private_chat.TherapistChatResponse;
+import juniverse.application.dtos.chats.private_chat.UserChatResponse;
 import juniverse.domain.models.PrivateChatModel;
 import juniverse.persistance.entities.PrivateChatEntity;
 import org.mapstruct.Mapper;

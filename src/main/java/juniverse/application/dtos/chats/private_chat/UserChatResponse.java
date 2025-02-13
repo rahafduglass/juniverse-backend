@@ -1,4 +1,4 @@
-package juniverse.application.dtos.private_chat;
+package juniverse.application.dtos.chats.private_chat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserChatResponse {
 
+
     private Long id;
 
     private String therapistUsername;
@@ -20,5 +21,6 @@ public class UserChatResponse {
     private String therapistLastName;
 
     private Integer userUnreadMessagesCount;
+
 
 }

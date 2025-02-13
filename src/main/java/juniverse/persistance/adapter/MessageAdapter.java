@@ -1,6 +1,8 @@
 package juniverse.persistance.adapter;
 
 import jakarta.transaction.Transactional;
+import juniverse.domain.enums.ChatType;
+import juniverse.domain.enums.MessageStatus;
 import juniverse.domain.mappers.MessageMapper;
 import juniverse.domain.models.MessageModel;
 import juniverse.persistance.jpa.MessageJpaRepository;
@@ -14,13 +16,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageAdapter implements MessageRepository {
 
+
     private final MessageJpaRepository messageJpaRepository;
     private final MessageMapper messageMapper;
+
 
     @Override
     public Integer getNumOfUnreadMessagesByChatAndReceiver(Long chatId, Long receiverId) {
         return messageJpaRepository.getNumOfUnreadMessagesByChatAndReceiver(chatId,receiverId);
     }
+
 
     @Override
     public MessageModel sendMessage(MessageModel messageModel) {
@@ -33,9 +38,21 @@ public class MessageAdapter implements MessageRepository {
         return messageMapper.listOfEntitiesToListOfModels(messageJpaRepository.findAllByPrivateChatId(chatId));
     }
 
+
     @Transactional
     @Override
-    public Boolean markMessagesAsRead(Long userId, Long chatId) {
-        return messageJpaRepository.markMessagesAsRead(userId,chatId)>0;
+    public void markMessagesAsRead(Long userId, Long chatId) {
+        messageJpaRepository.markMessagesAsRead(userId, chatId);
+    }
+
+
+    @Override
+    public List<MessageModel> findAllByChatType(ChatType chatType) {
+        return messageMapper.listOfEntitiesToListOfModels(messageJpaRepository.findAllByChatType(chatType));
+    }
+
+    @Override
+    public boolean deleteMessage(Long messageId) {
+        return messageJpaRepository.updateByStatus(messageId, MessageStatus.DELETED)>0;
     }
 }

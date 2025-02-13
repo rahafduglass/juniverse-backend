@@ -68,13 +68,13 @@ public class MessageService {
         return sendMessage(messageModel);
     }
 
-    public List<MessageModel> getAllMessages(Long chatId) {
+    public List<MessageModel> getAllPrivateMessages(Long chatId) {
         List<MessageModel> data=messageRepository.findAllByPrivateChatId(privateChatRepository.findById(chatId).getId());
         privateChatService.markChatAsRead(chatId);
         return data;
     }
 
-    public List<MessageModel> getAllMessages() {
+    public List<MessageModel> getAllPrivateMessages() {
         Long chatId=privateChatRepository.findByUser( identityProvider.currentIdentity()).getId();
         List<MessageModel> data=messageRepository.findAllByPrivateChatId(chatId);
         privateChatService.markChatAsRead(chatId);
@@ -121,7 +121,6 @@ public class MessageService {
     public boolean sendPublicMessage(String content) {
 
         MessageModel messageModel = new MessageModel();
-
         messageModel.setContent(content);
         SysUserEntity currentUser=identityProvider.currentIdentity();
         messageModel.setSenderUsername(currentUser.getUsername());
@@ -141,4 +140,11 @@ public class MessageService {
         return messageRepository.sendMessage(messageModel);
     }
 
+    public List<MessageModel> getAllPublicMessages() {
+        return messageRepository.findAllByChatType(ChatType.PUBLIC);
+    }
+
+    public boolean deleteMessage(Long messageId) {
+        return messageRepository.deleteMessage(messageId);
+    }
 }

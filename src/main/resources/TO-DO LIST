@@ -13,8 +13,7 @@
 
 
 -endpoints-
-1. sendMessages (all users)
-2. getAllMessages (all users)
+1. sendMessages (all users) done
+2. getAllMessages (all users) done
 3. deleteMessage (admins & mods)
 4. editMessage (all users)
-

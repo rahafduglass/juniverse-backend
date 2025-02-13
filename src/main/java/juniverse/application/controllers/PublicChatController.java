@@ -2,17 +2,18 @@ package juniverse.application.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.application.dtos.ApiResponse;
-import juniverse.application.dtos.private_chat.messages.UserMessageRequest;
+import juniverse.application.dtos.chats.UserMessageRequest;
+import juniverse.application.dtos.chats.public_chat.MessageResponse;
 import juniverse.application.helpers.ApiResponseHelper;
+import juniverse.domain.mappers.MessageMapper;
 import juniverse.domain.services.MessageService;
 import juniverse.domain.services.PublicChatService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -23,16 +24,36 @@ public class PublicChatController {
     private final PublicChatService publicChatService;
     private final MessageService messageService;
     private final ApiResponseHelper apiResponseHelper;
+    private final MessageMapper messageMapper;
 
     @PostMapping("/message")
     public ResponseEntity<ApiResponse<Boolean>> sendMessage(@RequestBody UserMessageRequest userMessageRequest) {
-        try{
-            boolean isSent= messageService.sendPublicMessage(userMessageRequest.getContent());
-            return apiResponseHelper.buildApiResponse(isSent,isSent,!isSent?"couldn't send":"sent successfully",!isSent? HttpStatus.EXPECTATION_FAILED:HttpStatus.OK);
+        try {
+            boolean isSent = messageService.sendPublicMessage(userMessageRequest.getContent());
+            return apiResponseHelper.buildApiResponse(isSent, isSent, !isSent ? "couldn't send" : "sent successfully", !isSent ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @GetMapping("/messages")
+    public ResponseEntity<ApiResponse<List<MessageResponse>>> getAllMessages() {
+        try {
+            List<MessageResponse> responses = messageMapper.listOfModelsToListOfResponses( messageService.getAllPublicMessages());
+            return apiResponseHelper.buildApiResponse(responses, responses!=null, responses==null ? "couldn't retrieve" : "retrieved successfully", responses==null ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
         }catch(Exception e){
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
+    }
 
+    @DeleteMapping ("/{messageId}")
+    public ResponseEntity<ApiResponse<Boolean>> markMessageAsDeleted(@PathVariable Long messageId) {
+        try{
+            boolean isDeleted= messageService.deleteMessage(messageId);
+            return apiResponseHelper.buildApiResponse(isDeleted, isDeleted, !isDeleted? "couldn't delete" : "marked as deleted successfully", !isDeleted ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+        }catch(Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
     }
 
 }

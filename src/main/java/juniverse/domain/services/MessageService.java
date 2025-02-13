@@ -145,7 +145,7 @@ public class MessageService {
     }
 
     public boolean deleteMessage(Long messageId) {
-        return messageRepository.deleteMessage(messageId);
+        return messageRepository.deleteMessage(messageId,identityProvider.currentIdentity().getId());
     }
 
     public boolean editMessage(Long messageId, String content) throws Exception {

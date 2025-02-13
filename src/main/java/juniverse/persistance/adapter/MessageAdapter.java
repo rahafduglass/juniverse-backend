@@ -52,8 +52,8 @@ public class MessageAdapter implements MessageRepository {
     }
 
     @Override
-    public boolean deleteMessage(Long messageId) {
-        return messageJpaRepository.updateByStatus(messageId, MessageStatus.DELETED)>0;
+    public boolean deleteMessage(Long messageId, Long deletedBy) {
+        return messageJpaRepository.updateByStatus(messageId, MessageStatus.DELETED,deletedBy)>0;
     }
 
     @Override

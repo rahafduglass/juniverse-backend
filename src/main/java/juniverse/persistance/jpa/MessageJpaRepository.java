@@ -31,8 +31,8 @@ public interface MessageJpaRepository extends JpaRepository<MessageEntity, Long>
 
     @Transactional
     @Modifying
-    @Query("UPDATE message m SET m.status = :messageStatus WHERE m.id = :messageId")
-    Integer updateByStatus(Long messageId, MessageStatus messageStatus);
+    @Query("UPDATE message m SET m.status = :messageStatus, m.deletedBy.id = :deletedBy WHERE m.id = :messageId")
+    Integer updateByStatus(Long messageId, MessageStatus messageStatus,Long deletedBy);
 
     @Transactional
     @Modifying

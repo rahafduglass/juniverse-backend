@@ -20,7 +20,7 @@ public interface MessageRepository {
 
     List<MessageModel> findAllByChatType(ChatType chatType);
 
-    boolean deleteMessage(Long messageId);
+    boolean deleteMessage(Long messageId,Long deletedBy);
 
     boolean updateMessageContent(Long messageId, String content);
 

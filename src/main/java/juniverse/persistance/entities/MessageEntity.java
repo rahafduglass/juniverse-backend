@@ -54,4 +54,9 @@ public class MessageEntity {
     private PublicChatEntity publicChat;
 
 
+    @ManyToOne
+    @JoinColumn(name="deleted_by")
+    private SysUserEntity deletedBy;
+
+
 }

@@ -49,7 +49,7 @@ public class PublicChatController {
     public ResponseEntity<ApiResponse<Boolean>> markMessageAsDeleted(@PathVariable Long messageId) {
         try{
             boolean isDeleted= messageService.deleteMessage(messageId);
-            return apiResponseHelper.buildApiResponse(isDeleted, isDeleted, !isDeleted? "couldn't delete" : "marked as deleted successfully", !isDeleted ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+            return apiResponseHelper.buildApiResponse(isDeleted, isDeleted, !isDeleted? "couldn't find message" : "marked as deleted successfully", !isDeleted ? HttpStatus.NOT_FOUND : HttpStatus.OK);
         }catch(Exception e){
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
@@ -59,7 +59,7 @@ public class PublicChatController {
     public ResponseEntity<ApiResponse<Boolean>> editMessage(@PathVariable Long messageId,@RequestBody UserMessageRequest request) {
         try{
             boolean isEdited=messageService.editMessage(messageId,request.getContent());
-            return apiResponseHelper.buildApiResponse(isEdited,isEdited,!isEdited?"didnt edit":"successfully edited",!isEdited ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+            return apiResponseHelper.buildApiResponse(isEdited,isEdited,!isEdited?"couldn't find message":"successfully edited",!isEdited ? HttpStatus.NOT_FOUND : HttpStatus.OK);
 
         }catch(Exception e){
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);

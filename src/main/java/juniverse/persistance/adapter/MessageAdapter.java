@@ -55,4 +55,14 @@ public class MessageAdapter implements MessageRepository {
     public boolean deleteMessage(Long messageId) {
         return messageJpaRepository.updateByStatus(messageId, MessageStatus.DELETED)>0;
     }
+
+    @Override
+    public boolean updateMessageContent(Long messageId, String content) {
+        return messageJpaRepository.updateByContent(messageId,content)>0;
+    }
+
+    @Override
+    public Long findSenderId(Long messageId) {
+        return messageJpaRepository.findSenderIdById(messageId).getSender().getId();
+    }
 }

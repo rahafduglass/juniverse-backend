@@ -21,4 +21,8 @@ public interface MessageRepository {
     List<MessageModel> findAllByChatType(ChatType chatType);
 
     boolean deleteMessage(Long messageId);
+
+    boolean updateMessageContent(Long messageId, String content);
+
+    Long findSenderId(Long messageId);
 }

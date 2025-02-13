@@ -45,7 +45,7 @@ public class MessageService {
 
         //retrieve user's chat
         PrivateChatModel privateChat = privateChatMapper.entityToModel(privateChatRepository.findByUserId(currentUser.getId()));
-        System.out.println(privateChat+"dddddddddddddddddddd");
+        System.out.println(privateChat + "dddddddddddddddddddd");
         //check if it doesn't exist? create.
         if (privateChat == null) {
             privateChat = privateChatService.createChatBetween(currentUser.getId(), therapist.getId());
@@ -69,14 +69,14 @@ public class MessageService {
     }
 
     public List<MessageModel> getAllPrivateMessages(Long chatId) {
-        List<MessageModel> data=messageRepository.findAllByPrivateChatId(privateChatRepository.findById(chatId).getId());
+        List<MessageModel> data = messageRepository.findAllByPrivateChatId(privateChatRepository.findById(chatId).getId());
         privateChatService.markChatAsRead(chatId);
         return data;
     }
 
     public List<MessageModel> getAllPrivateMessages() {
-        Long chatId=privateChatRepository.findByUser( identityProvider.currentIdentity()).getId();
-        List<MessageModel> data=messageRepository.findAllByPrivateChatId(chatId);
+        Long chatId = privateChatRepository.findByUser(identityProvider.currentIdentity()).getId();
+        List<MessageModel> data = messageRepository.findAllByPrivateChatId(chatId);
         privateChatService.markChatAsRead(chatId);
         return data;
     }
@@ -122,7 +122,7 @@ public class MessageService {
 
         MessageModel messageModel = new MessageModel();
         messageModel.setContent(content);
-        SysUserEntity currentUser=identityProvider.currentIdentity();
+        SysUserEntity currentUser = identityProvider.currentIdentity();
         messageModel.setSenderUsername(currentUser.getUsername());
         messageModel.setSenderId(currentUser.getId());
         messageModel.setChatType(ChatType.PUBLIC);
@@ -133,7 +133,7 @@ public class MessageService {
         messageModel.setReceiverUsername(null);
         messageModel.setIsRead(null);
 
-        return sendMessage(messageModel)!=null;
+        return sendMessage(messageModel) != null;
     }
 
     private MessageModel sendMessage(MessageModel messageModel) {
@@ -146,5 +146,14 @@ public class MessageService {
 
     public boolean deleteMessage(Long messageId) {
         return messageRepository.deleteMessage(messageId);
+    }
+
+    public boolean editMessage(Long messageId, String content) throws Exception {
+        boolean isAuthorized = (identityProvider.currentIdentity().getId()==messageRepository.findSenderId(messageId));
+
+        if (isAuthorized)
+            return messageRepository.updateMessageContent(messageId, content);
+        else
+            throw new Exception("can't edit, message doesn't belong to the user");
     }
 }

@@ -3,7 +3,6 @@ package juniverse.persistance.jpa;
 import jakarta.transaction.Transactional;
 import juniverse.domain.enums.ChatType;
 import juniverse.domain.enums.MessageStatus;
-import juniverse.domain.models.MessageModel;
 import juniverse.persistance.entities.MessageEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -34,4 +33,11 @@ public interface MessageJpaRepository extends JpaRepository<MessageEntity, Long>
     @Modifying
     @Query("UPDATE message m SET m.status = :messageStatus WHERE m.id = :messageId")
     Integer updateByStatus(Long messageId, MessageStatus messageStatus);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE message m SET m.content = :content WHERE m.id = :messageId")
+    Integer updateByContent(Long messageId, String content);
+
+    MessageEntity findSenderIdById(Long messageId);
 }

@@ -21,7 +21,6 @@ import java.util.List;
 @Tag(name = "PUBLIC CHAT")
 public class PublicChatController {
 
-    private final PublicChatService publicChatService;
     private final MessageService messageService;
     private final ApiResponseHelper apiResponseHelper;
     private final MessageMapper messageMapper;
@@ -56,4 +55,14 @@ public class PublicChatController {
         }
     }
 
+    @PutMapping("/{messageId}")
+    public ResponseEntity<ApiResponse<Boolean>> editMessage(@PathVariable Long messageId,@RequestBody UserMessageRequest request) {
+        try{
+            boolean isEdited=messageService.editMessage(messageId,request.getContent());
+            return apiResponseHelper.buildApiResponse(isEdited,isEdited,!isEdited?"didnt edit":"successfully edited",!isEdited ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+
+        }catch(Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 }

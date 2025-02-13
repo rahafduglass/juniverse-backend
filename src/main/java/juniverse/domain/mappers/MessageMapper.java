@@ -1,9 +1,11 @@
 package juniverse.domain.mappers;
 
-import juniverse.application.dtos.private_chat.messages.MessageRequest;
+import juniverse.application.dtos.private_chat.messages.TherapistMessageRequest;
 import juniverse.application.dtos.private_chat.messages.TherapistMessageResponse;
 import juniverse.domain.models.MessageModel;
 import juniverse.persistance.entities.MessageEntity;
+import juniverse.persistance.entities.PrivateChatEntity;
+import juniverse.persistance.entities.SysUserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -13,22 +15,44 @@ import java.util.List;
 public interface MessageMapper {
 
 
-    MessageModel requestToModel(MessageRequest messageRequest);
+    MessageModel requestToModel(TherapistMessageRequest therapistMessageRequest);
 
     TherapistMessageResponse modelToResponse(MessageModel messageModel);
 
 
-    @Mapping(source="senderUsername", target= "sender.username")
-    @Mapping(source="receiverUsername", target="receiver.username")
-    @Mapping(source="receiverId", target="receiver.id")
-    @Mapping(source="senderId", target="sender.id")
-    @Mapping(source = "privateChatId", target = "privateChat.id")
+    @Mapping(source = "receiverId", target = "receiver")
+    @Mapping(source = "senderId", target = "sender")
+    @Mapping(source = "privateChatId", target = "privateChat")
     MessageEntity modelToEntity(MessageModel messageModel);
+
+
+    default PrivateChatEntity mapPrivateChatIdToEntity(Long privateChatId) {
+        if (privateChatId == null) {
+            return null;  // Return null if there's no privateChatId
+        }
+
+        PrivateChatEntity privateChatEntity = new PrivateChatEntity();
+        privateChatEntity.setId(privateChatId);
+
+        return privateChatEntity;
+    }
+
+    default SysUserEntity mapSysUserIdToEntity(Long sysUserId) {
+        if (sysUserId == null) {
+            return null;  // Return null if there's no privateChatId
+        }
+
+        SysUserEntity sysUserEntity = new SysUserEntity();
+        sysUserEntity.setId(sysUserId);
+
+        return sysUserEntity;
+    }
+
 
     @Mapping(source = "sender.username", target = "senderUsername")
     @Mapping(source = "receiver.username", target = "receiverUsername")
-    @Mapping(source="receiver.id", target="receiverId")
-    @Mapping(source="sender.id", target="senderId")
+    @Mapping(source = "receiver.id", target = "receiverId")
+    @Mapping(source = "sender.id", target = "senderId")
     @Mapping(source = "privateChat.id", target = "privateChatId")
     MessageModel entityToModel(MessageEntity messageEntity);
 

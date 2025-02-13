@@ -27,11 +27,10 @@ import java.util.List;
 public class AuthenticationController {
 
     private final ApiResponseHelper apiResponseHelper;
-
     private final UserAuthenticationService authenticationService;
-
     private final UserAuthenticationMapper userAuthenticationMapper;
     private final SysUserMapper sysUserMapper;
+
 
     @PostMapping("/signIn")
     public ResponseEntity<ApiResponse<UserAuthenticationResponse>> signIn(@RequestBody UserAuthenticationRequest userAuthenticationRequest) {

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class MessageRequest {
+public class TherapistMessageRequest {
 
     private Long privateChatId;
 

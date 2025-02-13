@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.application.dtos.ApiResponse;
 import juniverse.application.dtos.private_chat.TherapistChatResponse;
 import juniverse.application.dtos.private_chat.UserChatResponse;
-import juniverse.application.dtos.private_chat.messages.MessageRequest;
+import juniverse.application.dtos.private_chat.messages.TherapistMessageRequest;
 import juniverse.application.dtos.private_chat.messages.TherapistMessageResponse;
 import juniverse.application.dtos.private_chat.messages.UserMessageRequest;
 import juniverse.application.helpers.ApiResponseHelper;
@@ -104,9 +104,9 @@ public class PrivateChatController {
     }
 
     @PostMapping("/messageFromTherapist")
-    public ResponseEntity<ApiResponse<TherapistMessageResponse>> sendMessageFromTherapist(@RequestBody MessageRequest messageRequest) {
+    public ResponseEntity<ApiResponse<TherapistMessageResponse>> sendMessageFromTherapist(@RequestBody TherapistMessageRequest therapistMessageRequest) {
         try {
-            TherapistMessageResponse therapistMessageResponse = messageMapper.modelToResponse(messageService.sendMessageFromTherapist(messageMapper.requestToModel(messageRequest)));
+            TherapistMessageResponse therapistMessageResponse = messageMapper.modelToResponse(messageService.sendMessageFromTherapist(messageMapper.requestToModel(therapistMessageRequest)));
             if (therapistMessageResponse != null) {
                 return apiResponseHelper.buildApiResponse(therapistMessageResponse, true, "message sent successfully", HttpStatus.OK);
             } else

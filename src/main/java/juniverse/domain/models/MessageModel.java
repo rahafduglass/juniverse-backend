@@ -35,5 +35,8 @@ public class MessageModel {
 
     private Long privateChatId;
 
+    private Long publicChatId;
+
     private Boolean isRead;
+
 }

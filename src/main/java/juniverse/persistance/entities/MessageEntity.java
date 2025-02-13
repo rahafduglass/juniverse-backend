@@ -9,18 +9,18 @@ import juniverse.domain.enums.ChatType;
 
 import java.time.LocalDateTime;
 
-@Entity(name="message")
+@Entity(name = "message")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name="message")
+@Table(name = "message")
 public class MessageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String content;
 
     @Column(nullable = false)
@@ -30,11 +30,11 @@ public class MessageEntity {
     private Boolean isRead;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable=false)
+    @Column(nullable = false)
     private ChatType chatType; // Enum for chat type: PUBLIC or PRIVATE
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable=false)
+    @Column(nullable = false)
     private MessageStatus status;
 
     @ManyToOne
@@ -46,11 +46,11 @@ public class MessageEntity {
     private SysUserEntity receiver; //nullable for public chat
 
     @ManyToOne
-    @JoinColumn(name="private_chat_id",nullable = true)//null if its public chat
+    @JoinColumn(name = "private_chat_id", nullable = true)//null if its public chat
     private PrivateChatEntity privateChat;
 
     @ManyToOne
-    @JoinColumn(name="public_chat_id",nullable = true)
+    @JoinColumn(name = "public_chat_id", nullable = true)
     private PublicChatEntity publicChat;
 
 

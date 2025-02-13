@@ -68,10 +68,6 @@ public class MessageService {
         return sendMessage(messageModel);
     }
 
-    private MessageModel sendMessage(MessageModel messageModel) {
-        return messageRepository.sendMessage(messageModel);
-    }
-
     public List<MessageModel> getAllMessages(Long chatId) {
         List<MessageModel> data=messageRepository.findAllByPrivateChatId(privateChatRepository.findById(chatId).getId());
         privateChatService.markChatAsRead(chatId);
@@ -120,6 +116,29 @@ public class MessageService {
 
         //send message
         return sendMessage(messageModel);
+    }
+
+    public boolean sendPublicMessage(String content) {
+
+        MessageModel messageModel = new MessageModel();
+
+        messageModel.setContent(content);
+        SysUserEntity currentUser=identityProvider.currentIdentity();
+        messageModel.setSenderUsername(currentUser.getUsername());
+        messageModel.setSenderId(currentUser.getId());
+        messageModel.setChatType(ChatType.PUBLIC);
+        messageModel.setStatus(MessageStatus.SENT);
+        messageModel.setTimestamp(LocalDateTime.now());
+        messageModel.setPrivateChatId(null);
+        messageModel.setReceiverId(null);
+        messageModel.setReceiverUsername(null);
+        messageModel.setIsRead(null);
+
+        return sendMessage(messageModel)!=null;
+    }
+
+    private MessageModel sendMessage(MessageModel messageModel) {
+        return messageRepository.sendMessage(messageModel);
     }
 
 }

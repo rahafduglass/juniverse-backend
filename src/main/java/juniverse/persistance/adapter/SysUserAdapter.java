@@ -16,16 +16,7 @@ import java.util.Optional;
 public class SysUserAdapter implements SysUserRepository {
 
     private final SysUserJpaRepository sysUserJpaRepository;
-    private final SysUserMapper sysUserMapper;
 
-    @Override
-    public SysUserModel findById(Long id) {
-        Optional<SysUserEntity> userEntity = sysUserJpaRepository.findById(id);
-        if (userEntity.isEmpty()) {
-            return null;
-        }
-        return sysUserMapper.entityToModel(userEntity.get());
-    }
 
     @Override
     public Optional<SysUserEntity> findByUsername(String username) {
@@ -66,5 +57,10 @@ public class SysUserAdapter implements SysUserRepository {
     @Override
     public boolean deleteProfilePicture(Long currentUserId) {
         return sysUserJpaRepository.deleteProfilePicture(currentUserId)>0;
+    }
+
+    @Override
+    public boolean deleteCoverPicture(Long currentUserId) {
+        return sysUserJpaRepository.deleteCoverPicture(currentUserId)>0;
     }
 }

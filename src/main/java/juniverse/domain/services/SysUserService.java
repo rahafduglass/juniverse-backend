@@ -3,7 +3,6 @@ package juniverse.domain.services;
 import juniverse.domain.mappers.SysUserMapper;
 import juniverse.domain.models.SysUserModel;
 import juniverse.domain.provider.IdentityProvider;
-import juniverse.persistance.entities.SysUserEntity;
 import juniverse.persistance.repositories.SysUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -81,7 +80,7 @@ public class SysUserService {
         Object[] photo = sysUserRepository.findCoverPicturePath(identityProvider.currentIdentity().getId());
         //if null return default cover pic
         if (((Object[])photo[0])[0] == null) {
-            ((Object[])photo[0])[0]=Files.readString(Paths.get("src/main/resources/juniverse_files/defaults/default_cover_pic.txt"));;
+            ((Object[])photo[0])[0]=Files.readString(Paths.get("src/main/resources/juniverse_files/defaults/default_cover_pic.txt"));
             ((Object[])photo[0])[1]="png";
             return photo;
         }
@@ -124,6 +123,23 @@ public class SysUserService {
 
         //delete path from database
         boolean result=sysUserRepository.deleteProfilePicture(currentUserId);
+
+        //delete from local storage
+        Files.delete(Paths.get(((Object[])photo[0])[0].toString()));
+
+        return result ;
+    }
+
+    public boolean deleteCoverPicture() throws Exception {
+        Long currentUserId=identityProvider.currentIdentity().getId();
+
+        //make sure profile pic exists
+        Object [] photo = sysUserRepository.findCoverPicturePath(currentUserId);
+        if(((Object[])photo[0])[0] == null)
+            throw new Exception("there's no cover picture for this user");
+
+        //delete path from database
+        boolean result=sysUserRepository.deleteCoverPicture(currentUserId);
 
         //delete from local storage
         Files.delete(Paths.get(((Object[])photo[0])[0].toString()));

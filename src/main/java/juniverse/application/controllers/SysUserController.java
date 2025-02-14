@@ -30,7 +30,8 @@ public class SysUserController {
         try {
             SysUserProfileResponse response = sysUserMapper.modelToDTO(sysUserService.getProfile());
             boolean isFail = response == null;
-            response.setBio(response.getBio()!=null?response.getBio():"");
+            if (response != null && response.getBio() == null)
+                response.setBio("");
             return apiResponseHelper.buildApiResponse(response, !isFail
                     , (isFail ? "couldn't update" : "profile updated successfully")
                     , (isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
@@ -55,7 +56,7 @@ public class SysUserController {
     @PutMapping("/profile-picture")
     public ResponseEntity<ApiResponse<Boolean>> updateProfilePicture(@RequestBody UpdatePhotoRequest request) {
         try {
-            boolean isUpdated = sysUserService.updateProfilePicture(request.getPhotoAsBase64(),request.getFileExtension());
+            boolean isUpdated = sysUserService.updateProfilePicture(request.getPhotoAsBase64(), request.getFileExtension());
             return apiResponseHelper.buildApiResponse(isUpdated, isUpdated
                     , (!isUpdated ? "couldn't update" : "profile picture updated successfully")
                     , (!isUpdated ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
@@ -67,7 +68,7 @@ public class SysUserController {
     @PutMapping("/cover-picture")
     public ResponseEntity<ApiResponse<Boolean>> updateCoverPicture(@RequestBody UpdatePhotoRequest request) {
         try {
-            boolean isUpdated = sysUserService.updateCoverPicture(request.getPhotoAsBase64(),request.getFileExtension());
+            boolean isUpdated = sysUserService.updateCoverPicture(request.getPhotoAsBase64(), request.getFileExtension());
             return apiResponseHelper.buildApiResponse(isUpdated, isUpdated
                     , (!isUpdated ? "couldn't update" : "cover picture updated successfully")
                     , (!isUpdated ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
@@ -77,29 +78,42 @@ public class SysUserController {
     }
 
     @GetMapping("/profile-and-cover-picture")
-    public ResponseEntity<ApiResponse<ProfileAndCoverPicturesResponse>>  getProfileAndCoverPictures() {
-        try{
-            var oGetCoverPicture=sysUserService.getCoverPicture();
-            var oGetProfilePicture=sysUserService.getProfilePicture();
-            ProfileAndCoverPicturesResponse response= new ProfileAndCoverPicturesResponse((String)((Object[])oGetProfilePicture[0])[0] ,(String) ((Object[])oGetProfilePicture[0])[1],(String)((Object[])oGetCoverPicture[0])[0],(String) ((Object[])oGetCoverPicture[0])[1]);
-            boolean areNotFetched=(response.getCoverPicturesBase64()=="")&&(response.getProfilePictureBase64()=="");
+    public ResponseEntity<ApiResponse<ProfileAndCoverPicturesResponse>> getProfileAndCoverPictures() {
+        try {
+            var oGetCoverPicture = sysUserService.getCoverPicture();
+            var oGetProfilePicture = sysUserService.getProfilePicture();
+            ProfileAndCoverPicturesResponse response = new ProfileAndCoverPicturesResponse((String) ((Object[]) oGetProfilePicture[0])[0], (String) ((Object[]) oGetProfilePicture[0])[1], (String) ((Object[]) oGetCoverPicture[0])[0], (String) ((Object[]) oGetCoverPicture[0])[1]);
+            boolean areNotFetched = (response.getCoverPicturesBase64().isEmpty()) && (response.getProfilePictureBase64().isEmpty());
             return apiResponseHelper.buildApiResponse(response, !areNotFetched
                     , (areNotFetched ? "couldn't retrieve" : "retrieved successfully")
-                    , (areNotFetched? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
-        }catch(Exception e){
+                    , (areNotFetched ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
+        } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
     @DeleteMapping("/profile-picture")
-    public ResponseEntity<ApiResponse<Boolean>> deleteProfilePicture(){
-        try{
-            boolean isDeleted= sysUserService.deleteProfilePicture();
+    public ResponseEntity<ApiResponse<Boolean>> deleteProfilePicture() {
+        try {
+            boolean isDeleted = sysUserService.deleteProfilePicture();
             return apiResponseHelper.buildApiResponse(isDeleted, !isDeleted
                     , (!isDeleted ? "couldn't delete" : "deleted successfully")
-                    , (!isDeleted? HttpStatus.NOT_FOUND : HttpStatus.OK));
-        }catch(Exception e){
+                    , (!isDeleted ? HttpStatus.NOT_FOUND : HttpStatus.OK));
+        } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
+    }
+
+    @DeleteMapping("/cover-picture")
+    public ResponseEntity<ApiResponse<Boolean>> deleteCoverPicture() {
+        try {
+            boolean isDeleted = sysUserService.deleteCoverPicture();
+            return apiResponseHelper.buildApiResponse(isDeleted, !isDeleted
+                    , (!isDeleted ? "couldn't delete" : "deleted successfully")
+                    , (!isDeleted ? HttpStatus.NOT_FOUND : HttpStatus.OK));
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+
     }
 }

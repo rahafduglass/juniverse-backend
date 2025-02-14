@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface SysUserRepository {
-    SysUserModel findById(Long id);
 
     Optional<SysUserEntity> findByUsername(String username);
 
@@ -26,4 +25,6 @@ public interface SysUserRepository {
     Boolean updateCoverPicturePath(Long id, String filePath,String fileExtension);
 
     boolean deleteProfilePicture(Long currentUserId);
+
+    boolean deleteCoverPicture(Long currentUserId);
 }

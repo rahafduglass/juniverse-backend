@@ -20,11 +20,8 @@ import java.util.stream.Collectors;
 public class UserAuthenticationService {
 
     private final SysUserRepository sysUserRepository;
-
     private final JwtService jwtService;
-
     private final AuthenticationManager authenticationManager;
-
     private final PasswordEncoder passwordEncoder;
     private final SysUserMapper sysUserMapper;
 

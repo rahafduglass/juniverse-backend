@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PrivateChatService {
+
     private final PrivateChatRepository privateChatRepository;
     private final PrivateChatMapper privateChatMapper;
     private final MessageRepository messageRepository;

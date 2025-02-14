@@ -7,7 +7,6 @@ import juniverse.application.dtos.chats.public_chat.MessageResponse;
 import juniverse.application.helpers.ApiResponseHelper;
 import juniverse.domain.mappers.MessageMapper;
 import juniverse.domain.services.MessageService;
-import juniverse.domain.services.PublicChatService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

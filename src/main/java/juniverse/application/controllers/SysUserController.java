@@ -90,4 +90,16 @@ public class SysUserController {
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
+
+    @DeleteMapping("/profile-picture")
+    public ResponseEntity<ApiResponse<Boolean>> deleteProfilePicture(){
+        try{
+            boolean isDeleted= sysUserService.deleteProfilePicture();
+            return apiResponseHelper.buildApiResponse(isDeleted, !isDeleted
+                    , (!isDeleted ? "couldn't delete" : "deleted successfully")
+                    , (!isDeleted? HttpStatus.NOT_FOUND : HttpStatus.OK));
+        }catch(Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 }

@@ -36,4 +36,9 @@ public interface SysUserJpaRepository extends JpaRepository<SysUserEntity, Long>
     @Transactional
     @Query("UPDATE sys_user u SET u.coverPicturePath = :path , u.coverPictureExtension=:coverPictureExtension WHERE u.id = :id")
     Integer updateCoverPicturePath(Long id, String path,String coverPictureExtension);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE sys_user s SET s.profilePicturePath = NULL,s.profilePictureExtension= NULL WHERE s.id = :id")
+    Integer deleteProfilePicture(Long id);
 }

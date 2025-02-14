@@ -24,4 +24,6 @@ public interface SysUserRepository {
     Object[] findCoverPicturePath(Long id);
 
     Boolean updateCoverPicturePath(Long id, String filePath,String fileExtension);
+
+    boolean deleteProfilePicture(Long currentUserId);
 }

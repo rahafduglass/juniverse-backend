@@ -3,6 +3,7 @@ package juniverse.domain.services;
 import juniverse.domain.mappers.SysUserMapper;
 import juniverse.domain.models.SysUserModel;
 import juniverse.domain.provider.IdentityProvider;
+import juniverse.persistance.entities.SysUserEntity;
 import juniverse.persistance.repositories.SysUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,6 @@ public class SysUserService {
     // endregion
 
     // region updateProfilePicture
-
     public boolean updateProfilePicture(String pictureAsBase64,String fileExtension ) throws IOException {
         //decode for more efficient storage
         byte[] decodedPhoto = Base64.getDecoder().decode(pictureAsBase64);
@@ -57,7 +57,6 @@ public class SysUserService {
     // endregion
 
     // region getProfilePicture
-
     public Object [] getProfilePicture() throws IOException {
         //get photo
         Object [] photo = sysUserRepository.findProfilePicturePath(identityProvider.currentIdentity().getId());
@@ -113,6 +112,23 @@ public class SysUserService {
 
         //if storing in local storage is successful, store path in the database
         return sysUserRepository.updateCoverPicturePath(identityProvider.currentIdentity().getId(), filePath,fileExtension);
+    }
+
+    public boolean deleteProfilePicture() throws Exception {
+        Long currentUserId=identityProvider.currentIdentity().getId();
+
+        //make sure profile pic exists
+        Object [] photo = sysUserRepository.findProfilePicturePath(currentUserId);
+        if(((Object[])photo[0])[0] == null)
+            throw new Exception("there's no profile picture for this user");
+
+        //delete path from database
+        boolean result=sysUserRepository.deleteProfilePicture(currentUserId);
+
+        //delete from local storage
+        Files.delete(Paths.get(((Object[])photo[0])[0].toString()));
+
+        return result ;
     }
     // endregion
 }

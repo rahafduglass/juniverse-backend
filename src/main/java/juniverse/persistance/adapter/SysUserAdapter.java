@@ -62,4 +62,9 @@ public class SysUserAdapter implements SysUserRepository {
     public Boolean updateCoverPicturePath(Long id, String filePath,String fileExtension) {
         return sysUserJpaRepository.updateCoverPicturePath(id, filePath,fileExtension) > 0;
     }
+
+    @Override
+    public boolean deleteProfilePicture(Long currentUserId) {
+        return sysUserJpaRepository.deleteProfilePicture(currentUserId)>0;
+    }
 }

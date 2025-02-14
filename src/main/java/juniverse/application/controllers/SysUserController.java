@@ -30,6 +30,7 @@ public class SysUserController {
         try {
             SysUserProfileResponse response = sysUserMapper.modelToDTO(sysUserService.getProfile());
             boolean isFail = response == null;
+            response.setBio(response.getBio()!=null?response.getBio():"");
             return apiResponseHelper.buildApiResponse(response, !isFail
                     , (isFail ? "couldn't update" : "profile updated successfully")
                     , (isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
@@ -54,7 +55,7 @@ public class SysUserController {
     @PutMapping("/profile-picture")
     public ResponseEntity<ApiResponse<Boolean>> updateProfilePicture(@RequestBody UpdatePhotoRequest request) {
         try {
-            boolean isUpdated = sysUserService.updateProfilePicture(request.getPhotoAsBase64());
+            boolean isUpdated = sysUserService.updateProfilePicture(request.getPhotoAsBase64(),request.getFileExtension());
             return apiResponseHelper.buildApiResponse(isUpdated, isUpdated
                     , (!isUpdated ? "couldn't update" : "profile picture updated successfully")
                     , (!isUpdated ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
@@ -66,7 +67,7 @@ public class SysUserController {
     @PutMapping("/cover-picture")
     public ResponseEntity<ApiResponse<Boolean>> updateCoverPicture(@RequestBody UpdatePhotoRequest request) {
         try {
-            boolean isUpdated = sysUserService.updateCoverPicture(request.getPhotoAsBase64());
+            boolean isUpdated = sysUserService.updateCoverPicture(request.getPhotoAsBase64(),request.getFileExtension());
             return apiResponseHelper.buildApiResponse(isUpdated, isUpdated
                     , (!isUpdated ? "couldn't update" : "cover picture updated successfully")
                     , (!isUpdated ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));
@@ -78,8 +79,11 @@ public class SysUserController {
     @GetMapping("/profile-and-cover-picture")
     public ResponseEntity<ApiResponse<ProfileAndCoverPicturesResponse>>  getProfileAndCoverPictures() {
         try{
-            ProfileAndCoverPicturesResponse response= new ProfileAndCoverPicturesResponse(sysUserService.getProfilePicture(),sysUserService.getCoverPicture());
-            boolean areNotFetched=(response.getCoverPicturesBase64()==null)&&(response.getProfilePictureBase64()==null);
+            var oGetCoverPicture=sysUserService.getCoverPicture();
+            var oGetProfilePicture=sysUserService.getProfilePicture();
+            //ProfileAndCoverPicturesResponse response= new ProfileAndCoverPicturesResponse(sysUserService.getProfilePicture(),sysUserService.getCoverPicture());
+            ProfileAndCoverPicturesResponse response= new ProfileAndCoverPicturesResponse((String)((Object[])oGetProfilePicture[0])[0] ,(String) ((Object[])oGetProfilePicture[0])[1],(String)((Object[])oGetCoverPicture[0])[0],(String) ((Object[])oGetCoverPicture[0])[1]);
+            boolean areNotFetched=(response.getCoverPicturesBase64()=="")&&(response.getProfilePictureBase64()=="");
             return apiResponseHelper.buildApiResponse(response, !areNotFetched
                     , (areNotFetched ? "couldn't retrieve" : "retrieved successfully")
                     , (areNotFetched? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK));

@@ -17,11 +17,11 @@ public interface SysUserRepository {
 
     Boolean updateBio(SysUserEntity sysUserEntity);
 
-    Boolean updateProfilePicturePath(Long userId,String path);
+    Boolean updateProfilePicturePath(Long userId,String path,String fileExtension);
 
-    String findProfilePicturePath(Long id);
+    Object[] findProfilePicturePath(Long id);
 
-    String findCoverPicturePath(Long id);
+    Object[] findCoverPicturePath(Long id);
 
-    Boolean updateCoverPicturePath(Long id, String filePath);
+    Boolean updateCoverPicturePath(Long id, String filePath,String fileExtension);
 }

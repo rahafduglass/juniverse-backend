@@ -44,22 +44,22 @@ public class SysUserAdapter implements SysUserRepository {
     }
 
     @Override
-    public Boolean updateProfilePicturePath(Long userId, String path) {
-        return sysUserJpaRepository.updateProfilePicturePath(userId, path) > 0;
+    public Boolean updateProfilePicturePath(Long userId, String path,String fileExtension) {
+        return sysUserJpaRepository.updateProfilePicturePath(userId, path,fileExtension) > 0;
     }
 
     @Override
-    public String findProfilePicturePath(Long id) {
+    public Object[]  findProfilePicturePath(Long id) {
         return sysUserJpaRepository.findProfilePicturePath(id);
     }
 
     @Override
-    public String findCoverPicturePath(Long id) {
+    public Object[] findCoverPicturePath(Long id) {
         return sysUserJpaRepository.findCoverPicturePath(id);
     }
 
     @Override
-    public Boolean updateCoverPicturePath(Long id, String filePath) {
-        return sysUserJpaRepository.updateCoverPicturePath(id, filePath) > 0;
+    public Boolean updateCoverPicturePath(Long id, String filePath,String fileExtension) {
+        return sysUserJpaRepository.updateCoverPicturePath(id, filePath,fileExtension) > 0;
     }
 }

@@ -23,17 +23,17 @@ public interface SysUserJpaRepository extends JpaRepository<SysUserEntity, Long>
 
     @Modifying
     @Transactional
-    @Query("UPDATE sys_user u SET u.profilePicturePath = :path WHERE u.id = :id")
-    Integer updateProfilePicturePath(Long id, String path);
+    @Query("UPDATE sys_user u SET u.profilePicturePath = :path,u.profilePictureExtension=:fileExtension WHERE u.id = :id")
+    Integer updateProfilePicturePath(Long id, String path,String fileExtension);
 
-    @Query("SELECT u.profilePicturePath FROM sys_user u WHERE u.id = :id")
-    String findProfilePicturePath(Long id);
+    @Query("SELECT u.profilePicturePath,u.profilePictureExtension FROM sys_user u WHERE u.id = :id")
+    Object[] findProfilePicturePath(Long id);
 
-    @Query("SELECT u.coverPicturePath FROM sys_user u WHERE u.id = :id")
-    String findCoverPicturePath(Long id);
+    @Query("SELECT u.coverPicturePath ,u.coverPictureExtension FROM sys_user u WHERE u.id = :id")
+    Object[] findCoverPicturePath(Long id);
 
     @Modifying
     @Transactional
-    @Query("UPDATE sys_user u SET u.coverPicturePath = :path WHERE u.id = :id")
-    Integer updateCoverPicturePath(Long id, String path);
+    @Query("UPDATE sys_user u SET u.coverPicturePath = :path , u.coverPictureExtension=:coverPictureExtension WHERE u.id = :id")
+    Integer updateCoverPicturePath(Long id, String path,String coverPictureExtension);
 }

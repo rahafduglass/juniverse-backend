@@ -51,8 +51,10 @@ public class SysUserEntity implements UserDetails {
     private PublicChatEntity chat;
 
     private String profilePicturePath;
+    private String profilePictureExtension;
 
     private String coverPicturePath;
+    private String coverPictureExtension;
 
     private String bio;
 

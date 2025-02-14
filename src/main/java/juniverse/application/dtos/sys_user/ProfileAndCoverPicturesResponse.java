@@ -8,7 +8,9 @@ import lombok.Data;
 public class ProfileAndCoverPicturesResponse {
 
     private String profilePictureBase64;
+    private String profilePictureExtension;
 
     private String coverPicturesBase64;
+    private String coverPicturesExtension;
 
 }

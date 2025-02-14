@@ -81,7 +81,6 @@ public class SysUserController {
         try{
             var oGetCoverPicture=sysUserService.getCoverPicture();
             var oGetProfilePicture=sysUserService.getProfilePicture();
-            //ProfileAndCoverPicturesResponse response= new ProfileAndCoverPicturesResponse(sysUserService.getProfilePicture(),sysUserService.getCoverPicture());
             ProfileAndCoverPicturesResponse response= new ProfileAndCoverPicturesResponse((String)((Object[])oGetProfilePicture[0])[0] ,(String) ((Object[])oGetProfilePicture[0])[1],(String)((Object[])oGetCoverPicture[0])[0],(String) ((Object[])oGetCoverPicture[0])[1]);
             boolean areNotFetched=(response.getCoverPicturesBase64()=="")&&(response.getProfilePictureBase64()=="");
             return apiResponseHelper.buildApiResponse(response, !areNotFetched

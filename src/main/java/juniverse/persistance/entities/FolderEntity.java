@@ -2,6 +2,7 @@ package juniverse.persistance.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import juniverse.domain.enums.FolderStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +28,9 @@ public class FolderEntity {
 
     @NotNull
     @Column(name = "status", nullable = false)
-    private Short status;
+    @Enumerated(EnumType.STRING)
+    private FolderStatus status;
+
 
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -42,6 +42,9 @@ public class FileEntity {
     @Column(name = "upload_date", nullable = false)
     private Instant uploadDate;
 
+    @Column (nullable = false)
+    private String extension;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "folder_id")

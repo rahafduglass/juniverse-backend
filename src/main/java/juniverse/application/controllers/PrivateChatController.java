@@ -2,10 +2,10 @@ package juniverse.application.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.application.dtos.ApiResponse;
+import juniverse.application.dtos.chats.private_chat.MessageResponse;
 import juniverse.application.dtos.chats.private_chat.TherapistChatResponse;
 import juniverse.application.dtos.chats.private_chat.UserChatResponse;
 import juniverse.application.dtos.chats.private_chat.TherapistMessageRequest;
-import juniverse.application.dtos.chats.private_chat.TherapistMessageResponse;
 import juniverse.application.dtos.chats.UserMessageRequest;
 import juniverse.application.helpers.ApiResponseHelper;
 import juniverse.domain.mappers.MessageMapper;
@@ -33,39 +33,30 @@ public class PrivateChatController {
 
 
     @GetMapping("/{chatId}/allMessages")
-    public ResponseEntity<ApiResponse<List<TherapistMessageResponse>>> getAllMessages(@PathVariable Long chatId) {
+    public ResponseEntity<ApiResponse<List<MessageResponse>>> getAllMessages(@PathVariable Long chatId) {
         try {
-            // Retrieve all messages
-            List<TherapistMessageResponse> messageListResponse = messageMapper.listOfModelsToListOfTherapistResponses(messageService.getAllPrivateMessages(chatId));
+            List<MessageResponse> therapistMessages = messageMapper.listOfModelsToListOfTherapistResponses(messageService.getAllPrivateMessages(chatId));
+            boolean isFail = therapistMessages == null || therapistMessages.isEmpty();
 
-            //check if retrieval succeeded
-            boolean isFail = messageListResponse == null || messageListResponse.isEmpty();
-
-            //build response
-            return apiResponseHelper.buildApiResponse(messageListResponse, !isFail
+            return apiResponseHelper.buildApiResponse(therapistMessages, !isFail
                     , (isFail ? "No message found for the user" : "Messages retrieved successfully")
                     , (isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK));
         } catch (Exception e) {
-            // Handle exceptions and return error response
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
     @GetMapping("/allMessages")
-    public ResponseEntity<ApiResponse<List<TherapistMessageResponse>>> getAllMessages() {
+    public ResponseEntity<ApiResponse<List<MessageResponse>>> getAllMessages() {
         try {
-            // Retrieve all messages
-            List<TherapistMessageResponse> messageListResponse = messageMapper.listOfModelsToListOfTherapistResponses(messageService.getAllPrivateMessages());
+            List<MessageResponse> userMessages = messageMapper.listOfModelsToListOfTherapistResponses(messageService.getAllPrivateMessages());
+            boolean isFail = userMessages == null || userMessages.isEmpty();
 
-            //check if retrieval succeeded
-            boolean isFail = messageListResponse == null || messageListResponse.isEmpty();
-
-            //build response
-            return apiResponseHelper.buildApiResponse(messageListResponse, !isFail
+            return apiResponseHelper.buildApiResponse(userMessages, !isFail
                     , (isFail ? "No message found for the user" : "Messages retrieved successfully")
                     , (isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK));
+
         } catch (Exception e) {
-            // Handle exceptions and return error response
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
@@ -73,16 +64,14 @@ public class PrivateChatController {
     @GetMapping("/allTherapistChats")
     public ResponseEntity<ApiResponse<List<TherapistChatResponse>>> getAllTherapistChats() {
         try {
-            // Retrieve chats for the therapist
-            List<TherapistChatResponse> therapistChatResponse = privateChatMapper.listOfModelsToListOfResponses(privateChatService.getAllTherapistChats());
 
-            // Determine if no chats are found
+            List<TherapistChatResponse> therapistChatResponse = privateChatMapper.listOfModelsToListOfResponses(privateChatService.getAllTherapistChats());
             boolean isNoChatsFound = (therapistChatResponse == null || therapistChatResponse.isEmpty());
 
-            //build response
             return apiResponseHelper.buildApiResponse(therapistChatResponse, !isNoChatsFound
                     , (isNoChatsFound ? "No chats found for the therapist" : "Chats retrieved successfully")
                     , (isNoChatsFound ? HttpStatus.NOT_FOUND : HttpStatus.OK));
+
         } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
@@ -91,48 +80,37 @@ public class PrivateChatController {
     @GetMapping()
     public ResponseEntity<ApiResponse<UserChatResponse>> getChat() {
         try {
-            //retrieve chat
             UserChatResponse userChatResponse = privateChatMapper.modelToUserChatResponse(privateChatService.getChat());
+            boolean isFail = userChatResponse == null;
 
-            //build api response
-            if (userChatResponse != null) {
-                return apiResponseHelper.buildApiResponse(userChatResponse, true, "User chat retrieved successfully", HttpStatus.OK);
-            } else return apiResponseHelper.buildApiResponse(null, false, "No user chat found", HttpStatus.NOT_FOUND);
+            return apiResponseHelper.buildApiResponse(userChatResponse, isFail, isFail ? "No user chat found" : "chat retrieved successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
         } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
     @PostMapping("/messageFromTherapist")
-    public ResponseEntity<ApiResponse<TherapistMessageResponse>> sendMessageFromTherapist(@RequestBody TherapistMessageRequest therapistMessageRequest) {
+    public ResponseEntity<ApiResponse<MessageResponse>> sendMessageFromTherapist(@RequestBody TherapistMessageRequest therapistMessageRequest) {
         try {
-            TherapistMessageResponse therapistMessageResponse = messageMapper.modelToResponse(messageService.sendMessageFromTherapist(messageMapper.requestToModel(therapistMessageRequest)));
-            if (therapistMessageResponse != null) {
-                return apiResponseHelper.buildApiResponse(therapistMessageResponse, true, "message sent successfully", HttpStatus.OK);
-            } else
-                return apiResponseHelper.buildApiResponse(null, false, "failed to send", HttpStatus.EXPECTATION_FAILED);
+            MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendMessageFromTherapist(messageMapper.requestToModel(therapistMessageRequest)));
+            boolean isFail = messageResponse == null;
+
+            return apiResponseHelper.buildApiResponse(messageResponse, isFail, isFail ? "failed to send" : "message sent successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
         } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
     @PostMapping("/messageToTherapist")
-    public ResponseEntity<ApiResponse<TherapistMessageResponse>> sendMessageToTherapist(@RequestBody UserMessageRequest userMessageRequest) {
+    public ResponseEntity<ApiResponse<MessageResponse>> sendMessageToTherapist(@RequestBody UserMessageRequest userMessageRequest) {
         try {
-            //send message
-            TherapistMessageResponse therapistMessageResponse = messageMapper.modelToResponse(messageService.sendMessageToTherapist(userMessageRequest.getContent()));
-            //build api response
-            if (therapistMessageResponse != null) {
-                return apiResponseHelper.buildApiResponse(therapistMessageResponse, true, "Message sent successfully", HttpStatus.OK);
-            } else
-                return apiResponseHelper.buildApiResponse(null, false, "failed to send", HttpStatus.EXPECTATION_FAILED);
+            MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendMessageToTherapist(userMessageRequest.getContent()));
+            boolean isFail = messageResponse == null;
+
+            return apiResponseHelper.buildApiResponse(messageResponse, isFail, isFail ? "failed to send" : "message sent successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
         } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
-
-    //TO-DO
-
-    //NEW endpoint: deleteMessage
 
 }

@@ -16,8 +16,8 @@ public interface PrivateChatJpaRepository extends JpaRepository<PrivateChatEntit
     @Query("SELECT pc, su FROM private_chat pc JOIN sys_user su ON pc.user.id = su.id WHERE pc.therapist.id = :therapistId")
     List<Object[]> findChatsWithUserDetailsByTherapist(@Param("therapistId") Long therapistId);
 
-
-    PrivateChatEntity findPrivateChatEntityByUser(SysUserEntity userId);
+    @Query("SELECT pc FROM private_chat pc WHERE pc.user.id = :userId")
+    PrivateChatEntity findPrivateChatEntityByUser(Long userId);
 
 
     PrivateChatEntity findByUser(SysUserEntity sysUserEntity);

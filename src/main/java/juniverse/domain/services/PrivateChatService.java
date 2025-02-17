@@ -24,55 +24,40 @@ public class PrivateChatService {
 
 
     public PrivateChatModel createChatBetween(Long userId, Long therapistId) {
-        PrivateChatModel privateChatTemp = new PrivateChatModel();
-        privateChatTemp.setUserId(userId);
-        privateChatTemp.setTherapistId(therapistId);
-        return privateChatRepository.create(privateChatTemp);
+
+        PrivateChatModel privateChatModel = new PrivateChatModel();
+        privateChatModel.setUserId(userId);
+        privateChatModel.setTherapistId(therapistId);
+
+        return privateChatRepository.create(privateChatModel);
     }
-    //replace response
+
     public List<PrivateChatModel> getAllTherapistChats() {
 
-        //retrieve therapist details
-        SysUserEntity sysUserEntity = identityProvider.currentIdentity();
+        Long therapistId = identityProvider.currentIdentity().getId();
+        List<Object[]> therapistChats = privateChatRepository.findAllByTherapistId(therapistId);
 
-        //retrieve all chats
-        List<Object[]> results = privateChatRepository.findAllByTherapistId(sysUserEntity.getId());
+        return therapistChats.stream().map(row -> {
 
-        //preparing and mapping results
-        return results.stream().map(row -> {
+            PrivateChatEntity chatEntity = (PrivateChatEntity) row[0];
+            PrivateChatModel chatModel = privateChatMapper.entityToModel(chatEntity);
 
-            // Extract PrivateChatEntity from list row[0]
-            PrivateChatEntity chat = (PrivateChatEntity) row[0];
+            chatModel.setTherapistUnreadMessagesCount(messageRepository.getNumOfUnreadMessagesByChatAndReceiver(chatEntity.getId(), therapistId));
 
-            //mapping
-            PrivateChatModel privateChatModel= privateChatMapper.entityToModel(chat);
-
-            //retrieve and manually map unreadMessagesCount
-            privateChatModel.setTherapistUnreadMessagesCount(messageRepository.getNumOfUnreadMessagesByChatAndReceiver(chat.getId(), sysUserEntity.getId()));
-
-            //return model to be collected in List<Models>
-            return privateChatModel;
+            return chatModel;
         }).collect(Collectors.toList());
     }
 
     public PrivateChatModel getChat() {
-        //retrieve current user
-        SysUserEntity currentUser = identityProvider.currentIdentity();
 
-        //retrieve private chat using current user
-        PrivateChatEntity chat = privateChatRepository.findByUser(currentUser);
+        Long currentUserId = identityProvider.currentIdentity().getId();
+        PrivateChatModel userPrivateChat = privateChatRepository.findByUser(currentUserId);
 
-        //check if not null
-        if (chat == null) throw new RuntimeException("private-chat not found");
+        if (userPrivateChat == null) throw new RuntimeException("private-chat not found");
 
-        //privateChatModel
-        PrivateChatModel privateChatModel=privateChatMapper.entityToModel(chat);
+        userPrivateChat.setUserUnreadMessagesCount(messageRepository.getNumOfUnreadMessagesByChatAndReceiver(userPrivateChat.getId(), currentUserId));
 
-        //retrieve and manually map unreadMessagesCount ---> FIND A BETTER WAY
-        privateChatModel.setUserUnreadMessagesCount(messageRepository.getNumOfUnreadMessagesByChatAndReceiver(chat.getId(), currentUser.getId()));
-
-        //mapping entity to our model
-        return privateChatModel;
+        return userPrivateChat;
     }
 
     public void markChatAsRead(Long chatId) {
@@ -80,6 +65,6 @@ public class PrivateChatService {
     }
 
     public PrivateChatModel getChatById(Long privateChatId) {
-        return privateChatMapper.entityToModel(privateChatRepository.findById(privateChatId));
+        return privateChatRepository.findById(privateChatId);
     }
 }

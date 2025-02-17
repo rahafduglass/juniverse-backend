@@ -1,8 +1,7 @@
 package juniverse.domain.mappers;
 
 import juniverse.application.dtos.chats.private_chat.TherapistMessageRequest;
-import juniverse.application.dtos.chats.private_chat.TherapistMessageResponse;
-import juniverse.application.dtos.chats.public_chat.MessageResponse;
+import juniverse.application.dtos.chats.private_chat.MessageResponse;
 import juniverse.domain.models.MessageModel;
 import juniverse.persistance.entities.MessageEntity;
 import juniverse.persistance.entities.PrivateChatEntity;
@@ -17,13 +16,13 @@ public interface MessageMapper {
 
     MessageModel requestToModel(TherapistMessageRequest therapistMessageRequest);
 
-    TherapistMessageResponse modelToResponse(MessageModel messageModel);
+    MessageResponse modelToResponse(MessageModel messageModel);
 
     List<MessageModel> listOfEntitiesToListOfModels(List<MessageEntity> listOfMessages);
 
-    List<TherapistMessageResponse> listOfModelsToListOfTherapistResponses(List<MessageModel> listOfMessages);
+    List<MessageResponse> listOfModelsToListOfTherapistResponses(List<MessageModel> listOfMessages);
 
-    List<MessageResponse> listOfModelsToListOfResponses(List<MessageModel> listOfMessages);
+    List<juniverse.application.dtos.chats.public_chat.MessageResponse> listOfModelsToListOfResponses(List<MessageModel> listOfMessages);
 
     @Mapping(source = "receiverId", target = "receiver")
     @Mapping(source = "senderId", target = "sender")

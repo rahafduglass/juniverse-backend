@@ -71,13 +71,6 @@ public class OpenApiConfig {
                         .description("use when a user want to initialize or continue chat with therapist\n" +
                                 " || ROLES permissions : ADMIN, STUDENT, MODERATOR");
             }
-            if (handlerMethod.getMethod().getName().equals("markChatAsRead")) {
-                operation.summary("mark chat as READ")
-                        .description("client-side should manually request to read a chat after the user enters chat\n" +
-                                " || INTUITIVE NOTE: the count of unread messages will be zero \n" +
-                                " || ROLES permissions : ALL ROLES");
-
-            }
 
 
             // Return the modified operation object

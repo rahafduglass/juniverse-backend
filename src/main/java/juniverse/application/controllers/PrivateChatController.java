@@ -92,7 +92,7 @@ public class PrivateChatController {
     @PostMapping("/messageFromTherapist")
     public ResponseEntity<ApiResponse<MessageResponse>> sendMessageFromTherapist(@RequestBody TherapistMessageRequest therapistMessageRequest) {
         try {
-            MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendMessageFromTherapist(messageMapper.requestToModel(therapistMessageRequest)));
+            MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendMessageFromTherapist(therapistMessageRequest.getContent(),therapistMessageRequest.getReceiverUsername(), therapistMessageRequest.getPrivateChatId()));
             boolean isFail = messageResponse == null;
 
             return apiResponseHelper.buildApiResponse(messageResponse, isFail, isFail ? "failed to send" : "message sent successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);

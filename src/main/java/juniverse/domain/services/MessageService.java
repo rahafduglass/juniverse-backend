@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -27,31 +28,21 @@ public class MessageService {
     private final SysUserRepository sysUserRepository;
     private final PrivateChatService privateChatService;
     private final IdentityProvider identityProvider;
-    private final PrivateChatMapper privateChatMapper;
 
 
     public MessageModel sendMessageToTherapist(String content) throws Exception {
-        //method logic: chat doesn't exist? create chat THEN send: send;
 
-        //check null message
         if (content.isEmpty())
             throw new Exception("can't send empty message");
 
-        //retrieve current user
         SysUserEntity currentUser = identityProvider.currentIdentity();
+        SysUserEntity therapist = sysUserRepository.findByUsername("omar_khaled").get();
+        PrivateChatModel privateChat = privateChatRepository.findByUserId(currentUser.getId());
 
-        //retrieve therapist
-        SysUserEntity therapist = sysUserRepository.findByUsername("omar_khaled").get(); //it's a static value not recommended, but we'll just use this bcz we have one therapist
-
-        //retrieve user's chat
-        PrivateChatModel privateChat = privateChatMapper.entityToModel(privateChatRepository.findByUserId(currentUser.getId()));
-        System.out.println(privateChat + "dddddddddddddddddddd");
-        //check if it doesn't exist? create.
         if (privateChat == null) {
             privateChat = privateChatService.createChatBetween(currentUser.getId(), therapist.getId());
         }
 
-        //set default & generated values
         MessageModel messageModel = new MessageModel();
         messageModel.setContent(content);
         messageModel.setSenderUsername(currentUser.getUsername());
@@ -64,46 +55,40 @@ public class MessageService {
         messageModel.setPrivateChatId(privateChat.getId());
         messageModel.setStatus(MessageStatus.SENT);
 
-        //send message
         return sendMessage(messageModel);
     }
 
     public List<MessageModel> getAllPrivateMessages(Long chatId) {
-        List<MessageModel> data = messageRepository.findAllByPrivateChatId(privateChatRepository.findById(chatId).getId());
+        List<MessageModel> privateMessages = messageRepository.findAllByPrivateChatId(privateChatRepository.findById(chatId).getId());
         privateChatService.markChatAsRead(chatId);
-        return data;
+        return privateMessages;
     }
 
     public List<MessageModel> getAllPrivateMessages() {
         Long chatId = privateChatRepository.findByUser(identityProvider.currentIdentity()).getId();
-        List<MessageModel> data = messageRepository.findAllByPrivateChatId(chatId);
+        List<MessageModel> privateMessages = messageRepository.findAllByPrivateChatId(chatId);
+
         privateChatService.markChatAsRead(chatId);
-        return data;
+
+        return privateMessages;
     }
 
-    public MessageModel sendMessageFromTherapist(MessageModel messageModel) throws Exception {
-        //method logic: chat doesn't exist? throw exception: send;
+    public MessageModel sendMessageFromTherapist(String content,String receiverUsername,Long privateChatId) throws Exception {
 
-        //check null message
-        if (messageModel.getContent().isEmpty())
+        if (content.isEmpty())
             throw new Exception("can't send empty message");
 
-        //retrieve therapist (the sender)
         SysUserEntity therapist = identityProvider.currentIdentity();
-
-        //retrieve receiver
         SysUserEntity receiver;
-        if (sysUserRepository.findByUsername(messageModel.getReceiverUsername()).isPresent())
-            receiver = sysUserRepository.findByUsername(messageModel.getReceiverUsername()).get();
+        if (sysUserRepository.findByUsername(receiverUsername)!=null)
+            receiver = sysUserRepository.findByUsername(receiverUsername).get();
         else throw new Exception("receiver's username isn't valid");
 
-        //retrieve user's chat
-        PrivateChatModel privateChat = privateChatService.getChatById(messageModel.getPrivateChatId());
-
-        //throw if chat doesn't exist
+        PrivateChatModel privateChat = privateChatService.getChatById(privateChatId);
         if (privateChat == null) throw new Exception("private-chat not found");
 
-        //set default & generated values
+        MessageModel messageModel= new MessageModel();
+        messageModel.setContent(content);
         messageModel.setSenderUsername(therapist.getUsername());
         messageModel.setSenderId(therapist.getId());
         messageModel.setReceiverUsername(receiver.getUsername());
@@ -114,15 +99,15 @@ public class MessageService {
         messageModel.setPrivateChatId(privateChat.getId());
         messageModel.setStatus(MessageStatus.SENT);
 
-        //send message
         return sendMessage(messageModel);
     }
 
     public boolean sendPublicMessage(String content) {
 
+        SysUserEntity currentUser = identityProvider.currentIdentity();
+
         MessageModel messageModel = new MessageModel();
         messageModel.setContent(content);
-        SysUserEntity currentUser = identityProvider.currentIdentity();
         messageModel.setSenderUsername(currentUser.getUsername());
         messageModel.setSenderId(currentUser.getId());
         messageModel.setChatType(ChatType.PUBLIC);
@@ -136,10 +121,6 @@ public class MessageService {
         return sendMessage(messageModel) != null;
     }
 
-    private MessageModel sendMessage(MessageModel messageModel) {
-        return messageRepository.sendMessage(messageModel);
-    }
-
     public List<MessageModel> getAllPublicMessages() {
         return messageRepository.findAllByChatType(ChatType.PUBLIC);
     }
@@ -149,11 +130,15 @@ public class MessageService {
     }
 
     public boolean editMessage(Long messageId, String content) throws Exception {
-        boolean isAuthorized = (identityProvider.currentIdentity().getId()==messageRepository.findSenderId(messageId));
+        boolean isOwner = (Objects.equals(identityProvider.currentIdentity().getId(), messageRepository.findSenderId(messageId)));
 
-        if (isAuthorized)
+        if (isOwner)
             return messageRepository.updateMessageContent(messageId, content);
         else
             throw new Exception("can't edit, message doesn't belong to the user");
+    }
+
+    private MessageModel sendMessage(MessageModel messageModel) {
+        return messageRepository.sendMessage(messageModel);
     }
 }

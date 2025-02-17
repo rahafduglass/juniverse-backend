@@ -1,6 +1,5 @@
 package juniverse.persistance.repositories;
 
-import juniverse.domain.models.SysUserModel;
 import juniverse.persistance.entities.SysUserEntity;
 import org.springframework.stereotype.Repository;
 

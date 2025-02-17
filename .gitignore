@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### project files ###
+/src/main/resources/juniverse_files/profile_pictures/
+/src/main/resources/juniverse_files/cover_pictures/
+/src/main/resources/juniverse_files/folders/

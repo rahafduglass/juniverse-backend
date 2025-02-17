@@ -20,14 +20,16 @@ public class FolderEntity {
     @Column(name = "name", nullable = false,unique = true)
     private String name;
 
+    @NotNull
+    private String description;
 
     @NotNull
     @Column(name = "path", nullable = false)
     private String path;
 
 
-    @NotNull
-    @Column(name = "status", nullable = false)
+
+
     @Enumerated(EnumType.STRING)
     private FolderStatus status;
 

@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface MessageJpaRepository extends JpaRepository<MessageEntity, Long> {
 
-
+    @Query("SELECT m FROM message m WHERE m.privateChat.id = :privateChatId ORDER BY m.timestamp ASC")
     List<MessageEntity> findAllByPrivateChatId(Long privateChatId);
 
     @Query("SELECT COUNT(m) FROM message m WHERE m.privateChat.id = :chatId AND m.receiver.id= :receiverId AND m.isRead = false")
@@ -26,7 +26,7 @@ public interface MessageJpaRepository extends JpaRepository<MessageEntity, Long>
     @Query("UPDATE message m SET m.isRead = true WHERE m.receiver.id = :receiverId AND m.privateChat.id = :privateChatId")
     Integer markMessagesAsRead(@Param("receiverId") Long receiverId, @Param("privateChatId") Long privateChatId);
 
-
+    @Query("SELECT m FROM message m WHERE m.chatType = :chatType ORDER BY m.timestamp ASC")
     List<MessageEntity> findAllByChatType(ChatType chatType);
 
     @Transactional

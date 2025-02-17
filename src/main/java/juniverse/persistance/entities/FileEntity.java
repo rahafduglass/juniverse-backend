@@ -1,10 +1,13 @@
 package juniverse.persistance.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import juniverse.domain.enums.FileExtension;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,7 +19,7 @@ public class FileEntity {
     private Long id;
 
     @Column(name = "monitored_at")
-    private Instant monitoredAt;
+    private LocalDateTime monitoredAt;
 
 
     @Column(name = "name", nullable = false)
@@ -30,6 +33,8 @@ public class FileEntity {
     @Column(name = "size", nullable = false)
     private String size;
 
+    @NotNull
+    private String description;
 
     @Column(name = "status", nullable = false)
     private String status;
@@ -40,10 +45,10 @@ public class FileEntity {
 
 
     @Column(name = "upload_date", nullable = false)
-    private Instant uploadDate;
+    private LocalDateTime uploadDate;
 
     @Column (nullable = false)
-    private String extension;
+    private FileExtension extension;
 
 
     @ManyToOne(fetch = FetchType.EAGER)

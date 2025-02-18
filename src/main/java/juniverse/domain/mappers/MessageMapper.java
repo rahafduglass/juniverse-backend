@@ -1,6 +1,5 @@
 package juniverse.domain.mappers;
 
-import juniverse.application.dtos.chats.private_chat.TherapistMessageRequest;
 import juniverse.application.dtos.chats.private_chat.MessageResponse;
 import juniverse.domain.models.MessageModel;
 import juniverse.persistance.entities.MessageEntity;
@@ -13,8 +12,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface MessageMapper {
-
-    MessageModel requestToModel(TherapistMessageRequest therapistMessageRequest);
 
     MessageResponse modelToResponse(MessageModel messageModel);
 

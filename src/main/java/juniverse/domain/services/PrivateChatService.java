@@ -4,7 +4,6 @@ import juniverse.domain.mappers.PrivateChatMapper;
 import juniverse.domain.models.PrivateChatModel;
 import juniverse.domain.provider.IdentityProvider;
 import juniverse.persistance.entities.PrivateChatEntity;
-import juniverse.persistance.entities.SysUserEntity;
 import juniverse.persistance.repositories.MessageRepository;
 import juniverse.persistance.repositories.PrivateChatRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,6 @@
 package juniverse.configuration.documentation;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -94,7 +93,8 @@ public class OpenApiConfig {
         };
     }
 
-    @Bean OperationCustomizer SysUserControllerOperationCustomizer() {
+    @Bean
+    public OperationCustomizer SysUserControllerOperationCustomizer() {
         return (operation, handlerMethod) -> {
             if (handlerMethod.getMethod().getName().equals("getProfile")) {
                 operation.summary("profile info for user!!")
@@ -119,7 +119,9 @@ public class OpenApiConfig {
             return operation;
         };
     }
-    @Bean OperationCustomizer PublicChatControllerOperationCustomizer() {
+
+    @Bean
+    public OperationCustomizer PublicChatControllerOperationCustomizer() {
         return (operation, handlerMethod) -> {
             if (handlerMethod.getMethod().getName().equals("sendMessage")) {
                 operation.summary("send public message!")

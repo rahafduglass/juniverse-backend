@@ -35,27 +35,22 @@ public class AuthenticationController {
     @PostMapping("/signIn")
     public ResponseEntity<ApiResponse<UserAuthenticationResponse>> signIn(@RequestBody UserAuthenticationRequest userAuthenticationRequest) {
         try {
-            //sign user and retrieve token
             UserAuthenticationResponse response=userAuthenticationMapper.modelToResponse(authenticationService.signIn(userAuthenticationMapper.requestToModel(userAuthenticationRequest)));
-            //check if login succeeded
             boolean isFail = response == null;
-            //build response
+
             return apiResponseHelper.buildApiResponse(response, !isFail, (isFail ? "invalid credentials" : "successful login"), (isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK));
         } catch (Exception e) {
-            // Handle exceptions and return error response
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
-    @PostMapping("/register-list-of-users") // run once "replaces integrating user data"
+    @PostMapping("/register-list-of-users")
     public ResponseEntity<ApiResponse<Boolean>> registerListOfUsers(@RequestBody List<RegisterRequest> registerRequests) {
         try {
-            //register users
             Boolean areRegistered=authenticationService.registerListOfUsers(sysUserMapper.listOfRequestsToListOfModel(registerRequests));
-            //build response
+
             return apiResponseHelper.buildApiResponse(areRegistered, areRegistered, (!areRegistered ? "registration failed" : "successful registration"), (!areRegistered ? HttpStatus.NOT_FOUND : HttpStatus.OK));
         } catch (Exception e) {
-            // Handle exceptions and return error response
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
 

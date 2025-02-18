@@ -15,6 +15,5 @@ public class ApiResponse<T> {
 
     private String message="Operation Done successfully";
 
-    private T data; //Generic DataType
-
+    private T data;
 }

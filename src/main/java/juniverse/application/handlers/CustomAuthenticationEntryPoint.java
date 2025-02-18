@@ -1,7 +1,6 @@
 package juniverse.application.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import juniverse.domain.models.ErrorResponse;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -23,7 +21,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
             HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException authException
-    ) throws IOException, ServletException {
+    ) throws IOException {
 
         ErrorResponse errorResponse = buildErrorResponse(
                 HttpStatus.UNAUTHORIZED.value(),

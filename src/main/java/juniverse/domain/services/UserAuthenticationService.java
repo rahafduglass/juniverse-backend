@@ -30,13 +30,11 @@ public class UserAuthenticationService {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userAuthenticationModel.getUsername(), userAuthenticationModel.getPassword()));
 
-        //authenticate user
         var user = sysUserRepository.findByUsername(userAuthenticationModel.getUsername())
                 .orElseThrow(() -> new RuntimeException("invalid credentials"));
-        //generate token
         var jwt = jwtService.generateToken(user);
 
-        //return model with token only
+
         return new UserAuthenticationModel(null, null, jwt);
 
     }
@@ -44,9 +42,8 @@ public class UserAuthenticationService {
     public Boolean registerListOfUsers(List<SysUserModel> sysUserModels) {
 
         List<SysUserEntity> users = sysUserModels.stream().map(sysUserModel -> {
-            //map model to entity
+
             SysUserEntity user= sysUserMapper.modelToEntity(sysUserModel);
-            //encode the password THEN map it.
             user.setPassword(passwordEncoder.encode(sysUserModel.getPassword()));
             return user;
         }).collect(Collectors.toList());

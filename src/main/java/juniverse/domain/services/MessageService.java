@@ -3,7 +3,6 @@ package juniverse.domain.services;
 
 import juniverse.domain.enums.ChatType;
 import juniverse.domain.enums.MessageStatus;
-import juniverse.domain.mappers.PrivateChatMapper;
 import juniverse.domain.models.MessageModel;
 import juniverse.domain.models.PrivateChatModel;
 import juniverse.domain.provider.IdentityProvider;
@@ -73,21 +72,21 @@ public class MessageService {
         return privateMessages;
     }
 
-    public MessageModel sendMessageFromTherapist(String content,String receiverUsername,Long privateChatId) throws Exception {
+    public MessageModel sendMessageFromTherapist(String content, String receiverUsername, Long privateChatId) throws Exception {
 
         if (content.isEmpty())
             throw new Exception("can't send empty message");
 
         SysUserEntity therapist = identityProvider.currentIdentity();
         SysUserEntity receiver;
-        if (sysUserRepository.findByUsername(receiverUsername)!=null)
+        if (sysUserRepository.findByUsername(receiverUsername).isPresent())
             receiver = sysUserRepository.findByUsername(receiverUsername).get();
         else throw new Exception("receiver's username isn't valid");
 
         PrivateChatModel privateChat = privateChatService.getChatById(privateChatId);
         if (privateChat == null) throw new Exception("private-chat not found");
 
-        MessageModel messageModel= new MessageModel();
+        MessageModel messageModel = new MessageModel();
         messageModel.setContent(content);
         messageModel.setSenderUsername(therapist.getUsername());
         messageModel.setSenderId(therapist.getId());
@@ -126,7 +125,7 @@ public class MessageService {
     }
 
     public boolean deleteMessage(Long messageId) {
-        return messageRepository.deleteMessage(messageId,identityProvider.currentIdentity().getId());
+        return messageRepository.deleteMessage(messageId, identityProvider.currentIdentity().getId());
     }
 
     public boolean editMessage(Long messageId, String content) throws Exception {

@@ -3,10 +3,10 @@ package juniverse.application.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.application.dtos.ApiResponse;
-import juniverse.application.dtos.sys_user.UpdatePhotoRequest;
 import juniverse.application.dtos.sys_user.ProfileAndCoverPicturesResponse;
 import juniverse.application.dtos.sys_user.SysUserProfileResponse;
 import juniverse.application.dtos.sys_user.UpdateBioRequest;
+import juniverse.application.dtos.sys_user.UpdatePhotoRequest;
 import juniverse.application.helpers.ApiResponseHelper;
 import juniverse.domain.mappers.SysUserMapper;
 import juniverse.domain.services.SysUserService;

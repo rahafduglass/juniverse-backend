@@ -1,6 +1,5 @@
 package juniverse.application.dtos.chats.public_chat;
 
-import juniverse.domain.enums.ChatType;
 import juniverse.domain.enums.MessageStatus;
 import lombok.Data;
 

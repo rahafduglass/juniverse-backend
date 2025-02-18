@@ -22,6 +22,3 @@ public class TherapistChatResponse {
     private Integer therapistUnreadMessagesCount;
 
 }
-// TO BE ADDED:
-// last message in that chat
-// the date of the last message

@@ -37,30 +37,30 @@ public class PublicChatController {
     @GetMapping("/messages")
     public ResponseEntity<ApiResponse<List<MessageResponse>>> getAllMessages() {
         try {
-            List<MessageResponse> responses = messageMapper.listOfModelsToListOfResponses( messageService.getAllPublicMessages());
-            return apiResponseHelper.buildApiResponse(responses, responses!=null, responses==null ? "couldn't retrieve" : "retrieved successfully", responses==null ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
-        }catch(Exception e){
+            List<MessageResponse> responses = messageMapper.listOfModelsToListOfResponses(messageService.getAllPublicMessages());
+            return apiResponseHelper.buildApiResponse(responses, responses != null, responses == null ? "couldn't retrieve" : "retrieved successfully", responses == null ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+        } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
-    @DeleteMapping ("/{messageId}")
+    @DeleteMapping("/{messageId}")
     public ResponseEntity<ApiResponse<Boolean>> markMessageAsDeleted(@PathVariable Long messageId) {
-        try{
-            boolean isDeleted= messageService.deleteMessage(messageId);
-            return apiResponseHelper.buildApiResponse(isDeleted, isDeleted, !isDeleted? "couldn't find message" : "marked as deleted successfully", !isDeleted ? HttpStatus.NOT_FOUND : HttpStatus.OK);
-        }catch(Exception e){
+        try {
+            boolean isDeleted = messageService.deleteMessage(messageId);
+            return apiResponseHelper.buildApiResponse(isDeleted, isDeleted, !isDeleted ? "couldn't find message" : "marked as deleted successfully", !isDeleted ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
     @PutMapping("/{messageId}")
-    public ResponseEntity<ApiResponse<Boolean>> editMessage(@PathVariable Long messageId,@RequestBody UserMessageRequest request) {
-        try{
-            boolean isEdited=messageService.editMessage(messageId,request.getContent());
-            return apiResponseHelper.buildApiResponse(isEdited,isEdited,!isEdited?"couldn't find message":"successfully edited",!isEdited ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+    public ResponseEntity<ApiResponse<Boolean>> editMessage(@PathVariable Long messageId, @RequestBody UserMessageRequest request) {
+        try {
+            boolean isEdited = messageService.editMessage(messageId, request.getContent());
+            return apiResponseHelper.buildApiResponse(isEdited, isEdited, !isEdited ? "couldn't find message" : "successfully edited", !isEdited ? HttpStatus.NOT_FOUND : HttpStatus.OK);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }

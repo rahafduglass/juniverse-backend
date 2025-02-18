@@ -2,11 +2,11 @@ package juniverse.application.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.application.dtos.ApiResponse;
+import juniverse.application.dtos.chats.UserMessageRequest;
 import juniverse.application.dtos.chats.private_chat.MessageResponse;
 import juniverse.application.dtos.chats.private_chat.TherapistChatResponse;
-import juniverse.application.dtos.chats.private_chat.UserChatResponse;
 import juniverse.application.dtos.chats.private_chat.TherapistMessageRequest;
-import juniverse.application.dtos.chats.UserMessageRequest;
+import juniverse.application.dtos.chats.private_chat.UserChatResponse;
 import juniverse.application.helpers.ApiResponseHelper;
 import juniverse.domain.mappers.MessageMapper;
 import juniverse.domain.mappers.PrivateChatMapper;
@@ -92,7 +92,7 @@ public class PrivateChatController {
     @PostMapping("/messageFromTherapist")
     public ResponseEntity<ApiResponse<MessageResponse>> sendMessageFromTherapist(@RequestBody TherapistMessageRequest therapistMessageRequest) {
         try {
-            MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendMessageFromTherapist(therapistMessageRequest.getContent(),therapistMessageRequest.getReceiverUsername(), therapistMessageRequest.getPrivateChatId()));
+            MessageResponse messageResponse = messageMapper.modelToResponse(messageService.sendMessageFromTherapist(therapistMessageRequest.getContent(), therapistMessageRequest.getReceiverUsername(), therapistMessageRequest.getPrivateChatId()));
             boolean isFail = messageResponse == null;
 
             return apiResponseHelper.buildApiResponse(messageResponse, isFail, isFail ? "failed to send" : "message sent successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
@@ -108,6 +108,17 @@ public class PrivateChatController {
             boolean isFail = messageResponse == null;
 
             return apiResponseHelper.buildApiResponse(messageResponse, isFail, isFail ? "failed to send" : "message sent successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PutMapping("/{messageId}")
+    public ResponseEntity<ApiResponse<Boolean>> editMessage(@PathVariable Long messageId, @RequestBody UserMessageRequest request) {
+        try {
+            boolean isEdited = messageService.editMessage(messageId, request.getContent());
+            return apiResponseHelper.buildApiResponse(isEdited, isEdited, !isEdited ? "couldn't find message" : "successfully edited", !isEdited ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+
         } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }

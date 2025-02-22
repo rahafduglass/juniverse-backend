@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -20,17 +22,37 @@ public class FolderService {
 
         if (folderRepository.findByName(folderModel.getName()) != null)
             throw new RuntimeException("Folder already exists");
-        else if (folderModel.getName().isEmpty())
-            throw new RuntimeException("Folder name is empty");
+        else if (folderModel.getName().isEmpty()||folderModel.getDescription().isEmpty())
+            throw new RuntimeException("data is empty");
 
-        folderModel.setCreatedBy(identityProvider.currentIdentity());
+        folderModel.setCreatedBy(identityProvider.currentIdentity().getId());
         folderModel.setStatus(FolderStatus.UPLOADED);
-        folderModel.setPath("src/main/resources/juniverse_files/folders/" + folderModel.getName());
+        folderModel.setCreatedOn(Timestamp.valueOf(LocalDateTime.now()));
 
-        folderRepository.save(folderModel);
-        File file = new File(folderModel.getPath());
+        Long generatedFolderId= folderRepository.save(folderModel).getId();
+        String path=("src/main/resources/juniverse_files/folders/" + generatedFolderId);
+        folderRepository.updatePath(generatedFolderId,path);
+
+        File file = new File(path);
         if (!file.mkdir()) throw new RuntimeException("Failed to create folder in local storage");
 
+        return true;
+    }
+
+    public boolean updateFolder(FolderModel folderModel) {
+        FolderModel currentFolder= folderRepository.findById(folderModel.getId());
+
+        if (currentFolder== null)
+            throw new RuntimeException("Folder doesnt exists");
+        else if (folderModel.getName().isEmpty()||folderModel.getDescription().isEmpty())
+            throw new RuntimeException("data is empty");
+
+        currentFolder.setName(folderModel.getName());
+        currentFolder.setDescription(folderModel.getDescription());
+        currentFolder.setModifiedOn(Timestamp.valueOf(LocalDateTime.now()));
+        currentFolder.setModifiedBy(identityProvider.currentIdentity().getId());
+
+        folderRepository.save(currentFolder);
         return true;
     }
 }

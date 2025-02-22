@@ -1,8 +1,9 @@
 package juniverse.domain.models;
 
 import juniverse.domain.enums.FolderStatus;
-import juniverse.persistance.entities.SysUserEntity;
 import lombok.Data;
+
+import java.sql.Timestamp;
 
 @Data
 public class FolderModel {
@@ -17,6 +18,11 @@ public class FolderModel {
 
     private FolderStatus status;
 
-    private SysUserEntity createdBy;
+    private Long createdBy;
 
+    private Timestamp createdOn;
+
+    private  Long ModifiedBy;
+
+    private Timestamp modifiedOn;
 }

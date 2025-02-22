@@ -68,14 +68,16 @@ public class SecurityConfiguration {
                                 "/api/v1/private-chat/allTherapistChats",
                                 "/api/v1/private-chat/messageFromTherapist"
                         ).hasAnyAuthority(UserRole.THERAPIST.name())
+                        .requestMatchers(
+                                //folders
+                                "api/v1/folder",
+                                "api/v1/folder/{folderId}"
+                        ).hasAnyAuthority(UserRole.ADMIN.name())
 
                         //admin, mod only
                         .requestMatchers(
-                                //chats
-                                HttpMethod.DELETE, "/api/v1/public-chat/{messageId}",
-
-                                //folders
-                                "/api/v1/folder"
+                                //public chats
+                                HttpMethod.DELETE, "/api/v1/public-chat/{messageId}"
                         ).hasAnyAuthority(UserRole.ADMIN.name(), UserRole.MODERATOR.name())
 
                         //admin, mod, student only

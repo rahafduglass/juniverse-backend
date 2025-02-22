@@ -6,6 +6,8 @@ import juniverse.domain.enums.FolderStatus;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @Entity
@@ -23,20 +25,22 @@ public class FolderEntity {
     @NotNull
     private String description;
 
-    @NotNull
-    @Column(name = "path", nullable = false)
+
     private String path;
-
-
 
 
     @Enumerated(EnumType.STRING)
     private FolderStatus status;
 
 
-
     @ManyToOne(fetch = FetchType.EAGER)
     @NotNull
     private SysUserEntity createdBy;
 
+    private Timestamp createdOn;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private SysUserEntity modifiedBy;
+
+    private Timestamp modifiedOn;
 }

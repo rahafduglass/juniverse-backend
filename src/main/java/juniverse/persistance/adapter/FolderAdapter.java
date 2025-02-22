@@ -21,8 +21,18 @@ public class FolderAdapter implements FolderRepository {
     }
 
     @Override
-    public Boolean save(FolderModel folderModel) {
-        folderJpaRepository.save(folderMapper.modelToEntity(folderModel));
-        return true;
+    public FolderModel save(FolderModel folderModel) {
+
+        return folderMapper.entityToModel(folderJpaRepository.save(folderMapper.modelToEntity(folderModel)));
+    }
+
+    @Override
+    public FolderModel findById(Long id) {
+        return folderMapper.entityToModel(folderJpaRepository.findById(id).get());
+    }
+
+    @Override
+    public void updatePath(Long id, String path) {
+        folderJpaRepository.updatePathById(id, path);
     }
 }

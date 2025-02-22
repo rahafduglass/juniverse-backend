@@ -4,6 +4,8 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import juniverse.application.controllers.PrivateChatController;
+import juniverse.application.controllers.PublicChatController;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +19,7 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("Juniverse API")
                         .version("1.0.0")
-                        .description("Private Chat: API to manage private chats between the users and the therapist. "))
+                        .description(""))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new io.swagger.v3.oas.models.Components()
                         .addSecuritySchemes("bearerAuth",
@@ -32,25 +34,25 @@ public class OpenApiConfig {
     @Bean
     public OperationCustomizer privateChatControllerOperationCustomizer() {
         return (operation, handlerMethod) -> {
-
-            if (handlerMethod.getMethod().getName().equals("getAllMessages")) {
+            Class<?> declaringClass = handlerMethod.getMethod().getDeclaringClass();
+            if (handlerMethod.getMethod().getName().equals("getAllMessages")&& declaringClass.equals(PrivateChatController.class)) {
                 Class<?>[] parameterTypes = handlerMethod.getMethod().getParameterTypes();
 
                 if (parameterTypes.length == 0) {
                     operation.summary("retrieve all messages")
-                            .description("retrieve ALL MESSAGES associated with specific user chat\n" +
+                            .description("retrieve ALL MESSAGES associated with specific user chat" +
                                     " || ROLES permissions : STUDENT, ADMIN, MODERATOR.");
                 } else if (parameterTypes.length == 1) {
                     operation.summary("retrieve all messages by chatId")
-                            .description("retrieve ALL MESSAGES associated with therapist chats\n" +
-                                    " || we're requesting the chatId because therapist has multiple chats\n" +
+                            .description("retrieve ALL MESSAGES associated with therapist chats" +
+                                    " || we're requesting the chatId because therapist has multiple chats" +
                                     " || ROLES permissions : THERAPIST");
                 }
             }
             if (handlerMethod.getMethod().getName().equals("getAllTherapistChats")) {
                 operation.summary("retrieve ALL THERAPIST CHATS ")
-                        .description("retrieve ALL CHATS METADATA associated with a therapist\n" +
-                                " || NOTE: you can use the chatId to retrieve messages later\n" +
+                        .description("retrieve ALL CHATS METADATA associated with a therapist" +
+                                " || NOTE: you can use the chatId to retrieve messages later" +
                                 " || ROLES permissions : THERAPIST");
             }
             if (handlerMethod.getMethod().getName().equals("getChat")) {
@@ -123,11 +125,13 @@ public class OpenApiConfig {
     @Bean
     public OperationCustomizer PublicChatControllerOperationCustomizer() {
         return (operation, handlerMethod) -> {
+            Class<?> declaringClass = handlerMethod.getMethod().getDeclaringClass();
+
             if (handlerMethod.getMethod().getName().equals("sendMessage")) {
                 operation.summary("send public message!")
                         .description("just fill content || ROLES permissions : ALL USERS.");
             }
-            if (handlerMethod.getMethod().getName().equals("getAllMessages")) {
+            if (handlerMethod.getMethod().getName().equals("getAllMessages")&& declaringClass.equals(PublicChatController.class)) {
                 operation.summary("get all public chat messages")
                         .description(" || ROLES permissions : ALL USERS.");
             }

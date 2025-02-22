@@ -72,7 +72,10 @@ public class SecurityConfiguration {
                         //admin, mod only
                         .requestMatchers(
                                 //chats
-                                HttpMethod.DELETE, "/api/v1/public-chat/{messageId}"
+                                HttpMethod.DELETE, "/api/v1/public-chat/{messageId}",
+
+                                //folders
+                                "/api/v1/folder"
                         ).hasAnyAuthority(UserRole.ADMIN.name(), UserRole.MODERATOR.name())
 
                         //admin, mod, student only
@@ -99,6 +102,7 @@ public class SecurityConfiguration {
                                 "/api/v1/sys-user/bio",
                                 "/api/v1/sys-user/profile",
                                 "/api/v1/sys-user/profile-and-cover-picture"
+
 
                         ).hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name(), UserRole.THERAPIST.name())
                         .anyRequest().authenticated())

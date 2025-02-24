@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,16 +23,16 @@ public class FolderService {
 
         if (folderRepository.findByName(folderModel.getName()) != null)
             throw new RuntimeException("Folder already exists");
-        else if (folderModel.getName().isEmpty()||folderModel.getDescription().isEmpty())
+        else if (folderModel.getName().isEmpty() || folderModel.getDescription().isEmpty())
             throw new RuntimeException("data is empty");
 
         folderModel.setCreatedBy(identityProvider.currentIdentity().getId());
         folderModel.setStatus(FolderStatus.UPLOADED);
         folderModel.setCreatedOn(Timestamp.valueOf(LocalDateTime.now()));
 
-        Long generatedFolderId= folderRepository.save(folderModel).getId();
-        String path=("src/main/resources/juniverse_files/folders/" + generatedFolderId);
-        folderRepository.updatePath(generatedFolderId,path);
+        Long generatedFolderId = folderRepository.save(folderModel).getId();
+        String path = ("src/main/resources/juniverse_files/folders/" + generatedFolderId);
+        folderRepository.updatePath(generatedFolderId, path);
 
         File file = new File(path);
         if (!file.mkdir()) throw new RuntimeException("Failed to create folder in local storage");
@@ -40,11 +41,12 @@ public class FolderService {
     }
 
     public boolean updateFolder(FolderModel folderModel) {
-        FolderModel currentFolder= folderRepository.findById(folderModel.getId());
+        FolderModel currentFolder = folderRepository.findById(folderModel.getId());
 
-        if (currentFolder== null)
+        if (currentFolder == null)
             throw new RuntimeException("Folder doesnt exists");
-        else if (folderModel.getName().isEmpty()||folderModel.getDescription().isEmpty())
+        else if (folderModel.getName() == null || folderModel.getName().isEmpty()
+                || folderModel.getDescription() == null || folderModel.getDescription().isEmpty())
             throw new RuntimeException("data is empty");
 
         currentFolder.setName(folderModel.getName());
@@ -54,5 +56,9 @@ public class FolderService {
 
         folderRepository.save(currentFolder);
         return true;
+    }
+
+    public List<FolderModel> getFolders() {
+        return folderRepository.getFolders();
     }
 }

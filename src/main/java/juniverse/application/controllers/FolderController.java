@@ -3,6 +3,7 @@ package juniverse.application.controllers;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.application.dtos.ApiResponse;
 import juniverse.application.dtos.folder.FolderRequest;
+import juniverse.application.dtos.folder.FolderResponse;
 import juniverse.application.helpers.ApiResponseHelper;
 import juniverse.domain.mappers.FolderMapper;
 import juniverse.domain.models.FolderModel;
@@ -44,6 +45,18 @@ public class FolderController {
             request.setId(folderId);
             boolean isFail=!(folderService.updateFolder(request));
             return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to add" : "folder added successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+
+        }catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<FolderResponse>>> getFolders() {
+        try{
+            List<FolderResponse> results= folderMapper.listOfModelsToListOfResponses(folderService.getFolders());
+            boolean isFail= results==null;
+            return apiResponseHelper.buildApiResponse(results, !isFail, isFail ? "failed to retrieve folders" : "retrieved successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
 
         }catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);

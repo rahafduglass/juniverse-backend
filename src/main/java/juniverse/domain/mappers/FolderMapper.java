@@ -2,13 +2,14 @@ package juniverse.domain.mappers;
 
 
 import juniverse.application.dtos.folder.FolderRequest;
+import juniverse.application.dtos.folder.FolderResponse;
 import juniverse.domain.models.FolderModel;
 import juniverse.persistance.entities.FolderEntity;
-import juniverse.persistance.entities.PrivateChatEntity;
 import juniverse.persistance.entities.SysUserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface FolderMapper {
@@ -38,4 +39,7 @@ public interface FolderMapper {
     }
 
 
+    List<FolderModel> listOfEntitiesToListOfModels(List<FolderEntity> folders);
+
+    List<FolderResponse> listOfModelsToListOfResponses(List<FolderModel> folders);
 }

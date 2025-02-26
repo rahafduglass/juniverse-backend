@@ -66,7 +66,6 @@ public class FolderController {
 
 }
 // TO DO LIST
-//get all folders
 //delete a folder
 //edit folder's name
 //edit folder's description

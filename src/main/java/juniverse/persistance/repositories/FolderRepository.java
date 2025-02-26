@@ -1,7 +1,6 @@
 package juniverse.persistance.repositories;
 
 import juniverse.domain.models.FolderModel;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

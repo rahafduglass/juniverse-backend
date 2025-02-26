@@ -8,7 +8,6 @@ import juniverse.persistance.repositories.FolderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository

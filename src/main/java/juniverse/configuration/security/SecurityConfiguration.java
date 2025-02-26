@@ -68,10 +68,16 @@ public class SecurityConfiguration {
                                 "/api/v1/private-chat/allTherapistChats",
                                 "/api/v1/private-chat/messageFromTherapist"
                         ).hasAnyAuthority(UserRole.THERAPIST.name())
+                        //admin
                         .requestMatchers(
                                 //folders
-                                "api/v1/folder",
-                                "api/v1/folder/{folderId}"
+                                HttpMethod.POST, "api/v1/folder"
+
+                        ).hasAnyAuthority(UserRole.ADMIN.name())
+                        .requestMatchers(
+                                //folders
+                                HttpMethod.PUT, "api/v1/folder/{folderId}"
+
                         ).hasAnyAuthority(UserRole.ADMIN.name())
 
                         //admin, mod only
@@ -105,8 +111,14 @@ public class SecurityConfiguration {
                                 "/api/v1/sys-user/profile",
                                 "/api/v1/sys-user/profile-and-cover-picture"
 
+                                //folders
+
 
                         ).hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name(), UserRole.THERAPIST.name())
+
+                        .requestMatchers(
+                                HttpMethod.GET, "/api/v1/folder")
+                        .hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name(), UserRole.THERAPIST.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

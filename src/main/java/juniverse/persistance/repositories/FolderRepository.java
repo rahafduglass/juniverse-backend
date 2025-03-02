@@ -16,4 +16,6 @@ public interface FolderRepository {
     void updatePath(Long id, String path);
 
     List<FolderModel> getFolders();
+
+    void remove(Long folderId);
 }

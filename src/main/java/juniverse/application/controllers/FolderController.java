@@ -90,6 +90,15 @@ public class FolderController {
         }
     }
 
+    @DeleteMapping("/{folderId}")
+    public ResponseEntity<ApiResponse<Boolean>> deleteFolder(@PathVariable Long folderId) {
+        try {
+            boolean isFail=!folderService.deleteFolder(folderId);
+            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to update" : "folder updated successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+        }catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 
 }
 // TO DO LIST

@@ -42,4 +42,9 @@ public class FolderAdapter implements FolderRepository {
     public List<FolderModel> getFolders() {
         return folderMapper.listOfEntitiesToListOfModels(folderJpaRepository.findAll());
     }
+
+    @Override
+    public void remove(Long folderId) {
+        folderJpaRepository.removeById(folderId);
+    }
 }

@@ -82,7 +82,7 @@ public class FolderService {
         FolderModel currentFolder = folderRepository.findById(folderId);
 
         if (currentFolder == null)
-            throw new RuntimeException("Folder doesnt exists");
+            throw new RuntimeException("Folder doesnt exist");
         else if (folderDescription == null || folderDescription.isEmpty())
             throw new RuntimeException("data is empty");
 
@@ -91,6 +91,16 @@ public class FolderService {
         currentFolder.setModifiedBy(identityProvider.currentIdentity().getId());
 
         folderRepository.save(currentFolder);
+        return true;
+    }
+
+    public boolean deleteFolder(Long folderId) {
+        FolderModel currentFolder = folderRepository.findById(folderId);
+
+        if (currentFolder == null)
+            throw new RuntimeException("folder doesnt exist");
+
+        folderRepository.remove(folderId);
         return true;
     }
 }

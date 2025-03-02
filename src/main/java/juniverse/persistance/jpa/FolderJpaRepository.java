@@ -15,5 +15,8 @@ public interface FolderJpaRepository extends JpaRepository<FolderEntity, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE FolderEntity f SET f.path=:path WHERE f.id=:id")
-    Integer updatePathById(Long id, String path);
+    void updatePathById(Long id, String path);
+
+    @Transactional
+    void removeById(Long folderId);
 }

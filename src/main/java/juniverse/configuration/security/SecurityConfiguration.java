@@ -70,16 +70,16 @@ public class SecurityConfiguration {
                         ).hasAnyAuthority(UserRole.THERAPIST.name())
                         //admin
                         .requestMatchers(
-                                //folders
                                 HttpMethod.POST, "api/v1/folder"
 
                         ).hasAnyAuthority(UserRole.ADMIN.name())
                         .requestMatchers(
-                                //folders
-                                HttpMethod.PUT, "api/v1/folder/{folderId}"
+                                HttpMethod.PUT, "api/v1/folder/{folderId}","api/v1/folder/{folderId}/description","api/v1/folder/{folderId}/name"
 
                         ).hasAnyAuthority(UserRole.ADMIN.name())
-
+                        .requestMatchers(
+                                HttpMethod.DELETE, "api/v1/folder/{folderId}"
+                        ).hasAnyAuthority(UserRole.ADMIN.name())
                         //admin, mod only
                         .requestMatchers(
                                 //public chats

@@ -61,4 +61,36 @@ public class FolderService {
     public List<FolderModel> getFolders() {
         return folderRepository.getFolders();
     }
+
+    public boolean updateFolderName(Long folderId, String folderName) {
+        FolderModel currentFolder = folderRepository.findById(folderId);
+
+        if (currentFolder == null)
+            throw new RuntimeException("Folder doesnt exists");
+        else if (folderName == null || folderName.isEmpty())
+            throw new RuntimeException("data is empty");
+
+        currentFolder.setName(folderName);
+        currentFolder.setModifiedOn(Timestamp.valueOf(LocalDateTime.now()));
+        currentFolder.setModifiedBy(identityProvider.currentIdentity().getId());
+
+        folderRepository.save(currentFolder);
+        return true;
+    }
+
+    public boolean updateFolderDescription(Long folderId, String folderDescription) {
+        FolderModel currentFolder = folderRepository.findById(folderId);
+
+        if (currentFolder == null)
+            throw new RuntimeException("Folder doesnt exists");
+        else if (folderDescription == null || folderDescription.isEmpty())
+            throw new RuntimeException("data is empty");
+
+        currentFolder.setDescription(folderDescription);
+        currentFolder.setModifiedOn(Timestamp.valueOf(LocalDateTime.now()));
+        currentFolder.setModifiedBy(identityProvider.currentIdentity().getId());
+
+        folderRepository.save(currentFolder);
+        return true;
+    }
 }

@@ -101,7 +101,10 @@ public class MessageService {
         return sendMessage(messageModel);
     }
 
-    public boolean sendPublicMessage(String content) {
+    public boolean sendPublicMessage(String content) throws Exception {
+
+        if (content.isEmpty())
+            throw new Exception("can't send empty message");
 
         SysUserEntity currentUser = identityProvider.currentIdentity();
 
@@ -138,6 +141,7 @@ public class MessageService {
     }
 
     private MessageModel sendMessage(MessageModel messageModel) {
+
         return messageRepository.sendMessage(messageModel);
     }
 }

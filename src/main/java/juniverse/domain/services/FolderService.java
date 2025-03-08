@@ -29,13 +29,12 @@ public class FolderService {
         folderModel.setCreatedBy(identityProvider.currentIdentity().getId());
         folderModel.setStatus(FolderStatus.UPLOADED);
         folderModel.setCreatedOn(Timestamp.valueOf(LocalDateTime.now()));
-
         Long generatedFolderId = folderRepository.save(folderModel).getId();
         String path = ("src/main/resources/juniverse_files/folders/" + generatedFolderId);
         folderRepository.updatePath(generatedFolderId, path);
 
         File file = new File(path);
-        if (!file.mkdir()) throw new RuntimeException("Failed to create folder in local storage");
+        if (file.mkdir()) throw new RuntimeException("Failed to create folder in local storage");
 
         return true;
     }

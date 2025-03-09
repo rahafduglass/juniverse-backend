@@ -1,19 +1,18 @@
-===> PUBLIC CHAT FLOW <===
+files
 
 
--persistence-
-1. PublicChatEntity
-2. PublicChatRepository
-3. PublicChatAdapter
-4. PublicChatJpaRepository
+//endpoints
 
+//all users
+1. add file (by all users)
+2. get files (by all users)
+3. get user files "and their metadata"
 
--domain-
-1. PublicChatService
+//admin & mod
+3. delete file (admins and mods)
 
+//mod
+4. get pending files (mod)
+5. accept file (mod)
+6. reject file (mod)
 
--endpoints-
-1. sendMessages (all users) done
-2. getAllMessages (all users) done
-3. deleteMessage (admins & mods) done
-4. editMessage (all users) done

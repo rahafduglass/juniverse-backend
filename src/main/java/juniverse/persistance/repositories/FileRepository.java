@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FileRepository {
     FileModel addFile(FileModel fileModel);
+
+    boolean updateFilePath(Long id, String filePath);
 }

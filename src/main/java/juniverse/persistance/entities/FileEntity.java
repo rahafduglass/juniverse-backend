@@ -3,6 +3,7 @@ package juniverse.persistance.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import juniverse.domain.enums.FileExtension;
+import juniverse.domain.enums.FileStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Entity
+@Entity(name="file")
 @Table(name = "file")
 public class FileEntity {
     @Id
@@ -30,30 +31,25 @@ public class FileEntity {
     private String path;
 
 
-    @Column(name = "size", nullable = false)
-    private String size;
-
     @NotNull
     private String description;
 
     @Column(name = "status", nullable = false)
-    private String status;
-
-
-    @Column(name = "type", nullable = false)
-    private String type;
+    private FileStatus status;
 
 
     @Column(name = "upload_date", nullable = false)
     private LocalDateTime uploadDate;
 
     @Column (nullable = false)
+    @Enumerated(EnumType.STRING)
     private FileExtension extension;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "folder_id")
-    private FolderEntity folderEntity;
+    @NotNull
+    private FolderEntity folder;
 
 
     @ManyToOne(fetch = FetchType.EAGER)

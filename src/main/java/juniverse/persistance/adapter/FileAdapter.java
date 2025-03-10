@@ -16,6 +16,11 @@ public class FileAdapter implements FileRepository {
 
     @Override
     public FileModel addFile(FileModel fileModel) {
-        return fileMapper.entityToModel(fileJpaRepository.addFile(fileMapper.modelToEntity(fileModel)));
+        return fileMapper.entityToModel(fileJpaRepository.save(fileMapper.modelToEntity(fileModel)));
+    }
+
+    @Override
+    public boolean updateFilePath(Long id, String filePath) {
+        return fileJpaRepository.updatePath(id,filePath)>0;
     }
 }

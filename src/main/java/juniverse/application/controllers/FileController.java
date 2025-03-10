@@ -1,6 +1,5 @@
 package juniverse.application.controllers;
 
-import jakarta.persistence.Access;
 import juniverse.application.dtos.ApiResponse;
 import juniverse.application.dtos.file.FileRequest;
 import juniverse.application.helpers.ApiResponseHelper;
@@ -27,7 +26,7 @@ public class FileController {
     public ResponseEntity<ApiResponse<Boolean>> addFolder(@RequestBody FileRequest fileRequest){
         try {
             boolean isFail = !fileService.addFolder(fileMapper.requestToModel(fileRequest), fileRequest.getFileAsBase64());
-            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to add" : "folder added successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to add" : "file added successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
         }catch(Exception e){
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }

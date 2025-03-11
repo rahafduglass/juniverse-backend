@@ -109,9 +109,11 @@ public class SecurityConfiguration {
                                 "/api/v1/sys-user/cover-picture",
                                 "/api/v1/sys-user/bio",
                                 "/api/v1/sys-user/profile",
-                                "/api/v1/sys-user/profile-and-cover-picture"
+                                "/api/v1/sys-user/profile-and-cover-picture",
 
-                                //folders
+                                //files
+                                "/api/v1/files"
+
 
 
                         ).hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name(), UserRole.THERAPIST.name())

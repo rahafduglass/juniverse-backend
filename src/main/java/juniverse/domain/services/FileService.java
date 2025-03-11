@@ -2,20 +2,19 @@ package juniverse.domain.services;
 
 import juniverse.domain.enums.FileExtension;
 import juniverse.domain.enums.FileStatus;
+import juniverse.domain.models.FileModel;
 import juniverse.domain.provider.IdentityProvider;
 import juniverse.persistance.entities.SysUserEntity;
 import juniverse.persistance.repositories.FileRepository;
 import juniverse.persistance.repositories.FolderRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import juniverse.domain.models.FileModel;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -59,9 +58,18 @@ public class FileService {
             throw new RuntimeException("file data isn't valid");
         }
 
-        if (fileModel.getFolderId() == null || folderRepository.findById(fileModel.getFolderId()) == null) {
+        validateFolder(fileModel.getFolderId());
+
+    }
+
+    public List<FileModel> getAcceptedFiles(Long folderId) {
+        //
+        validateFolder(folderId);
+        return fileRepository.getAcceptedFiles(folderId);
+    }
+    private void validateFolder(Long folderId){
+        if (folderId == null || folderRepository.findById(folderId) == null) {
             throw new RuntimeException("folder id isn't valid");
         }
-
     }
 }

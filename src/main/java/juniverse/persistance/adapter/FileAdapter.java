@@ -1,11 +1,14 @@
 package juniverse.persistance.adapter;
 
+import juniverse.domain.enums.FileStatus;
 import juniverse.domain.mappers.FileMapper;
 import juniverse.domain.models.FileModel;
 import juniverse.persistance.jpa.FileJpaRepository;
 import juniverse.persistance.repositories.FileRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @AllArgsConstructor
 @Repository
@@ -22,5 +25,10 @@ public class FileAdapter implements FileRepository {
     @Override
     public boolean updateFilePath(Long id, String filePath) {
         return fileJpaRepository.updatePath(id,filePath)>0;
+    }
+
+    @Override
+    public List<FileModel> getAcceptedFiles(Long folderId) {
+        return (fileJpaRepository.findAllByStatus(folderId, FileStatus.ACCEPTED)).stream().map(element-> fileMapper.entityToModel(element)).toList();
     }
 }

@@ -1,6 +1,7 @@
 package juniverse.domain.mappers;
 
 import juniverse.application.dtos.file.FileRequest;
+import juniverse.application.dtos.file.FileResponse;
 import juniverse.domain.models.FileModel;
 import juniverse.persistance.entities.FileEntity;
 import org.mapstruct.Mapper;
@@ -18,4 +19,6 @@ public interface FileMapper {
     @Mapping(source="owner.id", target="ownerId")
     @Mapping(source="folder.id", target="folderId")
     FileModel entityToModel(FileEntity fileEntity);
+
+    FileResponse modelToResponse(FileModel element);
 }

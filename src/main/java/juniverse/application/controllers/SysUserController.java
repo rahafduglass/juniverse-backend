@@ -114,6 +114,5 @@ public class SysUserController {
         } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
-
     }
 }

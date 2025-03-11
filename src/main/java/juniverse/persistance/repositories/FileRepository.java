@@ -12,4 +12,6 @@ public interface FileRepository {
     boolean updateFilePath(Long id, String filePath);
 
     List<FileModel> getAcceptedFiles(Long folderId);
+
+    FileModel getFilePath(Long fileId);
 }

@@ -2,6 +2,7 @@ package juniverse.domain.services;
 
 import juniverse.domain.enums.FileExtension;
 import juniverse.domain.enums.FileStatus;
+import juniverse.domain.models.EncodedFileModel;
 import juniverse.domain.models.FileModel;
 import juniverse.domain.provider.IdentityProvider;
 import juniverse.persistance.entities.SysUserEntity;
@@ -10,9 +11,12 @@ import juniverse.persistance.repositories.FolderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -28,19 +32,19 @@ public class FileService {
         validateFile(fileModel);
 
         SysUserEntity currentUser = identityProvider.currentIdentity();
-        //fill default data
+
         fileModel.setOwnerId(currentUser.getId());
         fileModel.setOwnerUsername(currentUser.getUsername());
         fileModel.setStatus(FileStatus.PENDING);
         fileModel.setUploadDate(LocalDateTime.now());
-        fileModel.setPath("src\\main\\resources\\juniverse_files\\folders\\"+fileModel.getFolderId()+"\\");
+        fileModel.setPath("src\\main\\resources\\juniverse_files\\folders\\" + fileModel.getFolderId() + "\\");
         FileModel savedFile = fileRepository.addFile(fileModel);
 
         //TODO decode base64 and store in local storage
-        byte[] decodedFile=Base64.getDecoder().decode(fileAsBase64);
-        String filePath="src\\main\\resources\\juniverse_files\\folders\\"+fileModel.getFolderId()+"\\"+ savedFile.getId()+"."+savedFile.getExtension();
+        byte[] decodedFile = Base64.getDecoder().decode(fileAsBase64);
+        String filePath = "src\\main\\resources\\juniverse_files\\folders\\" + fileModel.getFolderId() + "\\" + savedFile.getId() + "." + savedFile.getExtension();
 
-        FileOutputStream fileOutputStream= new FileOutputStream(filePath);
+        FileOutputStream fileOutputStream = new FileOutputStream(filePath);
         fileOutputStream.write(decodedFile);
         fileOutputStream.close();
 
@@ -63,13 +67,32 @@ public class FileService {
     }
 
     public List<FileModel> getAcceptedFiles(Long folderId) {
-        //
+
         validateFolder(folderId);
         return fileRepository.getAcceptedFiles(folderId);
     }
-    private void validateFolder(Long folderId){
+
+    private void validateFolder(Long folderId) {
         if (folderId == null || folderRepository.findById(folderId) == null) {
             throw new RuntimeException("folder id isn't valid");
         }
+    }
+
+    public EncodedFileModel getFileAsBase64(Long fileId) throws IOException {
+
+        FileModel file= fileRepository.getFilePath(fileId);
+        if(file==null)
+            throw new RuntimeException("file doesn't exist");
+
+        FileInputStream fileInputStream = new FileInputStream(file.getPath().concat(fileId.toString()+"."+file.getExtension()));
+
+        String encodedFile= Base64.getEncoder().encodeToString(fileInputStream.readAllBytes());
+
+        EncodedFileModel encodedFileModel = EncodedFileModel.builder()
+                .fileAsBase64(encodedFile)
+                .extension(file.getExtension())
+                .build();
+
+        return encodedFileModel;
     }
 }

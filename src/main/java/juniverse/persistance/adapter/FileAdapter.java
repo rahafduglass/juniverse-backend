@@ -31,4 +31,9 @@ public class FileAdapter implements FileRepository {
     public List<FileModel> getAcceptedFiles(Long folderId) {
         return (fileJpaRepository.findAllByStatus(folderId, FileStatus.ACCEPTED)).stream().map(element-> fileMapper.entityToModel(element)).toList();
     }
+
+    @Override
+    public FileModel getFilePath(Long fileId) {
+        return fileMapper.entityToModel(fileJpaRepository.findById(fileId).get());
+    }
 }

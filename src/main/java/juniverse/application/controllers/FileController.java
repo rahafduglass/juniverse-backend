@@ -1,10 +1,13 @@
 package juniverse.application.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.application.dtos.ApiResponse;
+import juniverse.application.dtos.file.EncodedFileResponse;
 import juniverse.application.dtos.file.FileRequest;
 import juniverse.application.dtos.file.FileResponse;
 import juniverse.application.helpers.ApiResponseHelper;
 import juniverse.domain.mappers.FileMapper;
+import juniverse.domain.models.EncodedFileModel;
 import juniverse.domain.services.FileService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @RestController
+@Tag(name = "FILES")
 @RequestMapping("api/v1/files")
 public class FileController {
 
@@ -24,23 +28,40 @@ public class FileController {
     private final FileMapper fileMapper;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Boolean>> addFolder(@RequestBody FileRequest fileRequest){
+    public ResponseEntity<ApiResponse<Boolean>> addFolder(@RequestBody FileRequest fileRequest) {
         try {
             boolean isFail = !fileService.addFolder(fileMapper.requestToModel(fileRequest), fileRequest.getFileAsBase64());
             return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to add" : "file added successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
-        }catch(Exception e){
+        } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
     //TODO
 
-    @GetMapping("/folders/{folderId}")
-    public ResponseEntity<ApiResponse<List<FileResponse>>> getAcceptedFiles(@PathVariable Long folderId){
+    @GetMapping("/{folderId}")
+    public ResponseEntity<ApiResponse<List<FileResponse>>> getAcceptedFiles(@PathVariable Long folderId) {
         try {
-            List<FileResponse> response = (fileService.getAcceptedFiles(folderId)).stream().map(element->fileMapper.modelToResponse(element)).collect(Collectors.toList());
+            List<FileResponse> response = (fileService.getAcceptedFiles(folderId)).stream().map(element -> fileMapper.modelToResponse(element)).collect(Collectors.toList());
             boolean isFail = response.isEmpty();
-            return apiResponseHelper.buildApiResponse(response,!isFail, isFail?"failed to get files":" retrieved succesfully",  isFail ?HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
-        }catch(Exception e){
+            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there's no files" : " retrieved succesfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @GetMapping("/file/{fileId}")
+    public ResponseEntity<ApiResponse<EncodedFileResponse>> getFileAsBase64(@PathVariable Long fileId) {
+        try {
+            EncodedFileModel modelResponse = fileService.getFileAsBase64(fileId);
+            EncodedFileResponse response = EncodedFileResponse.builder()
+                    .fileAsBase64(modelResponse.getFileAsBase64())
+                    .extension(modelResponse.getExtension())
+                    .build();
+
+            boolean isFail = response.getFileAsBase64().isEmpty();
+            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there's no such file" : " retrieved succesfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+
+        } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }

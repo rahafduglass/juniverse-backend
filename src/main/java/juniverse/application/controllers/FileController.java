@@ -36,14 +36,15 @@ public class FileController {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
-    //TODO
 
     @GetMapping("/{folderId}")
     public ResponseEntity<ApiResponse<List<FileResponse>>> getAcceptedFiles(@PathVariable Long folderId) {
         try {
-            List<FileResponse> response = (fileService.getAcceptedFiles(folderId)).stream().map(element -> fileMapper.modelToResponse(element)).collect(Collectors.toList());
+            List<FileResponse> response = (fileService.getAcceptedFiles(folderId)).stream()
+                    .map(element -> fileMapper.modelToResponse(element))
+                    .collect(Collectors.toList());
             boolean isFail = response.isEmpty();
-            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there's no files" : " retrieved succesfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there's no files" : " retrieved succesfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
         } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
@@ -62,6 +63,19 @@ public class FileController {
             return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there's no such file" : " retrieved succesfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
 
         } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @GetMapping("/pending/{folderId}")
+    public ResponseEntity<ApiResponse<List<FileResponse>>> getPendingFiles(@PathVariable Long folderId) {
+        try{
+            List<FileResponse> response= (fileService.getPendingFiles(folderId)).stream()
+                    .map(element-> fileMapper.modelToResponse(element))
+                    .collect(Collectors.toList());
+            boolean isFail = response.isEmpty();
+            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there's no files" : " retrieved succesfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        }catch(Exception e){
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }

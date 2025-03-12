@@ -14,6 +14,7 @@ import java.util.List;
 @Repository
 public class FileAdapter implements FileRepository {
 
+
     private final FileJpaRepository fileJpaRepository;
     private final FileMapper fileMapper;
 
@@ -35,5 +36,10 @@ public class FileAdapter implements FileRepository {
     @Override
     public FileModel getFilePath(Long fileId) {
         return fileMapper.entityToModel(fileJpaRepository.findById(fileId).get());
+    }
+
+    @Override
+    public List<FileModel> getPendingFiles(Long folderId) {
+        return fileJpaRepository.findAllByStatus(folderId,FileStatus.PENDING).stream().map(element-> fileMapper.entityToModel(element)).toList();
     }
 }

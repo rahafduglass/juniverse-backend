@@ -34,7 +34,7 @@ public class FolderService {
         folderRepository.updatePath(generatedFolderId, path);
 
         File file = new File(path);
-        if (file.mkdir()) throw new RuntimeException("Failed to create folder in local storage");
+        file.mkdir();
 
         return true;
     }

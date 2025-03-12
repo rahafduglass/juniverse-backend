@@ -22,4 +22,8 @@ public class FileResponse {
 
     private String ownerUsername;
 
+    private LocalDateTime monitoredAt;
+
+    private String monitoredByUsername;
+
 }

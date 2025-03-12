@@ -14,4 +14,6 @@ public interface FileRepository {
     List<FileModel> getAcceptedFiles(Long folderId);
 
     FileModel getFilePath(Long fileId);
+
+    List<FileModel> getPendingFiles(Long folderId);
 }

@@ -14,10 +14,16 @@ public interface FileMapper {
 
     @Mapping(source="folderId", target="folder.id")
     @Mapping(source="ownerId", target="owner.id")
+    @Mapping(source="ownerUsername", target="owner.username")
+    @Mapping(source="monitoredByUsername", target="monitoredBy.username")
+    @Mapping(source="monitoredById", target="monitoredBy.id")
     FileEntity modelToEntity(FileModel fileModel);
 
     @Mapping(source="owner.id", target="ownerId")
     @Mapping(source="folder.id", target="folderId")
+    @Mapping(source="owner.username", target="ownerUsername")
+    @Mapping(source="monitoredBy.username", target="monitoredByUsername")
+    @Mapping(source="monitoredBy.id", target="monitoredById")
     FileModel entityToModel(FileEntity fileEntity);
 
     FileResponse modelToResponse(FileModel element);

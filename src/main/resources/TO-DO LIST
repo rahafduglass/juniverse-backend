@@ -1,10 +1,10 @@
 ===> file controller <===
 
 //all users
- 1. add file (by all users) done
- 2. get files (by all users)
- 3. get user files "and their metadata"
- 4. get file (using fileId) as base64
+ 1. add file (by all users) DONE
+ 2. get accepted files (by all users) DONE
+ 3. get user files "and their metadata" DASHBOARD CONTROLLER
+ 4. get file (using fileId) as base64 DONE
 
 //admin & mod
  3. delete file (admins and mods)

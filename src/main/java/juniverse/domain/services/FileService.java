@@ -1,11 +1,13 @@
 package juniverse.domain.services;
 
+import io.micrometer.common.KeyValues;
 import juniverse.domain.enums.FileExtension;
 import juniverse.domain.enums.FileStatus;
 import juniverse.domain.models.EncodedFileModel;
 import juniverse.domain.models.FileModel;
 import juniverse.domain.provider.IdentityProvider;
 import juniverse.persistance.entities.SysUserEntity;
+import juniverse.persistance.jpa.FileJpaRepository;
 import juniverse.persistance.repositories.FileRepository;
 import juniverse.persistance.repositories.FolderRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class FileService {
     private final FileRepository fileRepository;
     private final IdentityProvider identityProvider;
     private final FolderRepository folderRepository;
+    private final FileJpaRepository fileJpaRepository;
 
     public boolean addFolder(FileModel fileModel, String fileAsBase64) throws IOException {
 
@@ -94,5 +97,10 @@ public class FileService {
                 .build();
 
         return encodedFileModel;
+    }
+
+    public List<FileModel> getPendingFiles(Long folderId) {
+        validateFolder(folderId);
+        return fileRepository.getPendingFiles(folderId);
     }
 }

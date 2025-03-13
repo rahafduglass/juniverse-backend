@@ -27,7 +27,7 @@ public class FileService {
     private final FolderRepository folderRepository;
     private final FileJpaRepository fileJpaRepository;
 
-    public boolean addFolder(FileModel fileModel, String fileAsBase64) throws IOException {
+    public boolean addFile(FileModel fileModel, String fileAsBase64) throws IOException {
 
         validateFile(fileModel);
 

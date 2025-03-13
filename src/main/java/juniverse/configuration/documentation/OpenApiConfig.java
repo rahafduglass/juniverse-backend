@@ -1,12 +1,14 @@
 package juniverse.configuration.documentation;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import juniverse.application.controllers.PrivateChatController;
 import juniverse.application.controllers.PublicChatController;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.service.OperationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,7 +37,7 @@ public class OpenApiConfig {
     public OperationCustomizer privateChatControllerOperationCustomizer() {
         return (operation, handlerMethod) -> {
             Class<?> declaringClass = handlerMethod.getMethod().getDeclaringClass();
-            if (handlerMethod.getMethod().getName().equals("getAllMessages")&& declaringClass.equals(PrivateChatController.class)) {
+            if (handlerMethod.getMethod().getName().equals("getAllMessages") && declaringClass.equals(PrivateChatController.class)) {
                 Class<?>[] parameterTypes = handlerMethod.getMethod().getParameterTypes();
 
                 if (parameterTypes.length == 0) {
@@ -80,7 +82,7 @@ public class OpenApiConfig {
     }
 
     @Bean
-    public OperationCustomizer AuthenticationControllerOperationCustomizer() {
+    public OperationCustomizer AuthenticationController() {
         return (operation, handlerMethod) -> {
             if (handlerMethod.getMethod().getName().equals("signIn")) {
                 operation.summary("sign in and get ur token!!")
@@ -96,7 +98,7 @@ public class OpenApiConfig {
     }
 
     @Bean
-    public OperationCustomizer SysUserControllerOperationCustomizer() {
+    public OperationCustomizer SysUserController() {
         return (operation, handlerMethod) -> {
             if (handlerMethod.getMethod().getName().equals("getProfile")) {
                 operation.summary("profile info for user!!")
@@ -123,7 +125,7 @@ public class OpenApiConfig {
     }
 
     @Bean
-    public OperationCustomizer PublicChatControllerOperationCustomizer() {
+    public OperationCustomizer PublicChatController() {
         return (operation, handlerMethod) -> {
             Class<?> declaringClass = handlerMethod.getMethod().getDeclaringClass();
 
@@ -131,7 +133,7 @@ public class OpenApiConfig {
                 operation.summary("send public message!")
                         .description("just fill content || ROLES permissions : ALL USERS.");
             }
-            if (handlerMethod.getMethod().getName().equals("getAllMessages")&& declaringClass.equals(PublicChatController.class)) {
+            if (handlerMethod.getMethod().getName().equals("getAllMessages") && declaringClass.equals(PublicChatController.class)) {
                 operation.summary("get all public chat messages")
                         .description(" || ROLES permissions : ALL USERS.");
             }
@@ -144,6 +146,83 @@ public class OpenApiConfig {
                         .description(" || ROLES permissions : ALL USERS.^^");
             }
 
+            return operation;
+        };
+    }
+
+    @Bean
+    public OperationCustomizer FolderController() {
+        return (operation, handlerMethod) -> {
+            if (handlerMethod.getMethod().getName().equals("addFolder")) {
+                operation.summary("adding folders :D")
+                        .description(" || ROLES permissions : ADMINS.^^");
+            }
+            if (handlerMethod.getMethod().getName().equals("updateFolder")) {
+                operation.summary("update folder's name and description")
+                        .description(" use to update both name and description using folderId for sure|| ROLES permissions : ADMINS.^^");
+            }
+            if (handlerMethod.getMethod().getName().equals("updateFolderName")) {
+                operation.summary("update folder's name alone")
+                        .description(" use to update folder's name alone using folderId for sure|| ROLES permissions : ADMINS.^^");
+            }
+            if (handlerMethod.getMethod().getName().equals("updateFolderDescription")) {
+                operation.summary("update folder's description")
+                        .description(" use to update folder's description using folderId for sure|| ROLES permissions : ADMINS.^^");
+            }
+            if (handlerMethod.getMethod().getName().equals("getFolders")) {
+                operation.summary("get all folders")
+                        .description(" || ROLES permissions : ALL USERS.^^");
+            }
+            if (handlerMethod.getMethod().getName().equals("deleteFolder")) {
+                operation.summary("delete a folder")
+                        .description("delete a folder using folderId || ROLES permissions : ADMINS.^^");
+            }
+            if (handlerMethod.getMethod().getName().equals("updateFolder")) {
+                operation.summary("update folder's name and description")
+                        .description(" use to update both name and description using folderId for sure|| ROLES permissions : ADMINS.^^");
+            }
+            return operation;
+        };
+    }
+
+    @Bean
+    public OperationCustomizer FileController(OperationService operationBuilder) {
+        return (operation, handlerMethod) -> {
+            if (handlerMethod.getMethod().getName().equals("addFile")) {
+                operation
+                        .summary("add a file in a folder")
+                        .description("adding a file to a specific folder, using the folderId || ROLES permissions : ALL USERS.^^");
+            }
+            if (handlerMethod.getMethod().getName().equals("getAcceptedFiles")) {
+                operation
+                        .summary("retrieve files in a folder")
+                        .description("get all files related to a folder || ROLES permissions : ALL USERS.^^");
+            }
+            if (handlerMethod.getMethod().getName().equals("getFileAsBase64")) {
+                operation
+                        .summary("retrieve the file as BASE64")
+                        .description("retrieve specific file encoded in BASE64 and its extension by fileId || ROLES permissions : ALL USERS.^^");
+            }
+            if (handlerMethod.getMethod().getName().equals("getPendingFiles")) {
+                operation
+                        .summary("retrieve pending files as mod")
+                        .description("get all files related to a folder || ROLES permissions : MODERATOR");
+            }
+            if (handlerMethod.getMethod().getName().equals("rejectFile")) {
+                operation
+                        .summary("reject a pending file")
+                        .description("|| ROLES permissions : MODERATOR");
+            }
+            if (handlerMethod.getMethod().getName().equals("acceptFile")) {
+                operation
+                        .summary("accept a pending file")
+                        .description("|| ROLES permissions : MODERATOR");
+            }
+            if (handlerMethod.getMethod().getName().equals("deleteFile")) {
+                operation
+                        .summary("delete a file")
+                        .description("|| ROLES permissions :ADMIN, MODERATOR");
+            }
             return operation;
         };
     }

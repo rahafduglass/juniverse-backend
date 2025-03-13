@@ -71,7 +71,7 @@ public class SecurityConfiguration {
 
                         //admin
                         .requestMatchers(
-                                HttpMethod.POST, "api/v1/folder", "api/v1/files"
+                                HttpMethod.POST, "api/v1/folder"
 
                         ).hasAnyAuthority(UserRole.ADMIN.name())
                         .requestMatchers(
@@ -125,8 +125,9 @@ public class SecurityConfiguration {
                                 "/api/v1/sys-user/profile-and-cover-picture",
 
                                 //files
-                                "/api/v1/files/file/{fileId]",
-                                "/api/v1/files/{folderId}"
+                                "/api/v1/files/file/{fileId}",
+                                "/api/v1/files/{folderId}",
+                                "/api/v1/files"
 
 
                         ).hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name(), UserRole.THERAPIST.name())

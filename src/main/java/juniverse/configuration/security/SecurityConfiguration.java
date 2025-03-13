@@ -68,9 +68,10 @@ public class SecurityConfiguration {
                                 "/api/v1/private-chat/allTherapistChats",
                                 "/api/v1/private-chat/messageFromTherapist"
                         ).hasAnyAuthority(UserRole.THERAPIST.name())
+
                         //admin
                         .requestMatchers(
-                                HttpMethod.POST, "api/v1/folder"
+                                HttpMethod.POST, "api/v1/folder", "api/v1/files"
 
                         ).hasAnyAuthority(UserRole.ADMIN.name())
                         .requestMatchers(
@@ -80,10 +81,22 @@ public class SecurityConfiguration {
                         .requestMatchers(
                                 HttpMethod.DELETE, "api/v1/folder/{folderId}"
                         ).hasAnyAuthority(UserRole.ADMIN.name())
+
+                        //moderator
+                        .requestMatchers(
+                                "api/v1/files/pending/{folderId}",
+                                "api/v1/files/{fileId}/reject",
+                                "api/v1/files/{fileId}/accept"
+                        ).hasAnyAuthority(UserRole.MODERATOR.name())
+
                         //admin, mod only
                         .requestMatchers(
                                 //public chats
                                 HttpMethod.DELETE, "/api/v1/public-chat/{messageId}"
+                        ).hasAnyAuthority(UserRole.ADMIN.name(), UserRole.MODERATOR.name())
+                        .requestMatchers(
+                                //files
+                                HttpMethod.DELETE, "api/v1/files/file/{fileId}"
                         ).hasAnyAuthority(UserRole.ADMIN.name(), UserRole.MODERATOR.name())
 
                         //admin, mod, student only
@@ -112,7 +125,7 @@ public class SecurityConfiguration {
                                 "/api/v1/sys-user/profile-and-cover-picture",
 
                                 //files
-                                "/api/v1/files",
+                                "/api/v1/files/file/{fileId]",
                                 "/api/v1/files/{folderId}"
 
 

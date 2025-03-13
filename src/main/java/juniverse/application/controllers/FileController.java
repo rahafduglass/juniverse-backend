@@ -68,7 +68,7 @@ public class FileController {
         }
     }
 
-    @GetMapping("/pending/{folderId}")
+    @GetMapping("/file/pending/{folderId}")
     public ResponseEntity<ApiResponse<List<FileResponse>>> getPendingFiles(@PathVariable Long folderId) {
         try{
             List<FileResponse> response= (fileService.getPendingFiles(folderId)).stream()
@@ -81,7 +81,7 @@ public class FileController {
         }
     }
 
-    @PutMapping("/{fileId}/reject")
+    @PutMapping("/file/reject")
     public ResponseEntity<ApiResponse<Boolean>> rejectFile(@PathVariable Long fileId) {
         try{
             boolean isFail= !fileService.updateFileStatus(fileId,FileStatus.REJECTED);
@@ -91,7 +91,7 @@ public class FileController {
         }
     }
 
-    @PutMapping("/{fileId}/accept")
+    @PutMapping("/file/{fileId}/accept")
     public ResponseEntity<ApiResponse<Boolean>> acceptFile(@PathVariable Long fileId) {
         try{
             boolean isFail= !fileService.updateFileStatus(fileId,FileStatus.ACCEPTED);
@@ -101,7 +101,7 @@ public class FileController {
         }
     }
 
-    @DeleteMapping("/{fileId}")
+    @DeleteMapping("/file/{fileId}")
     public ResponseEntity<ApiResponse<Boolean>> deleteFile(@PathVariable Long fileId) {
         try{
             boolean isFail= !fileService.updateFileStatus(fileId,FileStatus.DELETED);

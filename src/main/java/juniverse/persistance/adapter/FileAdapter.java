@@ -30,8 +30,7 @@ public class FileAdapter implements FileRepository {
 
     @Override
     public List<FileModel> getAcceptedFiles(Long folderId) {
-        List<FileModel> response=  (fileJpaRepository.findAllByStatus(folderId, FileStatus.ACCEPTED)).stream().map(fileMapper::entityToModel).toList();
-        return response;
+        return (fileJpaRepository.findAllByStatus(folderId, FileStatus.ACCEPTED)).stream().map(fileMapper::entityToModel).toList();
     }
 
     @Override

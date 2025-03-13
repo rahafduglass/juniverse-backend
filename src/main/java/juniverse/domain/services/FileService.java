@@ -1,6 +1,5 @@
 package juniverse.domain.services;
 
-import io.micrometer.common.KeyValues;
 import juniverse.domain.enums.FileExtension;
 import juniverse.domain.enums.FileStatus;
 import juniverse.domain.models.EncodedFileModel;
@@ -14,11 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -72,8 +69,7 @@ public class FileService {
     public List<FileModel> getAcceptedFiles(Long folderId) {
 
         validateFolder(folderId);
-        List<FileModel> response= fileRepository.getAcceptedFiles(folderId);
-        return response;
+        return fileRepository.getAcceptedFiles(folderId);
     }
 
     private void validateFolder(Long folderId) {
@@ -92,12 +88,10 @@ public class FileService {
 
         String encodedFile= Base64.getEncoder().encodeToString(fileInputStream.readAllBytes());
 
-        EncodedFileModel encodedFileModel = EncodedFileModel.builder()
+        return EncodedFileModel.builder()
                 .fileAsBase64(encodedFile)
                 .extension(file.getExtension())
                 .build();
-
-        return encodedFileModel;
     }
 
     public List<FileModel> getPendingFiles(Long folderId) {

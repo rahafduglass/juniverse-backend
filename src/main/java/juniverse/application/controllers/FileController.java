@@ -6,7 +6,6 @@ import juniverse.application.dtos.file.EncodedFileResponse;
 import juniverse.application.dtos.file.FileRequest;
 import juniverse.application.dtos.file.FileResponse;
 import juniverse.application.helpers.ApiResponseHelper;
-import juniverse.domain.enums.FileExtension;
 import juniverse.domain.enums.FileStatus;
 import juniverse.domain.mappers.FileMapper;
 import juniverse.domain.models.EncodedFileModel;

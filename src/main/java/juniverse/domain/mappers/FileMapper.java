@@ -4,6 +4,7 @@ import juniverse.application.dtos.file.FileRequest;
 import juniverse.application.dtos.file.FileResponse;
 import juniverse.domain.models.FileModel;
 import juniverse.persistance.entities.FileEntity;
+import juniverse.persistance.entities.SysUserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -13,10 +14,8 @@ public interface FileMapper {
     FileModel requestToModel(FileRequest fileRequest);
 
     @Mapping(source="folderId", target="folder.id")
-    @Mapping(source="ownerId", target="owner.id")
-    @Mapping(source="ownerUsername", target="owner.username")
-    @Mapping(source="monitoredByUsername", target="monitoredBy.username")
-    @Mapping(source="monitoredById", target="monitoredBy.id")
+    @Mapping(source="ownerId", target="owner")
+    @Mapping(source="monitoredById", target="monitoredBy")
     FileEntity modelToEntity(FileModel fileModel);
 
     @Mapping(source="owner.id", target="ownerId")
@@ -27,4 +26,15 @@ public interface FileMapper {
     FileModel entityToModel(FileEntity fileEntity);
 
     FileResponse modelToResponse(FileModel element);
+
+    default SysUserEntity mapSysUserIdToEntity(Long sysUserId) {
+        if (sysUserId == null) {
+            return null;  // Return null if there's no privateChatId
+        }
+
+        SysUserEntity sysUserEntity = new SysUserEntity();
+        sysUserEntity.setId(sysUserId);
+
+        return sysUserEntity;
+    }
 }

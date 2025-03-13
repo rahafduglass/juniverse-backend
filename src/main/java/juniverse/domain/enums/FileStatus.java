@@ -4,5 +4,6 @@ public enum FileStatus {
     PENDING,
     REJECTED,
     ACCEPTED,
-    FAILED
+    FAILED,
+    DELETED
 }

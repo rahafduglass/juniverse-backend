@@ -6,6 +6,8 @@ import juniverse.application.dtos.file.EncodedFileResponse;
 import juniverse.application.dtos.file.FileRequest;
 import juniverse.application.dtos.file.FileResponse;
 import juniverse.application.helpers.ApiResponseHelper;
+import juniverse.domain.enums.FileExtension;
+import juniverse.domain.enums.FileStatus;
 import juniverse.domain.mappers.FileMapper;
 import juniverse.domain.models.EncodedFileModel;
 import juniverse.domain.services.FileService;
@@ -41,7 +43,7 @@ public class FileController {
     public ResponseEntity<ApiResponse<List<FileResponse>>> getAcceptedFiles(@PathVariable Long folderId) {
         try {
             List<FileResponse> response = (fileService.getAcceptedFiles(folderId)).stream()
-                    .map(element -> fileMapper.modelToResponse(element))
+                    .map(fileMapper::modelToResponse)
                     .collect(Collectors.toList());
             boolean isFail = response.isEmpty();
             return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there's no files" : " retrieved succesfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
@@ -71,7 +73,7 @@ public class FileController {
     public ResponseEntity<ApiResponse<List<FileResponse>>> getPendingFiles(@PathVariable Long folderId) {
         try{
             List<FileResponse> response= (fileService.getPendingFiles(folderId)).stream()
-                    .map(element-> fileMapper.modelToResponse(element))
+                    .map(fileMapper::modelToResponse)
                     .collect(Collectors.toList());
             boolean isFail = response.isEmpty();
             return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there's no files" : " retrieved succesfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
@@ -80,4 +82,33 @@ public class FileController {
         }
     }
 
+    @PutMapping("/{fileId}/reject")
+    public ResponseEntity<ApiResponse<Boolean>> rejectFile(@PathVariable Long fileId) {
+        try{
+            boolean isFail= !fileService.updateFileStatus(fileId,FileStatus.REJECTED);
+            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to update" : "file updated successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        }catch(Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PutMapping("/{fileId}/accept")
+    public ResponseEntity<ApiResponse<Boolean>> acceptFile(@PathVariable Long fileId) {
+        try{
+            boolean isFail= !fileService.updateFileStatus(fileId,FileStatus.ACCEPTED);
+            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to update" : "file updated successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        }catch(Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @DeleteMapping("/{fileId}")
+    public ResponseEntity<ApiResponse<Boolean>> deleteFile(@PathVariable Long fileId) {
+        try{
+            boolean isFail= !fileService.updateFileStatus(fileId,FileStatus.DELETED);
+            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to update" : "file updated successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        }catch(Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 }

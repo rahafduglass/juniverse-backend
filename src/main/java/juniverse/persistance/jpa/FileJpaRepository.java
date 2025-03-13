@@ -19,9 +19,15 @@ public interface FileJpaRepository extends JpaRepository<FileEntity, Long> {
     @Transactional
     @Modifying
     @Query("UPDATE file f SET f.path= :filePath WHERE f.id= :id")
-    Integer updatePath(Long id, String filePath);
+    int updatePath(Long id, String filePath);
 
 
     @Query("SELECT f FROM file f WHERE f.folder.id = :folderId AND f.status = :status")
     List<FileEntity> findAllByStatus(Long folderId, FileStatus status);
+
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE file f SET f.status= :status WHERE f.id= :fileId")
+    int updateFileStatus(Long fileId, FileStatus status);
 }

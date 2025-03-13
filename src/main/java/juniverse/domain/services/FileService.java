@@ -72,7 +72,8 @@ public class FileService {
     public List<FileModel> getAcceptedFiles(Long folderId) {
 
         validateFolder(folderId);
-        return fileRepository.getAcceptedFiles(folderId);
+        List<FileModel> response= fileRepository.getAcceptedFiles(folderId);
+        return response;
     }
 
     private void validateFolder(Long folderId) {
@@ -102,5 +103,9 @@ public class FileService {
     public List<FileModel> getPendingFiles(Long folderId) {
         validateFolder(folderId);
         return fileRepository.getPendingFiles(folderId);
+    }
+
+    public boolean updateFileStatus(Long fileId, FileStatus status) {
+        return fileRepository.updateFileStatus(fileId,status);
     }
 }

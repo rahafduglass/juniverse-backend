@@ -1,5 +1,6 @@
 package juniverse.persistance.repositories;
 
+import juniverse.domain.enums.FileStatus;
 import juniverse.domain.models.FileModel;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,6 @@ public interface FileRepository {
     FileModel getFilePath(Long fileId);
 
     List<FileModel> getPendingFiles(Long folderId);
+
+    boolean updateFileStatus(Long fileId, FileStatus status);
 }

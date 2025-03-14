@@ -1,12 +1,16 @@
 package juniverse.domain.enums;
 
 public enum FileExtension {
-
+    xlsx,
+    xls,
+    pptx,
     png,
     jpg,
     jpeg,
     pdf,
     doc,
+    mpeg,
+    docx,
     ppt,
     css,
     html,

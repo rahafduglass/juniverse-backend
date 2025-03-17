@@ -44,6 +44,11 @@ public class FileAdapter implements FileRepository {
     }
 
     @Override
+    public List<FileModel> getPendingFiles() {
+        return   fileJpaRepository.findAllByStatus(FileStatus.PENDING).stream().map(fileMapper::entityToModel).toList();
+    }
+
+    @Override
     public boolean updateFileStatus(Long fileId, FileStatus status) {
         return fileJpaRepository.updateFileStatus(fileId,status)>0;
     }

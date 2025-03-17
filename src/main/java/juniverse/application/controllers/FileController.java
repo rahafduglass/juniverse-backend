@@ -81,6 +81,19 @@ public class FileController {
         }
     }
 
+    @GetMapping("file/pending")
+    public ResponseEntity<ApiResponse<List<FileResponse>>> getPendingFiles(){
+        try{
+            List<FileResponse> response= (fileService.getPendingFiles()).stream()
+                    .map(fileMapper::modelToResponse)
+                    .collect(Collectors.toList());
+            boolean isFail = response.isEmpty();
+            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there's no files" : " retrieved succesfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        }catch(Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
     @PutMapping("/file/{fileId}/reject")
     public ResponseEntity<ApiResponse<Boolean>> rejectFile(@PathVariable Long fileId) {
         try{

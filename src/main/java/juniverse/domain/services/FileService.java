@@ -99,6 +99,10 @@ public class FileService {
         return fileRepository.getPendingFiles(folderId);
     }
 
+    public List<FileModel> getPendingFiles() {
+        return fileRepository.getPendingFiles();
+    }
+
     public boolean updateFileStatus(Long fileId, FileStatus status) {
         return fileRepository.updateFileStatus(fileId,status);
     }

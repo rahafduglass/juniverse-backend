@@ -25,6 +25,9 @@ public interface FileJpaRepository extends JpaRepository<FileEntity, Long> {
     @Query("SELECT f FROM file f WHERE f.folder.id = :folderId AND f.status = :status")
     List<FileEntity> findAllByStatus(Long folderId, FileStatus status);
 
+    @Query("SELECT f FROM file f WHERE f.status = :status")
+    List<FileEntity> findAllByStatus(FileStatus status);
+
 
     @Transactional
     @Modifying

@@ -18,5 +18,8 @@ public interface FileRepository {
 
     List<FileModel> getPendingFiles(Long folderId);
 
+    List<FileModel> getPendingFiles();
+
+
     boolean updateFileStatus(Long fileId, FileStatus status);
 }

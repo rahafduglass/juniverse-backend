@@ -23,6 +23,7 @@ public interface FileMapper {
     @Mapping(source="owner.username", target="ownerUsername")
     @Mapping(source="monitoredBy.username", target="monitoredByUsername")
     @Mapping(source="monitoredBy.id", target="monitoredById")
+    @Mapping(source="folder.name", target="folderName")
     FileModel entityToModel(FileEntity fileEntity);
 
     FileResponse modelToResponse(FileModel element);

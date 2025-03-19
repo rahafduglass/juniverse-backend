@@ -25,7 +25,7 @@ public class FileAdapter implements FileRepository {
 
     @Override
     public boolean updateFilePath(Long id, String filePath) {
-        return fileJpaRepository.updatePath(id,filePath)>0;
+        return fileJpaRepository.updatePath(id, filePath) > 0;
     }
 
     @Override
@@ -40,16 +40,31 @@ public class FileAdapter implements FileRepository {
 
     @Override
     public List<FileModel> getPendingFiles(Long folderId) {
-        return fileJpaRepository.findAllByStatus(folderId,FileStatus.PENDING).stream().map(fileMapper::entityToModel).toList();
+
+        return fileJpaRepository.findAllByStatus(folderId, FileStatus.PENDING).stream()
+                .map(e ->
+                        {
+                            FileModel fileModel = fileMapper.entityToModel(e);
+                            fileModel.setFolderName(e.getFolder().getName());
+                            return fileModel;
+                        }
+                ).toList();
     }
 
     @Override
     public List<FileModel> getPendingFiles() {
-        return   fileJpaRepository.findAllByStatus(FileStatus.PENDING).stream().map(fileMapper::entityToModel).toList();
+        return fileJpaRepository.findAllByStatus(FileStatus.PENDING).stream()
+                .map(e ->
+                {
+                    FileModel fileModel = fileMapper.entityToModel(e);
+                    fileModel.setFolderName(e.getFolder().getName());
+                    return fileModel;
+                })
+                .toList();
     }
 
     @Override
     public boolean updateFileStatus(Long fileId, FileStatus status) {
-        return fileJpaRepository.updateFileStatus(fileId,status)>0;
+        return fileJpaRepository.updateFileStatus(fileId, status) > 0;
     }
 }

@@ -37,6 +37,8 @@ public class FileModel {
 
     private Long folderId;
 
+    private String folderName;
+
     private LocalDateTime monitoredAt;
 
     private Long monitoredById;

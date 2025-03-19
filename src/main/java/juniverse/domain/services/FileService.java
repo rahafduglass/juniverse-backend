@@ -25,7 +25,6 @@ public class FileService {
     private final FileRepository fileRepository;
     private final IdentityProvider identityProvider;
     private final FolderRepository folderRepository;
-    private final FileJpaRepository fileJpaRepository;
 
     public boolean addFile(FileModel fileModel, String fileAsBase64) throws IOException {
 

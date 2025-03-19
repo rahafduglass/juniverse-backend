@@ -20,6 +20,8 @@ public class FileResponse {
 
     private Long folderId;
 
+    private String folderName;
+
     private String ownerUsername;
 
     private LocalDateTime monitoredAt;

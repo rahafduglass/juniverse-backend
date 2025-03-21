@@ -2,6 +2,7 @@ package juniverse.domain.services;
 
 import juniverse.domain.enums.FileExtension;
 import juniverse.domain.enums.FileStatus;
+import juniverse.domain.enums.UserRole;
 import juniverse.domain.models.EncodedFileModel;
 import juniverse.domain.models.FileModel;
 import juniverse.domain.provider.IdentityProvider;
@@ -32,14 +33,13 @@ public class FileService {
 
         SysUserEntity currentUser = identityProvider.currentIdentity();
 
+        fileModel.setStatus(currentUser.getRole() == UserRole.STUDENT ? FileStatus.PENDING : FileStatus.ACCEPTED);
         fileModel.setOwnerId(currentUser.getId());
         fileModel.setOwnerUsername(currentUser.getUsername());
-        fileModel.setStatus(FileStatus.PENDING);
         fileModel.setUploadDate(LocalDateTime.now());
         fileModel.setPath("src\\main\\resources\\juniverse_files\\folders\\" + fileModel.getFolderId() + "\\");
         FileModel savedFile = fileRepository.addFile(fileModel);
 
-        //TODO decode base64 and store in local storage
         byte[] decodedFile = Base64.getDecoder().decode(fileAsBase64);
         String filePath = "src\\main\\resources\\juniverse_files\\folders\\" + fileModel.getFolderId() + "\\" + savedFile.getId() + "." + savedFile.getExtension();
 
@@ -114,5 +114,13 @@ public class FileService {
         fileRepository.deleteFile(fileId);
         fileToDelete.delete();
         return true;
+    }
+
+    public boolean updateFileName(Long fileId, String fileName) {
+        return fileRepository.updateFileName(fileId,fileName);
+    }
+
+    public boolean updateFileDescription(Long fileId, String fileDescription) {
+        return fileRepository.updateFileDescription(fileId,fileDescription);
     }
 }

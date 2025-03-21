@@ -33,4 +33,14 @@ public interface FileJpaRepository extends JpaRepository<FileEntity, Long> {
     @Modifying
     @Query("UPDATE file f SET f.status= :status WHERE f.id= :fileId")
     int updateFileStatus(Long fileId, FileStatus status);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE file f SET f.name= :name WHERE f.id= :fileId")
+    int updateFileName(Long fileId, String name);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE file f SET f.description= :description WHERE f.id= :fileId")
+    int updateFileDescription(Long fileId, String description);
 }

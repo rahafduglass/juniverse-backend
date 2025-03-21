@@ -24,4 +24,8 @@ public interface FileRepository {
     boolean updateFileStatus(Long fileId, FileStatus status);
 
     boolean deleteFile(Long fileId);
+
+    boolean updateFileName(Long fileId, String fileName);
+
+    boolean updateFileDescription(Long fileId, String fileDescription);
 }

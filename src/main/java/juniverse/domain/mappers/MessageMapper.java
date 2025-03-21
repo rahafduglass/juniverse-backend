@@ -28,8 +28,10 @@ public interface MessageMapper {
 
     @Mapping(source = "sender.username", target = "senderUsername")
     @Mapping(source = "receiver.username", target = "receiverUsername")
+    @Mapping(source = "receiver.role", target = "receiverRole")
     @Mapping(source = "receiver.id", target = "receiverId")
     @Mapping(source = "sender.id", target = "senderId")
+    @Mapping(source = "sender.role", target = "senderRole")
     @Mapping(source = "privateChat.id", target = "privateChatId")
     MessageModel entityToModel(MessageEntity messageEntity);
 

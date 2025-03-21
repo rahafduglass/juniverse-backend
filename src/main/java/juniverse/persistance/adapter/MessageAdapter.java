@@ -65,4 +65,9 @@ public class MessageAdapter implements MessageRepository {
     public Long findSenderId(Long messageId) {
         return messageJpaRepository.findSenderIdById(messageId).getSender().getId();
     }
+
+    @Override
+    public MessageModel findById(Long messageId) {
+        return messageMapper.entityToModel(messageJpaRepository.findById(messageId).get());
+    }
 }

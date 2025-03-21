@@ -114,6 +114,28 @@ public class FileController {
         }
     }
 
+    @PutMapping("/file/{fileId}/name")
+    public ResponseEntity<ApiResponse<Boolean>> updateFileName(@PathVariable Long fileId, String fileName) {
+        try{
+            boolean isFail= !fileService.updateFileName(fileId,fileName);
+            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to update" : "file updated successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        }catch (Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PutMapping("/file/{fileId}/description")
+    public ResponseEntity<ApiResponse<Boolean>> updateFileDescription(@PathVariable Long fileId, String fileDescription) {
+        try{
+            boolean isFail= !fileService.updateFileDescription(fileId,fileDescription);
+            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to update" : "file updated successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        }catch (Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+
+
     @DeleteMapping("/file/{fileId}")
     public ResponseEntity<ApiResponse<Boolean>> deleteFile(@PathVariable Long fileId) {
         try{

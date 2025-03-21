@@ -25,4 +25,6 @@ public interface MessageRepository {
     boolean updateMessageContent(Long messageId, String content);
 
     Long findSenderId(Long messageId);
+
+    MessageModel findById(Long messageId);
 }

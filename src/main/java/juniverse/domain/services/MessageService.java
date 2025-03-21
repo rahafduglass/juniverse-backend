@@ -3,6 +3,7 @@ package juniverse.domain.services;
 
 import juniverse.domain.enums.ChatType;
 import juniverse.domain.enums.MessageStatus;
+import juniverse.domain.enums.UserRole;
 import juniverse.domain.models.MessageModel;
 import juniverse.domain.models.PrivateChatModel;
 import juniverse.domain.provider.IdentityProvider;
@@ -128,7 +129,22 @@ public class MessageService {
     }
 
     public boolean deleteMessage(Long messageId) {
-        return messageRepository.deleteMessage(messageId, identityProvider.currentIdentity().getId());
+        SysUserEntity currentUser = identityProvider.currentIdentity();
+        isValidDelete(currentUser, messageId);
+        return messageRepository.deleteMessage(messageId, currentUser.getId());
+    }
+
+    private void isValidDelete(SysUserEntity currentUser, Long messageId) {
+        MessageModel message = messageRepository.findById(messageId);
+
+        if (currentUser.getId().equals(message.getSenderId())) return;
+
+        if ((currentUser.getRole() == UserRole.ADMIN && message.getSenderRole() == UserRole.ADMIN)
+                || (currentUser.getRole() == UserRole.MODERATOR && message.getSenderRole() == UserRole.ADMIN)
+                || (currentUser.getRole() == UserRole.MODERATOR && message.getSenderRole() == UserRole.MODERATOR)) {
+            throw new RuntimeException("invalid delete message");
+        }
+
     }
 
     public boolean editMessage(Long messageId, String content) throws Exception {

@@ -6,12 +6,12 @@ import juniverse.domain.models.EncodedFileModel;
 import juniverse.domain.models.FileModel;
 import juniverse.domain.provider.IdentityProvider;
 import juniverse.persistance.entities.SysUserEntity;
-import juniverse.persistance.jpa.FileJpaRepository;
 import juniverse.persistance.repositories.FileRepository;
 import juniverse.persistance.repositories.FolderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -79,13 +79,13 @@ public class FileService {
 
     public EncodedFileModel getFileAsBase64(Long fileId) throws IOException {
 
-        FileModel file= fileRepository.getFilePath(fileId);
-        if(file==null)
+        FileModel file = fileRepository.getFilePath(fileId);
+        if (file == null)
             throw new RuntimeException("file doesn't exist");
 
-        FileInputStream fileInputStream = new FileInputStream(file.getPath().concat(fileId.toString()+"."+file.getExtension()));
+        FileInputStream fileInputStream = new FileInputStream(file.getPath().concat(fileId.toString() + "." + file.getExtension()));
 
-        String encodedFile= Base64.getEncoder().encodeToString(fileInputStream.readAllBytes());
+        String encodedFile = Base64.getEncoder().encodeToString(fileInputStream.readAllBytes());
 
         return EncodedFileModel.builder()
                 .fileAsBase64(encodedFile)
@@ -103,6 +103,16 @@ public class FileService {
     }
 
     public boolean updateFileStatus(Long fileId, FileStatus status) {
-        return fileRepository.updateFileStatus(fileId,status);
+        return fileRepository.updateFileStatus(fileId, status);
+    }
+
+    public boolean deleteFile(Long fileId) {
+        FileModel file = fileRepository.getFilePath(fileId);
+        String filePath = file.getPath().concat(fileId.toString() + "." + file.getExtension());
+        File fileToDelete = new File(filePath);
+
+        fileRepository.deleteFile(fileId);
+        fileToDelete.delete();
+        return true;
     }
 }

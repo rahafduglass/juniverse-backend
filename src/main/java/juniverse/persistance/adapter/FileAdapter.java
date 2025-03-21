@@ -67,4 +67,10 @@ public class FileAdapter implements FileRepository {
     public boolean updateFileStatus(Long fileId, FileStatus status) {
         return fileJpaRepository.updateFileStatus(fileId, status) > 0;
     }
+
+    @Override
+    public boolean deleteFile(Long fileId) {
+        fileJpaRepository.delete(fileJpaRepository.findById(fileId).get());
+        return true;
+    }
 }

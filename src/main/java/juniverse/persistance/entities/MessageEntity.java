@@ -49,9 +49,6 @@ public class MessageEntity {
     @JoinColumn(name = "private_chat_id", nullable = true)//null if its public chat
     private PrivateChatEntity privateChat;
 
-    @ManyToOne
-    @JoinColumn(name = "public_chat_id", nullable = true)
-    private PublicChatEntity publicChat;
 
 
     @ManyToOne

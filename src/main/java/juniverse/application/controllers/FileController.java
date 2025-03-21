@@ -117,7 +117,7 @@ public class FileController {
     @DeleteMapping("/file/{fileId}")
     public ResponseEntity<ApiResponse<Boolean>> deleteFile(@PathVariable Long fileId) {
         try{
-            boolean isFail= !fileService.updateFileStatus(fileId,FileStatus.DELETED);
+            boolean isFail= !fileService.deleteFile(fileId);
             return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to update" : "file updated successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
         }catch(Exception e){
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);

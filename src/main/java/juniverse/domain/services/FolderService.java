@@ -3,11 +3,15 @@ package juniverse.domain.services;
 import juniverse.domain.enums.FolderStatus;
 import juniverse.domain.models.FolderModel;
 import juniverse.domain.provider.IdentityProvider;
+import juniverse.domain.services.utils.FileUtils;
 import juniverse.persistance.repositories.FolderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -93,13 +97,16 @@ public class FolderService {
         return true;
     }
 
-    public boolean deleteFolder(Long folderId) {
+    public boolean deleteFolder(Long folderId) throws IOException {
         FolderModel currentFolder = folderRepository.findById(folderId);
 
         if (currentFolder == null)
             throw new RuntimeException("folder doesnt exist");
 
         folderRepository.remove(folderId);
+        Path folder = Paths.get(currentFolder.getPath()) ;
+        FileUtils.deleteRecursively(folder);
+
         return true;
     }
 }

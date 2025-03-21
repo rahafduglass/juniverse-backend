@@ -19,4 +19,5 @@ public interface FolderJpaRepository extends JpaRepository<FolderEntity, Long> {
 
     @Transactional
     void removeById(Long folderId);
+
 }

@@ -47,9 +47,6 @@ public class SysUserEntity implements UserDetails {
     @Column(nullable=false)
     private UserRole role;
 
-    @ManyToOne
-    private PublicChatEntity chat;
-
     private String profilePicturePath;
     private String profilePictureExtension;
 

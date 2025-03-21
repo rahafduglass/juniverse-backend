@@ -22,4 +22,6 @@ public interface FileRepository {
 
 
     boolean updateFileStatus(Long fileId, FileStatus status);
+
+    boolean deleteFile(Long fileId);
 }

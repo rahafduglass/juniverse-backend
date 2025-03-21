@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -43,4 +45,7 @@ public class FolderEntity {
     private SysUserEntity modifiedBy;
 
     private Timestamp modifiedOn;
+
+    @OneToMany(mappedBy="folder",cascade = CascadeType.REMOVE)
+    private List<FileEntity> files = new ArrayList<>();
 }

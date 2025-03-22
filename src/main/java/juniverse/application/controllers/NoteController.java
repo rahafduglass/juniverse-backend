@@ -17,14 +17,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/therapist-chat")
 @Tag(name = "NOTES")
 public class NoteController {
     private final NoteService noteService;
     private final NoteMapper noteMapper;
     private final ApiResponseHelper apiResponseHelper;
 
-    @PostMapping("notes/note")
+    @PostMapping("/notes/note")
     public ResponseEntity<ApiResponse<Boolean>> addNote(NoteRequest noteRequest) {
         try {
             boolean isFail = !noteService.addNote(noteMapper.requestToModel(noteRequest));
@@ -34,7 +34,7 @@ public class NoteController {
         }
     }
 
-    @GetMapping("/private-chat/{chatId}/notes")
+    @GetMapping("/{chatId}/notes")
     public ResponseEntity<ApiResponse<List<NoteResponse>>> getNotes(@PathVariable Long chatId) {
         try {
             List<NoteResponse> response = (noteService.getNotes(chatId)).stream()

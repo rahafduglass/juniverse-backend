@@ -3,7 +3,7 @@ package juniverse.domain.services;
 import juniverse.domain.enums.FolderStatus;
 import juniverse.domain.models.FolderModel;
 import juniverse.domain.provider.IdentityProvider;
-import juniverse.domain.services.utils.FileUtils;
+import juniverse.domain.utils.FileUtils;
 import juniverse.persistance.repositories.FolderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

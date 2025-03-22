@@ -1,4 +1,4 @@
-package juniverse.domain.services.utils;
+package juniverse.domain.utils;
 
 import java.io.IOException;
 import java.nio.file.Files;

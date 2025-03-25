@@ -1,6 +1,7 @@
 package juniverse.application.dtos.chats.public_chat;
 
 import juniverse.domain.enums.MessageStatus;
+import juniverse.domain.enums.UserRole;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,8 @@ public class MessageResponse {
     private MessageStatus status;
 
     private String senderUsername;
+
+    private UserRole senderRole;
 
 
 }

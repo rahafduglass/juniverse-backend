@@ -66,7 +66,8 @@ public class SecurityConfiguration {
                                 //chats
                                 "/api/v1/private-chat/{chatId}/allMessages",
                                 "/api/v1/private-chat/allTherapistChats",
-                                "/api/v1/private-chat/messageFromTherapist"
+                                "/api/v1/private-chat/messageFromTherapist",
+                                "/api/v1/therapist-chat/**"
                         ).hasAnyAuthority(UserRole.THERAPIST.name())
 
                         //admin

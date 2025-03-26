@@ -1,6 +1,5 @@
 package juniverse.domain.models;
 
-import juniverse.persistance.entities.SysUserEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -17,11 +16,9 @@ public class NewsModel {
 
     private String authorUserName;
 
-
-
     private Long updatedById;
 
-
+    private String updatedByUserName;
 
     private LocalDateTime createdAt;
 

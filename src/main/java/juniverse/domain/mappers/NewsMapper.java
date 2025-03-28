@@ -2,6 +2,7 @@ package juniverse.domain.mappers;
 
 
 import juniverse.application.dtos.news.NewsRequest;
+import juniverse.application.dtos.news.NewsResponse;
 import juniverse.domain.models.NewsModel;
 import juniverse.persistance.entities.NewsEntity;
 import juniverse.persistance.entities.SysUserEntity;
@@ -27,4 +28,7 @@ public interface NewsMapper {
         return sysUserEntity;
     }
 
+    NewsModel entityToModel(NewsEntity newsEntity);
+
+    NewsResponse modelToResponse(NewsModel newsModel);
 }

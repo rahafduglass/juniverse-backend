@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v2/news")
+@RequestMapping("api/v1/news")
 @RequiredArgsConstructor
 @Tag(name = "NEWS")
 public class NewsController {

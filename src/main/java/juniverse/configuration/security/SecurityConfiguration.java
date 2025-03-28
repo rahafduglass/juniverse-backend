@@ -61,6 +61,7 @@ public class SecurityConfiguration {
                                 "/webjars/**"
                         ).permitAll()
 
+
                         //therapist only
                         .requestMatchers(
                                 //chats
@@ -70,18 +71,27 @@ public class SecurityConfiguration {
                                 "/api/v1/therapist-chat/**"
                         ).hasAnyAuthority(UserRole.THERAPIST.name())
 
+
                         //admin
                         .requestMatchers(
-                                HttpMethod.POST, "api/v1/folder"
+                                HttpMethod.POST
+                                , "api/v1/folder"
+                                , "api/v1/news"
 
                         ).hasAnyAuthority(UserRole.ADMIN.name())
                         .requestMatchers(
-                                HttpMethod.PUT, "api/v1/folder/{folderId}", "api/v1/folder/{folderId}/description", "api/v1/folder/{folderId}/name"
-
+                                HttpMethod.PUT
+                                , "api/v1/folder/{folderId}"
+                                , "api/v1/folder/{folderId}/description"
+                                , "api/v1/folder/{folderId}/name"
+                                , "api/v1/news/{newsId}"
                         ).hasAnyAuthority(UserRole.ADMIN.name())
                         .requestMatchers(
-                                HttpMethod.DELETE, "api/v1/folder/{folderId}"
+                                HttpMethod.DELETE
+                                , "api/v1/folder/{folderId}"
+                                , "api/v1/news/{newsId}"
                         ).hasAnyAuthority(UserRole.ADMIN.name())
+
 
                         //moderator
                         .requestMatchers(
@@ -90,15 +100,17 @@ public class SecurityConfiguration {
                                 "api/v1/files/{fileId}/accept"
                         ).hasAnyAuthority(UserRole.MODERATOR.name())
 
+
                         //admin, mod only
                         .requestMatchers(
-                                //public chats
-                                HttpMethod.DELETE, "/api/v1/public-chat/{messageId}"
+                                HttpMethod.DELETE
+                                , "/api/v1/public-chat/{messageId}"
                         ).hasAnyAuthority(UserRole.ADMIN.name(), UserRole.MODERATOR.name())
                         .requestMatchers(
-                                //files
-                                HttpMethod.DELETE, "api/v1/files/file/{fileId}"
+                                HttpMethod.DELETE
+                                , "api/v1/files/file/{fileId}"
                         ).hasAnyAuthority(UserRole.ADMIN.name(), UserRole.MODERATOR.name())
+
 
                         //admin, mod, student only
                         .requestMatchers(
@@ -108,8 +120,13 @@ public class SecurityConfiguration {
                                 "/api/v1/private-chat"
                         ).hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name())
 
+
                         //all users
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/public-chat/{messageId}")
+                        .requestMatchers(HttpMethod.GET
+                                ,"api/v1/news")
+                        .hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name(), UserRole.THERAPIST.name())
+                        .requestMatchers(HttpMethod.PUT
+                                , "/api/v1/public-chat/{messageId}")
                         .hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name(), UserRole.THERAPIST.name())
                         .requestMatchers(
                                 //chats
@@ -134,7 +151,8 @@ public class SecurityConfiguration {
                         ).hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name(), UserRole.THERAPIST.name())
 
                         .requestMatchers(
-                                HttpMethod.GET, "/api/v1/folder")
+                                HttpMethod.GET
+                                , "/api/v1/folder")
                         .hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name(), UserRole.THERAPIST.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

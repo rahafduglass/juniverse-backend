@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/news")
@@ -47,9 +46,9 @@ public class NewsController {
     }
 
     @PutMapping("/{newsId}")
-    public ResponseEntity<ApiResponse<Boolean>> updateNews(@PathVariable Long newsId,@RequestBody NewsRequest newsRequest) {
+    public ResponseEntity<ApiResponse<Boolean>> updateNews(@PathVariable Long newsId, @RequestBody NewsRequest newsRequest) {
         try {
-            boolean isFail= !newsService.updateNews(newsId,newsMapper.requestToModel(newsRequest));
+            boolean isFail = !newsService.updateNews(newsId, newsMapper.requestToModel(newsRequest));
             return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to update" : "news updated successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
         } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
@@ -58,10 +57,10 @@ public class NewsController {
 
     @DeleteMapping("/{newsId}")
     public ResponseEntity<ApiResponse<Boolean>> deleteNews(@PathVariable Long newsId) {
-        try{
-            boolean isFail= !newsService.deleteNews(newsId);
+        try {
+            boolean isFail = !newsService.deleteNews(newsId);
             return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to delete" : "news deleted successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }

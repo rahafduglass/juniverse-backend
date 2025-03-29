@@ -1,6 +1,7 @@
 package juniverse.persistance.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,17 +18,22 @@ public class EventEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String title;
 
+    @NotNull
     private String description;
 
+    @NotNull
     private String location;
 
+    @NotNull
     private String date;
 
+    @NotNull
     private Timestamp time;
 
+    @NotNull
     @ManyToOne
     private SysUserEntity createdBy;
-
 }

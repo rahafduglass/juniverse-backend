@@ -62,7 +62,7 @@ public class SecurityConfiguration {
                         ).permitAll()
 
 
-                        //therapist only
+                        //therapist
                         .requestMatchers(
                                 //chats
                                 "/api/v1/private-chat/{chatId}/allMessages",
@@ -77,6 +77,7 @@ public class SecurityConfiguration {
                                 HttpMethod.POST
                                 , "api/v1/folder"
                                 , "api/v1/news"
+                                , "api/v1/events"
 
                         ).hasAnyAuthority(UserRole.ADMIN.name())
                         .requestMatchers(
@@ -90,6 +91,7 @@ public class SecurityConfiguration {
                                 HttpMethod.DELETE
                                 , "api/v1/folder/{folderId}"
                                 , "api/v1/news/{newsId}"
+                                , "api/v1/events/{eventId}"
                         ).hasAnyAuthority(UserRole.ADMIN.name())
 
 
@@ -98,6 +100,7 @@ public class SecurityConfiguration {
                                 "api/v1/files/pending/{folderId}",
                                 "api/v1/files/{fileId}/reject",
                                 "api/v1/files/{fileId}/accept"
+
                         ).hasAnyAuthority(UserRole.MODERATOR.name())
 
 
@@ -122,10 +125,14 @@ public class SecurityConfiguration {
 
 
                         //all users
-                        .requestMatchers(HttpMethod.GET
-                                ,"api/v1/news")
+                        .requestMatchers(
+                                HttpMethod.GET
+                                , "api/v1/news"
+                                , "api/v1/events"
+                        )
                         .hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name(), UserRole.THERAPIST.name())
-                        .requestMatchers(HttpMethod.PUT
+                        .requestMatchers(
+                                HttpMethod.PUT
                                 , "/api/v1/public-chat/{messageId}")
                         .hasAnyAuthority(UserRole.STUDENT.name(), UserRole.MODERATOR.name(), UserRole.ADMIN.name(), UserRole.THERAPIST.name())
                         .requestMatchers(

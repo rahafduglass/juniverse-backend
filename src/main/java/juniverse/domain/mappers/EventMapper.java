@@ -1,11 +1,14 @@
 package juniverse.domain.mappers;
 
 import juniverse.application.dtos.event.EventRequest;
+import juniverse.application.dtos.event.EventResponse;
 import juniverse.domain.models.EventModel;
 import juniverse.persistance.entities.EventEntity;
 import juniverse.persistance.entities.SysUserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface EventMapper {
@@ -24,4 +27,8 @@ public interface EventMapper {
 
         return sysUserEntity;
     }
+
+    EventResponse modelToResponse(EventModel eventModel);
+
+    List<EventModel> entityToModel(List<EventEntity> eventEntities);
 }

@@ -62,7 +62,7 @@ public class SysUserService {
         //encode picture then return it
         FileInputStream fileInputStream = new FileInputStream((String) ((Object[]) photo[0])[0]);
         ((Object[]) photo[0])[0] = Base64.getEncoder().encodeToString(fileInputStream.readAllBytes());
-
+        fileInputStream.close();
         return photo;
     }
 
@@ -79,7 +79,7 @@ public class SysUserService {
         //encode picture then return it
         FileInputStream fileInputStream = new FileInputStream((String) ((Object[]) photo[0])[0]);
         ((Object[]) photo[0])[0] = Base64.getEncoder().encodeToString(fileInputStream.readAllBytes());
-
+        fileInputStream.close();
         return photo;
 
     }

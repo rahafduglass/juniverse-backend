@@ -28,4 +28,8 @@ public interface FileRepository {
     boolean updateFileName(Long fileId, String fileName);
 
     boolean updateFileDescription(Long fileId, String fileDescription);
+
+    List<FileModel> getUserPendingFiles(Long userId);
+
+    List<FileModel> getUserAcceptedFiles(Long userId);
 }

@@ -84,4 +84,14 @@ public class FileAdapter implements FileRepository {
     public boolean updateFileDescription(Long fileId, String fileDescription) {
         return fileJpaRepository.updateFileDescription(fileId,fileDescription)>0;
     }
+
+    @Override
+    public List<FileModel> getUserPendingFiles(Long userId) {
+        return (fileJpaRepository.getUserPendingFiles(userId)).stream().map(fileMapper::entityToModel).toList();
+    }
+
+    @Override
+    public List<FileModel> getUserAcceptedFiles(Long userId) {
+        return (fileJpaRepository.getUserAcceptedFiles(userId)).stream().map(fileMapper::entityToModel).toList();
+    }
 }

@@ -3,6 +3,7 @@ package juniverse.application.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.application.dtos.ApiResponse;
+import juniverse.application.dtos.file.FileResponse;
 import juniverse.application.dtos.sys_user.ProfileAndCoverPicturesResponse;
 import juniverse.application.dtos.sys_user.SysUserProfileResponse;
 import juniverse.application.dtos.sys_user.UpdateBioRequest;
@@ -14,6 +15,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -115,4 +118,5 @@ public class SysUserController {
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
+
 }

@@ -1,7 +1,9 @@
 package juniverse.persistance.jpa;
 
+import io.micrometer.common.KeyValues;
 import jakarta.transaction.Transactional;
 import juniverse.domain.enums.FileStatus;
+import juniverse.domain.models.FileModel;
 import juniverse.persistance.entities.FileEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,8 +14,6 @@ import java.util.List;
 
 @Repository
 public interface FileJpaRepository extends JpaRepository<FileEntity, Long> {
-
-
 
 
     @Transactional
@@ -43,4 +43,10 @@ public interface FileJpaRepository extends JpaRepository<FileEntity, Long> {
     @Modifying
     @Query("UPDATE file f SET f.description= :description WHERE f.id= :fileId")
     int updateFileDescription(Long fileId, String description);
+
+    @Query("SELECT f FROM file f WHERE f.status =0 AND f.owner.id=:userId")
+    List<FileEntity> getUserPendingFiles(Long userId);
+
+    @Query("SELECT f FROM file f WHERE f.status =2 AND f.owner.id=:userId")
+    List<FileEntity> getUserAcceptedFiles(Long userId);
 }

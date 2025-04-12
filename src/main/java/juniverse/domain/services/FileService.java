@@ -1,5 +1,6 @@
 package juniverse.domain.services;
 
+import io.micrometer.common.KeyValues;
 import juniverse.domain.enums.FileExtension;
 import juniverse.domain.enums.FileStatus;
 import juniverse.domain.enums.UserRole;
@@ -122,5 +123,15 @@ public class FileService {
 
     public boolean updateFileDescription(Long fileId, String fileDescription) {
         return fileRepository.updateFileDescription(fileId,fileDescription);
+    }
+
+    public List<FileModel> getUserPendingFiles() {
+        Long userId=identityProvider.currentIdentity().getId();
+        return fileRepository.getUserPendingFiles(userId);
+    }
+
+    public List<FileModel> getUserAcceptedFiles() {
+        Long userId=identityProvider.currentIdentity().getId();
+        return fileRepository.getUserAcceptedFiles(userId);
     }
 }

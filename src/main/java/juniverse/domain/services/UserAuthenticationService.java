@@ -8,6 +8,7 @@ import juniverse.persistance.entities.SysUserEntity;
 import juniverse.persistance.repositories.SysUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,9 @@ public class UserAuthenticationService {
 
         var user = sysUserRepository.findByUsername(userAuthenticationModel.getUsername())
                 .orElseThrow(() -> new RuntimeException("invalid credentials"));
+        if (user.getIsBanned()) {
+            throw new LockedException("This user is banned.");
+        }
         var jwt = jwtService.generateToken(user);
 
 

@@ -2,6 +2,7 @@ package juniverse.domain.mappers;
 
 import juniverse.application.dtos.sys_user.RegisterRequest;
 import juniverse.application.dtos.sys_user.SysUserProfileResponse;
+import juniverse.application.dtos.sys_user.SysUserResponse;
 import juniverse.application.dtos.sys_user.UpdateBioRequest;
 import juniverse.domain.models.SysUserModel;
 import juniverse.persistance.entities.SysUserEntity;
@@ -24,4 +25,5 @@ public interface SysUserMapper {
     SysUserModel requestToModel(UpdateBioRequest request);
 
 
+    SysUserResponse modelToResponse(SysUserModel sysUserModel);
 }

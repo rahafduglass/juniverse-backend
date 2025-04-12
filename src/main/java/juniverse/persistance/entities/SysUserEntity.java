@@ -47,6 +47,8 @@ public class SysUserEntity implements UserDetails {
     @Column(nullable=false)
     private UserRole role;
 
+    private Boolean isBanned;
+
     private String profilePicturePath;
     private String profilePictureExtension;
 

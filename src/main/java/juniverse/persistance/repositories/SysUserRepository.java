@@ -1,6 +1,9 @@
 package juniverse.persistance.repositories;
 
+import juniverse.domain.enums.UserRole;
+import juniverse.domain.models.SysUserModel;
 import juniverse.persistance.entities.SysUserEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,4 +29,12 @@ public interface SysUserRepository {
     boolean deleteProfilePicture(Long currentUserId);
 
     boolean deleteCoverPicture(Long currentUserId);
+
+    boolean updateRole(Long studentId, UserRole userRole);
+
+    UserRole findRoleById(Long studentId);
+
+    boolean banUser(Long userId);
+
+    List<SysUserModel> findUsersByRole(UserRole role);
 }

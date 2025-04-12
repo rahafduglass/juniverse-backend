@@ -1,5 +1,6 @@
 package juniverse.persistance.adapter;
 
+import juniverse.domain.enums.UserRole;
 import juniverse.domain.mappers.SysUserMapper;
 import juniverse.domain.models.SysUserModel;
 import juniverse.persistance.entities.SysUserEntity;
@@ -10,12 +11,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
 public class SysUserAdapter implements SysUserRepository {
 
     private final SysUserJpaRepository sysUserJpaRepository;
+    private final SysUserMapper sysUserMapper;
 
 
     @Override
@@ -62,5 +65,25 @@ public class SysUserAdapter implements SysUserRepository {
     @Override
     public boolean deleteCoverPicture(Long currentUserId) {
         return sysUserJpaRepository.deleteCoverPicture(currentUserId)>0;
+    }
+
+    @Override
+    public boolean updateRole(Long studentId, UserRole userRole) {
+        return sysUserJpaRepository.updateRole(studentId,userRole)>0;
+    }
+
+    @Override
+    public UserRole findRoleById(Long studentId) {
+        return sysUserJpaRepository.findRoleById(studentId);
+    }
+
+    @Override
+    public boolean banUser(Long userId) {
+        return sysUserJpaRepository.banUser(userId)>0;
+    }
+
+    @Override
+    public List<SysUserModel> findUsersByRole(UserRole role) {
+        return (sysUserJpaRepository.findUsersByRole(role)).stream().map(sysUserMapper::entityToModel).toList();
     }
 }

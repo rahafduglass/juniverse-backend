@@ -1,0 +1,71 @@
+package juniverse.application.controllers;
+
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import juniverse.application.dtos.ApiResponse;
+import juniverse.application.dtos.news.NewsResponse;
+import juniverse.application.dtos.sys_user.SysUserResponse;
+import juniverse.application.helpers.ApiResponseHelper;
+import juniverse.domain.enums.UserRole;
+import juniverse.domain.mappers.SysUserMapper;
+import juniverse.domain.services.SysUserService;
+import juniverse.domain.services.UsersService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("users")
+@RequiredArgsConstructor
+@Tag(name = "User-Management")
+public class UsersController {
+
+    private final UsersService usersService;
+    private final ApiResponseHelper apiResponseHelper;
+    private final SysUserService sysUserService;
+    private final SysUserMapper sysUserMapper;
+
+    @PutMapping("/{studentId}/promote")
+    public ResponseEntity<ApiResponse<Boolean>> promoteStudent(@PathVariable Long studentId) {
+        try {
+            boolean isFail = !usersService.promoteStudent(studentId);
+            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to promote" : "student promoted successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PutMapping("/{moderatorId}/demote")
+    public ResponseEntity<ApiResponse<Boolean>> demoteModerator(@PathVariable Long moderatorId) {
+        try {
+            boolean isFail = !usersService.demoteModerator(moderatorId);
+            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to demote" : "moderator demoted successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PutMapping("/{userId}/ban")
+    public ResponseEntity<ApiResponse<Boolean>> banUser(@PathVariable Long userId) {
+        try {
+            boolean isFail = !usersService.banUser(userId);
+            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to ban" : "user banned successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @GetMapping("/{role}")
+    public ResponseEntity<ApiResponse<List<SysUserResponse>>> getUsersByRole(@PathVariable UserRole role) {
+        try {
+            List<SysUserResponse> response = (sysUserService.getUsersByRole(role)).stream().map(sysUserMapper::modelToResponse).toList();
+            boolean isFail = response.isEmpty();
+            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there are no news" : " retrieved succesfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+}

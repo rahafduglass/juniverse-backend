@@ -1,5 +1,7 @@
 package juniverse.domain.services;
 
+import io.micrometer.common.KeyValues;
+import juniverse.domain.enums.UserRole;
 import juniverse.domain.mappers.SysUserMapper;
 import juniverse.domain.models.SysUserModel;
 import juniverse.domain.provider.IdentityProvider;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -136,4 +139,7 @@ public class SysUserService {
         return result;
     }
 
+    public List<SysUserModel> getUsersByRole(UserRole role) {
+        return sysUserRepository.findUsersByRole(role);
+    }
 }

@@ -58,12 +58,33 @@ public class UsersController {
         }
     }
 
+    @GetMapping("/banned")
+    public ResponseEntity<ApiResponse<List<SysUserResponse>>> getBannedUsers() {
+        try {
+            List<SysUserResponse> response = (sysUserService.getBannedUsers()).stream().map(sysUserMapper::modelToResponse).toList();
+            boolean isFail = response.isEmpty();
+            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there are no banned users" : " retrieved succesfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
     @GetMapping("/{role}")
     public ResponseEntity<ApiResponse<List<SysUserResponse>>> getUsersByRole(@PathVariable UserRole role) {
         try {
             List<SysUserResponse> response = (sysUserService.getUsersByRole(role)).stream().map(sysUserMapper::modelToResponse).toList();
             boolean isFail = response.isEmpty();
-            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there are no news" : " retrieved succesfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there are no users" : " retrieved succesfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PutMapping("/{userId}/unban")
+    public ResponseEntity<ApiResponse<Boolean>> unbanUser(@PathVariable Long userId) {
+        try {
+            boolean isFail = !usersService.unbanUser(userId);
+            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to unban" : "user ubanned successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
         } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }

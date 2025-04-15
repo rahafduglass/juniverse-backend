@@ -86,4 +86,14 @@ public class SysUserAdapter implements SysUserRepository {
     public List<SysUserModel> findUsersByRole(UserRole role) {
         return (sysUserJpaRepository.findUsersByRole(role)).stream().map(sysUserMapper::entityToModel).toList();
     }
+
+    @Override
+    public List<SysUserModel> findBannedUsers() {
+        return sysUserJpaRepository.findBannedUsers().stream().map(sysUserMapper::entityToModel).toList();
+    }
+
+    @Override
+    public boolean unbanUser(Long userId) {
+        return sysUserJpaRepository.unbanUser(userId)>0;
+    }
 }

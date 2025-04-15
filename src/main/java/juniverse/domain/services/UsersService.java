@@ -33,4 +33,12 @@ public class UsersService {
         throw new RuntimeException("can't Ban an admin Or therapist");
 
     }
+
+    public boolean unbanUser(Long userId) {
+        UserRole userRole = sysUserRepository.findRoleById(userId);
+        if (userRole == UserRole.STUDENT || userRole == UserRole.MODERATOR)
+            return sysUserRepository.unbanUser(userId);
+        throw new RuntimeException("can't Ban an admin Or therapist");
+
+    }
 }

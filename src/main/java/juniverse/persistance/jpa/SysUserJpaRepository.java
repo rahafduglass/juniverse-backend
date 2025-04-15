@@ -1,6 +1,5 @@
 package juniverse.persistance.jpa;
 
-import io.micrometer.common.KeyValues;
 import jakarta.transaction.Transactional;
 import juniverse.domain.enums.UserRole;
 import juniverse.persistance.entities.SysUserEntity;
@@ -64,6 +63,14 @@ public interface SysUserJpaRepository extends JpaRepository<SysUserEntity, Long>
     @Query("UPDATE sys_user s SET s.isBanned =true WHERE s.id = :id")
     Integer banUser(Long id);
 
-    @Query(" SELECT u FROM sys_user u WHERE u.role = :role")
+    @Query(" SELECT u FROM sys_user u WHERE u.role = :role AND u.isBanned=false")
     List<SysUserEntity> findUsersByRole(UserRole role);
+
+    @Query("SELECT u FROM sys_user u WHERE u.isBanned=true")
+    List<SysUserEntity> findBannedUsers();
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE sys_user s SET s.isBanned =false WHERE s.id = :id")
+    Integer unbanUser(Long id);
 }

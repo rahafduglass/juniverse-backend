@@ -15,4 +15,8 @@ public class SysUserResponse {
     private String email;
 
     private UserRole role;
+
+    private String lastName;
+
+    private String firstName;
 }

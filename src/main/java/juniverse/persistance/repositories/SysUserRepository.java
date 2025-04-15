@@ -37,4 +37,8 @@ public interface SysUserRepository {
     boolean banUser(Long userId);
 
     List<SysUserModel> findUsersByRole(UserRole role);
+
+    List<SysUserModel> findBannedUsers();
+
+    boolean unbanUser(Long userId);
 }

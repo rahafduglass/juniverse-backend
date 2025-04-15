@@ -142,4 +142,8 @@ public class SysUserService {
     public List<SysUserModel> getUsersByRole(UserRole role) {
         return sysUserRepository.findUsersByRole(role);
     }
+
+    public List<SysUserModel> getBannedUsers() {
+        return sysUserRepository.findBannedUsers();
+    }
 }

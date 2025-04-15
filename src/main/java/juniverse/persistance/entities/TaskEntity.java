@@ -16,7 +16,7 @@ public class TaskEntity {
     private String title;
 
     @NotNull
-    private boolean isChecked;
+    private Boolean isChecked=false;
 
     @ManyToOne
     @NotNull

@@ -11,7 +11,6 @@ import juniverse.domain.services.FileService;
 import juniverse.domain.services.QuoteService;
 import juniverse.domain.services.TaskService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -91,6 +90,7 @@ public class DashboardController {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
+
     @DeleteMapping("/tasks/{taskId}")
     public ResponseEntity<ApiResponse<Boolean>> deleteTask(@PathVariable Long taskId){
         try{
@@ -100,12 +100,24 @@ public class DashboardController {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
+
     @PutMapping("/quotes")
     public ResponseEntity<ApiResponse<Boolean>> updateQuote(String quote){
         try{
             boolean isFail= !quoteService.updateQuote(quote);
             return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to update" : "quote updated successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
         }catch (Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @GetMapping("/quotes/quote")
+    public ResponseEntity<ApiResponse<String>> getUserQuote(){
+        try {
+            String response = quoteService.getUserQuote();
+            boolean isFail = response.isEmpty();
+            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "failed to get" : "tasks retrieved successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+        } catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }

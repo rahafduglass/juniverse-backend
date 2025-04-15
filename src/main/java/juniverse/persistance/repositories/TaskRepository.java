@@ -14,4 +14,5 @@ public interface TaskRepository {
      boolean checkTask(Long taskId);
 
      boolean deleteTask(Long taskId);
+
 }

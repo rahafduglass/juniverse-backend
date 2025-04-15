@@ -29,4 +29,9 @@ public class QuoteAdapter implements QuoteRepository {
         return true;
 
     }
+
+    @Override
+    public String getQuoteByOwnerId(Long id) {
+        return quoteJpaRepository.findByOwnerId(id).get().getQuote();
+    }
 }

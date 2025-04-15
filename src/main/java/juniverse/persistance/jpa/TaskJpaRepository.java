@@ -19,4 +19,6 @@ public interface TaskJpaRepository extends JpaRepository<TaskEntity,Long> {
     @Transactional
     @Query("UPDATE task t SET t.isChecked=true")
     Integer checkTask(Long taskId);
+
+
 }

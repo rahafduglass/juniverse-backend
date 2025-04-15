@@ -6,5 +6,5 @@ import lombok.Data;
 public class TaskResponse {
     private int id;
     private String title;
-    private boolean isChecked;
+    private Boolean isChecked;
 }

@@ -37,4 +37,7 @@ public class TaskAdapter implements TaskRepository {
         taskJpaRepository.deleteById(taskId);
         return true;
     }
+
+
+
 }

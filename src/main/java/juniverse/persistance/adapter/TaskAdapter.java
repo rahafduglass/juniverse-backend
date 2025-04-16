@@ -38,6 +38,10 @@ public class TaskAdapter implements TaskRepository {
         return true;
     }
 
+    @Override
+    public boolean uncheckTask(Long taskId) {
+        return taskJpaRepository.uncheckTask(taskId)<0;
+    }
 
 
 }

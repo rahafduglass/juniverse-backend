@@ -4,6 +4,7 @@ import juniverse.domain.enums.FileStatus;
 import juniverse.domain.models.FileModel;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -21,7 +22,7 @@ public interface FileRepository {
     List<FileModel> getPendingFiles();
 
 
-    boolean updateFileStatus(Long fileId, FileStatus status);
+    boolean updateFileStatus(Long fileId, FileStatus status, LocalDateTime monitoredAt, Long monitoredBy);
 
     boolean deleteFile(Long fileId);
 

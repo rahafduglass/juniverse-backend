@@ -104,7 +104,7 @@ public class FileService {
     }
 
     public boolean updateFileStatus(Long fileId, FileStatus status) {
-        return fileRepository.updateFileStatus(fileId, status);
+        return fileRepository.updateFileStatus(fileId, status,LocalDateTime.now(),identityProvider.currentIdentity().getId());
     }
 
     public boolean deleteFile(Long fileId) {

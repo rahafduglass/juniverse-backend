@@ -90,6 +90,15 @@ public class DashboardController {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
+    @PutMapping("/tasks/{taskId}/uncheck")
+    public ResponseEntity<ApiResponse<Boolean>> uncheckTask(@PathVariable Long taskId){
+        try{
+            boolean isFail= !taskService.uncheck(taskId);
+            return apiResponseHelper.buildApiResponse(!isFail, !isFail, isFail ? "failed to check" : "task checked successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
+        }catch (Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 
     @DeleteMapping("/tasks/{taskId}")
     public ResponseEntity<ApiResponse<Boolean>> deleteTask(@PathVariable Long taskId){

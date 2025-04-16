@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,13 +48,13 @@ public class UserAuthenticationService {
 
         List<SysUserEntity> users = sysUserModels.stream().map(sysUserModel -> {
 
-            SysUserEntity user= sysUserMapper.modelToEntity(sysUserModel);
+            SysUserEntity user = sysUserMapper.modelToEntity(sysUserModel);
             user.setPassword(passwordEncoder.encode(sysUserModel.getPassword()));
             return user;
         }).collect(Collectors.toList());
 
         List<SysUserEntity> savedUsers = sysUserRepository.saveAll(users);
-        return savedUsers!=null;
+        return savedUsers != null;
     }
 
 }

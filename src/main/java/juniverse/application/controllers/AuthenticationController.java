@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
-@Tag(name="LOGIN & REGISTER")
+@Tag(name = "LOGIN & REGISTER")
 public class AuthenticationController {
 
     private final ApiResponseHelper apiResponseHelper;
@@ -35,19 +35,22 @@ public class AuthenticationController {
     @PostMapping("/signIn")
     public ResponseEntity<ApiResponse<UserAuthenticationResponse>> signIn(@RequestBody UserAuthenticationRequest userAuthenticationRequest) {
         try {
-            UserAuthenticationResponse response=userAuthenticationMapper.modelToResponse(authenticationService.signIn(userAuthenticationMapper.requestToModel(userAuthenticationRequest)));
+            UserAuthenticationResponse response = userAuthenticationMapper.modelToResponse(authenticationService.signIn(userAuthenticationMapper.requestToModel(userAuthenticationRequest)));
             boolean isFail = response == null;
 
             return apiResponseHelper.buildApiResponse(response, !isFail, (isFail ? "invalid credentials" : "successful login"), (isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK));
         } catch (Exception e) {
-            return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+            return apiResponseHelper.buildApiResponse(null
+                    , false
+                    , "An error occurred: " + (e.getMessage().equals("Bad credentials") ? "invalid password or username" : e.getMessage())
+                    , HttpStatus.EXPECTATION_FAILED);
         }
     }
 
     @PostMapping("/register-list-of-users")
     public ResponseEntity<ApiResponse<Boolean>> registerListOfUsers(@RequestBody List<RegisterRequest> registerRequests) {
         try {
-            Boolean areRegistered=authenticationService.registerListOfUsers(sysUserMapper.listOfRequestsToListOfModel(registerRequests));
+            Boolean areRegistered = authenticationService.registerListOfUsers(sysUserMapper.listOfRequestsToListOfModel(registerRequests));
 
             return apiResponseHelper.buildApiResponse(areRegistered, areRegistered, (!areRegistered ? "registration failed" : "successful registration"), (!areRegistered ? HttpStatus.NOT_FOUND : HttpStatus.OK));
         } catch (Exception e) {

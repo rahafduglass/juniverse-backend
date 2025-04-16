@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -31,8 +32,8 @@ public interface FileJpaRepository extends JpaRepository<FileEntity, Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE file f SET f.status= :status WHERE f.id= :fileId")
-    int updateFileStatus(Long fileId, FileStatus status);
+    @Query("UPDATE file f SET f.status= :status,f.monitoredAt=:monitoredAt,f.monitoredBy.id=:monitoredBy WHERE f.id= :fileId")
+    int updateFileStatus(Long fileId, FileStatus status, LocalDateTime monitoredAt, Long monitoredBy);
 
     @Transactional
     @Modifying

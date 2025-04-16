@@ -8,6 +8,7 @@ import juniverse.persistance.repositories.FileRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -64,8 +65,8 @@ public class FileAdapter implements FileRepository {
     }
 
     @Override
-    public boolean updateFileStatus(Long fileId, FileStatus status) {
-        return fileJpaRepository.updateFileStatus(fileId, status) > 0;
+    public boolean updateFileStatus(Long fileId, FileStatus status, LocalDateTime monitoredAt, Long monitoredBy) {
+        return fileJpaRepository.updateFileStatus(fileId, status,monitoredAt,monitoredBy) > 0;
     }
 
     @Override

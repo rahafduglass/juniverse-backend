@@ -15,4 +15,5 @@ public interface TaskRepository {
 
      boolean deleteTask(Long taskId);
 
+    boolean uncheckTask(Long taskId);
 }

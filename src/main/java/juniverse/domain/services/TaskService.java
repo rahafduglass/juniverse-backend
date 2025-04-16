@@ -37,4 +37,7 @@ public class TaskService {
     }
 
 
+    public boolean uncheck(Long taskId) {
+        return taskRepository.uncheckTask(taskId);
+    }
 }

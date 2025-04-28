@@ -4,9 +4,12 @@ package juniverse.domain.services.chat;
 import juniverse.domain.enums.ChatType;
 import juniverse.domain.enums.MessageStatus;
 import juniverse.domain.enums.UserRole;
+import juniverse.domain.mappers.notification.NotificationMapper;
 import juniverse.domain.models.chat.MessageModel;
 import juniverse.domain.models.chat.PrivateChatModel;
+import juniverse.domain.models.notification.NotificationModel;
 import juniverse.domain.provider.IdentityProvider;
+import juniverse.domain.services.notification.NotificationService;
 import juniverse.persistance.entities.user.SysUserEntity;
 import juniverse.persistance.repositories.chat.MessageRepository;
 import juniverse.persistance.repositories.chat.PrivateChatRepository;
@@ -28,7 +31,7 @@ public class MessageService {
     private final SysUserRepository sysUserRepository;
     private final PrivateChatService privateChatService;
     private final IdentityProvider identityProvider;
-
+    private final NotificationService notificationService;
 
     public MessageModel sendMessageToTherapist(String content) throws Exception {
 
@@ -54,6 +57,7 @@ public class MessageService {
         messageModel.setTimestamp(LocalDateTime.now());
         messageModel.setPrivateChatId(privateChat.getId());
         messageModel.setStatus(MessageStatus.SENT);
+
 
         return sendMessage(messageModel);
     }
@@ -157,6 +161,16 @@ public class MessageService {
     }
 
     private MessageModel sendMessage(MessageModel messageModel) {
+        if(messageModel.getReceiverId()!=null){
+            NotificationModel notification= NotificationModel.builder()
+                    .isRead(false)
+                    .receiverId(messageModel.getReceiverId())
+                    .time(LocalDateTime.now())
+                    .content("you have private messages check your chat")
+
+                    .build();
+            notificationService.createNotification(notification);
+        }
 
         return messageRepository.sendMessage(messageModel);
     }

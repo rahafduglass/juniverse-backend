@@ -1,8 +1,8 @@
 package juniverse.domain.provider;
 
 
-import juniverse.persistance.entities.SysUserEntity;
-import juniverse.persistance.repositories.SysUserRepository;
+import juniverse.persistance.entities.user.SysUserEntity;
+import juniverse.persistance.repositories.user.SysUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

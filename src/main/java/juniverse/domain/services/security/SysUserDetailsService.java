@@ -1,7 +1,7 @@
 package juniverse.domain.services.security;
 
 
-import juniverse.persistance.repositories.SysUserRepository;
+import juniverse.persistance.repositories.user.SysUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

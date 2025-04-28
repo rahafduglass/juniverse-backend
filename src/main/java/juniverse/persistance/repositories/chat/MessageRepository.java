@@ -1,0 +1,30 @@
+package juniverse.persistance.repositories.chat;
+
+
+import juniverse.domain.enums.ChatType;
+import juniverse.domain.models.chat.MessageModel;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface MessageRepository {
+
+    Integer getNumOfUnreadMessagesByChatAndReceiver(Long chatId, Long receiverId);
+
+    MessageModel sendMessage(MessageModel messageModel);
+
+    List<MessageModel> findAllByPrivateChatId(Long id);
+
+    void markMessagesAsRead(Long userId, Long chatId);
+
+    List<MessageModel> findAllByChatType(ChatType chatType);
+
+    boolean deleteMessage(Long messageId,Long deletedBy);
+
+    boolean updateMessageContent(Long messageId, String content);
+
+    Long findSenderId(Long messageId);
+
+    MessageModel findById(Long messageId);
+}

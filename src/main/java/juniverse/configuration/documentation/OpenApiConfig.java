@@ -1,12 +1,11 @@
 package juniverse.configuration.documentation;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import juniverse.application.controllers.PrivateChatController;
-import juniverse.application.controllers.PublicChatController;
+import juniverse.application.controllers.chat.PrivateChatController;
+import juniverse.application.controllers.chat.PublicChatController;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.service.OperationService;
 import org.springframework.context.annotation.Bean;

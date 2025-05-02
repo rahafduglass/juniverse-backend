@@ -95,4 +95,14 @@ public class FileAdapter implements FileRepository {
     public List<FileModel> getUserAcceptedFiles(Long userId) {
         return (fileJpaRepository.getUserAcceptedFiles(userId)).stream().map(fileMapper::entityToModel).toList();
     }
+
+    @Override
+    public Long findUploaderIdById(Long fileId) {
+        return fileJpaRepository.findOwnerIdById(fileId);
+    }
+
+    @Override
+    public FileModel getById(Long fileId) {
+        return fileMapper.entityToModel(fileJpaRepository.findById(fileId).get());
+    }
 }

@@ -1,11 +1,14 @@
 package juniverse.domain.services.filesharing;
 
+import jdk.jshell.Snippet;
 import juniverse.domain.enums.FileExtension;
 import juniverse.domain.enums.FileStatus;
 import juniverse.domain.enums.UserRole;
 import juniverse.domain.models.filesharing.EncodedFileModel;
 import juniverse.domain.models.filesharing.FileModel;
+import juniverse.domain.models.notification.NotificationModel;
 import juniverse.domain.provider.IdentityProvider;
+import juniverse.domain.services.notification.NotificationService;
 import juniverse.persistance.entities.user.SysUserEntity;
 import juniverse.persistance.repositories.filesharing.FileRepository;
 import juniverse.persistance.repositories.filesharing.FolderRepository;
@@ -26,6 +29,7 @@ public class FileService {
     private final FileRepository fileRepository;
     private final IdentityProvider identityProvider;
     private final FolderRepository folderRepository;
+    private final NotificationService notificationService;
 
     public boolean addFile(FileModel fileModel, String fileAsBase64) throws IOException {
 
@@ -103,7 +107,21 @@ public class FileService {
     }
 
     public boolean updateFileStatus(Long fileId, FileStatus status) {
-        return fileRepository.updateFileStatus(fileId, status,LocalDateTime.now(),identityProvider.currentIdentity().getId());
+        FileModel file = fileRepository.getById(fileId);
+
+        NotificationModel notification = NotificationModel.builder()
+                .isRead(false)
+                .type("pending file")
+                .content(status == FileStatus.ACCEPTED ? "your file: "+file.getName()+" got accepted by a moderator" : "your file got rejected by a moderator")
+                .createdOn(LocalDateTime.now())
+                .receiverId(file.getOwnerId())
+                .build();
+        notificationService.createNotification(notification);
+        return fileRepository.updateFileStatus(fileId, status, LocalDateTime.now(), identityProvider.currentIdentity().getId());
+    }
+
+    public Long getFileUploaderId(Long fileId) {
+        return fileRepository.findUploaderIdById(fileId);
     }
 
     public boolean deleteFile(Long fileId) {
@@ -117,20 +135,20 @@ public class FileService {
     }
 
     public boolean updateFileName(Long fileId, String fileName) {
-        return fileRepository.updateFileName(fileId,fileName);
+        return fileRepository.updateFileName(fileId, fileName);
     }
 
     public boolean updateFileDescription(Long fileId, String fileDescription) {
-        return fileRepository.updateFileDescription(fileId,fileDescription);
+        return fileRepository.updateFileDescription(fileId, fileDescription);
     }
 
     public List<FileModel> getUserPendingFiles() {
-        Long userId=identityProvider.currentIdentity().getId();
+        Long userId = identityProvider.currentIdentity().getId();
         return fileRepository.getUserPendingFiles(userId);
     }
 
     public List<FileModel> getUserAcceptedFiles() {
-        Long userId=identityProvider.currentIdentity().getId();
+        Long userId = identityProvider.currentIdentity().getId();
         return fileRepository.getUserAcceptedFiles(userId);
     }
 }

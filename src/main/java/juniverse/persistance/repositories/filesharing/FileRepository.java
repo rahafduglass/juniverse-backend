@@ -33,4 +33,8 @@ public interface FileRepository {
     List<FileModel> getUserPendingFiles(Long userId);
 
     List<FileModel> getUserAcceptedFiles(Long userId);
+
+    Long findUploaderIdById(Long fileId);
+
+    FileModel getById(Long fileId);
 }

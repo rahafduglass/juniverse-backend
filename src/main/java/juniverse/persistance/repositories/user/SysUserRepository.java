@@ -40,4 +40,6 @@ public interface SysUserRepository {
     List<SysUserModel> findBannedUsers();
 
     boolean unbanUser(Long userId);
+
+    List<SysUserModel> findAll();
 }

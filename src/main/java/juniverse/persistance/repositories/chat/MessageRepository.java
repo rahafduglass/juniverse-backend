@@ -27,4 +27,6 @@ public interface MessageRepository {
     Long findSenderId(Long messageId);
 
     MessageModel findById(Long messageId);
+
+    Long getNumOfUnreadMessagesByReceiverId(Long receiverId);
 }

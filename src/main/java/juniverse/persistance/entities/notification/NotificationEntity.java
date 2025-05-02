@@ -6,7 +6,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "notification")
 @Data
 public class NotificationEntity {
     @Id
@@ -17,7 +17,9 @@ public class NotificationEntity {
 
     private Boolean isRead;
 
-    private LocalDateTime time;
+    private String type;
+
+    private LocalDateTime createdOn;
 
     @ManyToOne
     private SysUserEntity receiver;

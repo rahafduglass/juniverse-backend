@@ -40,4 +40,7 @@ public interface MessageJpaRepository extends JpaRepository<MessageEntity, Long>
     Integer updateByContent(Long messageId, String content);
 
     MessageEntity findSenderIdById(Long messageId);
+
+    @Query("SELECT COUNT(m) FROM message m WHERE m.receiver.id=:receiverId")
+    Long getNumOfUnreadMessagesByReceiverId(Long receiverId);
 }

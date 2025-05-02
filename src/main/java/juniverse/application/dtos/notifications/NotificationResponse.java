@@ -1,13 +1,11 @@
-package juniverse.domain.models.notification;
+package juniverse.application.dtos.notifications;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-@Builder
-public class NotificationModel {
+public class NotificationResponse {
     private Long id;
 
     private String content;
@@ -19,5 +17,4 @@ public class NotificationModel {
     private LocalDateTime createdOn;
 
     private String type;
-
 }

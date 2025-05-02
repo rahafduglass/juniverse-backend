@@ -70,4 +70,9 @@ public class MessageAdapter implements MessageRepository {
     public MessageModel findById(Long messageId) {
         return messageMapper.entityToModel(messageJpaRepository.findById(messageId).get());
     }
+
+    @Override
+    public Long getNumOfUnreadMessagesByReceiverId(Long receiverId) {
+        return messageJpaRepository.getNumOfUnreadMessagesByReceiverId(receiverId);
+    }
 }

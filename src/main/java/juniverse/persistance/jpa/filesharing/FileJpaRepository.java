@@ -48,4 +48,7 @@ public interface FileJpaRepository extends JpaRepository<FileEntity, Long> {
 
     @Query("SELECT f FROM file f WHERE f.status =2 AND f.owner.id=:userId")
     List<FileEntity> getUserAcceptedFiles(Long userId);
+
+    @Query("SELECT f.owner.id FROM file f WHERE f.id =:fileId ")
+    Long findOwnerIdById(Long fileId);
 }

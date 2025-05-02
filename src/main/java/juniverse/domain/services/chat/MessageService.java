@@ -161,17 +161,18 @@ public class MessageService {
     }
 
     private MessageModel sendMessage(MessageModel messageModel) {
-        if(messageModel.getReceiverId()!=null){
-            NotificationModel notification= NotificationModel.builder()
+        if (messageModel.getChatType() != ChatType.PUBLIC) {
+            NotificationModel notification = NotificationModel.builder()
                     .isRead(false)
                     .receiverId(messageModel.getReceiverId())
-                    .time(LocalDateTime.now())
-                    .content("you have private messages check your chat")
-
+                    .content("you have message from " + identityProvider.currentIdentity().getUsername() + " check your chat")
+                    .createdOn(LocalDateTime.now())
+                    .type("message")
                     .build();
             notificationService.createNotification(notification);
         }
 
         return messageRepository.sendMessage(messageModel);
     }
+
 }

@@ -16,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SysUserAdapter implements SysUserRepository {
 
+
     private final SysUserJpaRepository sysUserJpaRepository;
     private final SysUserMapper sysUserMapper;
 
@@ -37,12 +38,12 @@ public class SysUserAdapter implements SysUserRepository {
     }
 
     @Override
-    public Boolean updateProfilePicturePath(Long userId, String path,String fileExtension) {
-        return sysUserJpaRepository.updateProfilePicturePath(userId, path,fileExtension) > 0;
+    public Boolean updateProfilePicturePath(Long userId, String path, String fileExtension) {
+        return sysUserJpaRepository.updateProfilePicturePath(userId, path, fileExtension) > 0;
     }
 
     @Override
-    public Object[]  findProfilePicturePath(Long id) {
+    public Object[] findProfilePicturePath(Long id) {
         return sysUserJpaRepository.findProfilePicturePath(id);
     }
 
@@ -52,23 +53,23 @@ public class SysUserAdapter implements SysUserRepository {
     }
 
     @Override
-    public Boolean updateCoverPicturePath(Long id, String filePath,String fileExtension) {
-        return sysUserJpaRepository.updateCoverPicturePath(id, filePath,fileExtension) > 0;
+    public Boolean updateCoverPicturePath(Long id, String filePath, String fileExtension) {
+        return sysUserJpaRepository.updateCoverPicturePath(id, filePath, fileExtension) > 0;
     }
 
     @Override
     public boolean deleteProfilePicture(Long currentUserId) {
-        return sysUserJpaRepository.deleteProfilePicture(currentUserId)>0;
+        return sysUserJpaRepository.deleteProfilePicture(currentUserId) > 0;
     }
 
     @Override
     public boolean deleteCoverPicture(Long currentUserId) {
-        return sysUserJpaRepository.deleteCoverPicture(currentUserId)>0;
+        return sysUserJpaRepository.deleteCoverPicture(currentUserId) > 0;
     }
 
     @Override
     public boolean updateRole(Long studentId, UserRole userRole) {
-        return sysUserJpaRepository.updateRole(studentId,userRole)>0;
+        return sysUserJpaRepository.updateRole(studentId, userRole) > 0;
     }
 
     @Override
@@ -78,7 +79,7 @@ public class SysUserAdapter implements SysUserRepository {
 
     @Override
     public boolean banUser(Long userId) {
-        return sysUserJpaRepository.banUser(userId)>0;
+        return sysUserJpaRepository.banUser(userId) > 0;
     }
 
     @Override
@@ -93,6 +94,11 @@ public class SysUserAdapter implements SysUserRepository {
 
     @Override
     public boolean unbanUser(Long userId) {
-        return sysUserJpaRepository.unbanUser(userId)>0;
+        return sysUserJpaRepository.unbanUser(userId) > 0;
+    }
+
+    @Override
+    public List<SysUserModel> findAll() {
+        return sysUserJpaRepository.findAll().stream().map(sysUserMapper::entityToModel).toList();
     }
 }

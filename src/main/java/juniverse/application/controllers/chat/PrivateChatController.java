@@ -126,7 +126,7 @@ public class PrivateChatController {
     @PostMapping("/attachFileToTherapist")
     public ResponseEntity<ApiResponse<Boolean>> attachFileToTherapist(@RequestBody AttachPrivateChatFileRequest request) {
         try {
-            boolean isFail= !messageService.attachFile(fileMapper.requestToModel(request),request.getFileAsBase64());
+            boolean isFail= !messageService.attachFileToTherapist(fileMapper.requestToModel(request),request.getFileAsBase64());
             return apiResponseHelper.buildApiResponse(isFail, !isFail, isFail ? "couldn't find message" : "successfully edited", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
 
         }catch (Exception e) {

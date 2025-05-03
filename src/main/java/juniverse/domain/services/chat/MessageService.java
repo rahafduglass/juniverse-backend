@@ -4,7 +4,6 @@ package juniverse.domain.services.chat;
 import juniverse.domain.enums.ChatType;
 import juniverse.domain.enums.MessageStatus;
 import juniverse.domain.enums.UserRole;
-import juniverse.domain.mappers.notification.NotificationMapper;
 import juniverse.domain.models.chat.MessageModel;
 import juniverse.domain.models.chat.PrivateChatModel;
 import juniverse.domain.models.filesharing.FileModel;
@@ -179,7 +178,7 @@ public class MessageService {
         return messageRepository.sendMessage(messageModel);
     }
 
-    public Boolean attachFile( FileModel fileModel,String fileAsBase64) throws IOException {
+    public Boolean attachFileToTherapist(FileModel fileModel, String fileAsBase64) throws IOException {
 
         if (fileModel==null&& fileAsBase64.isEmpty())
             throw new RuntimeException("can't send empty file");
@@ -246,4 +245,6 @@ public class MessageService {
         sendMessage(messageModel);
         return true;
     }
+
+
 }

@@ -12,4 +12,6 @@ public interface NotificationRepository {
     void saveAll(List<NotificationModel> notifications);
 
     List<NotificationModel> findAllByReceiverId(Long id);
+
+    boolean updateNotificationsAsRead(List<Long> toReadNotifications);
 }

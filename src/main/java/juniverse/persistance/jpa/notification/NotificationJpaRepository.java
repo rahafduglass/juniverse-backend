@@ -1,8 +1,10 @@
 package juniverse.persistance.jpa.notification;
 
+import jakarta.transaction.Transactional;
 import juniverse.persistance.entities.notification.NotificationEntity;
 import org.apache.logging.log4j.simple.internal.SimpleProvider;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +15,9 @@ public interface NotificationJpaRepository extends JpaRepository<NotificationEnt
 
     @Query("SELECT n FROM notification n WHERE n.receiver.id=:receiverId")
     List<NotificationEntity> findAllByReceiverId(Long receiverId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE notification n SET n.isRead=true WHERE n.id IN :ids")
+    int updateAsRead(List<Long> ids);
 }

@@ -1,7 +1,8 @@
 package juniverse.application.controllers.notification;
 
 import juniverse.application.dtos.ApiResponse;
-import juniverse.application.dtos.file.FileResponse;
+import juniverse.application.dtos.notifications.GetNotificationsResponse;
+import juniverse.application.dtos.notifications.NotificationIdsRequest;
 import juniverse.application.dtos.notifications.NotificationResponse;
 import juniverse.application.helpers.ApiResponseHelper;
 import juniverse.domain.mappers.notification.NotificationMapper;
@@ -9,13 +10,9 @@ import juniverse.domain.services.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,13 +29,34 @@ public class NotificationController {
     private final ApiResponseHelper apiResponseHelper;
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<NotificationResponse>>> getNotifications() {
-        try{
-            List<NotificationResponse> response= notificationService.getNotifications().stream().map(notificationMapper::modelToResponse).toList();
+    public ResponseEntity<ApiResponse<GetNotificationsResponse>> getNotifications() {
+        try {
+            List<NotificationResponse> allNotifications = notificationService.getNotifications().stream().map(notificationMapper::modelToResponse).toList();
+            List<NotificationResponse> unreadMessages = allNotifications.stream()
+                    .filter(n -> !n.getIsRead())
+                    .toList();
+            List<NotificationResponse> readNotifications = allNotifications.stream()
+                    .filter(n -> n.getIsRead())
+                    .toList();
+            GetNotificationsResponse response = new GetNotificationsResponse();
+            response.setReadNotifications(readNotifications);
+            response.setNumberOfReadNotifications(readNotifications.size());
+            response.setUnreadNotifications(unreadMessages);
+            response.setNumberOfUnreadNotifications(unreadMessages.size());
 
-            boolean isFail = response.isEmpty();
-            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there's no files" : " retrieved successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
-        }catch(Exception e){
+            boolean isFail = allNotifications.isEmpty();
+            return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there's no notifications" : " retrieved successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PatchMapping("/readAll")
+    public ResponseEntity<ApiResponse<Boolean>> readAll(@RequestBody NotificationIdsRequest toReadNotifications) {
+        try{
+            boolean isFail= !notificationService.readAll(toReadNotifications.getNotificationIds());
+            return apiResponseHelper.buildApiResponse(isFail, !isFail, isFail ? "couldn't update" : " updated successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        }catch (Exception e){
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }

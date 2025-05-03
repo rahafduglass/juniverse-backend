@@ -44,4 +44,7 @@ public class NotificationService {
     }
 
 
+    public boolean readAll(List<Long> toReadNotifications) {
+         return notificationRepository.updateNotificationsAsRead(toReadNotifications);
+    }
 }

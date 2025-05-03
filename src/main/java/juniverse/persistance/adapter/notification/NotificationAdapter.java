@@ -32,4 +32,9 @@ public class NotificationAdapter implements NotificationRepository {
     public List<NotificationModel> findAllByReceiverId(Long receiverId) {
         return (notificationJpaRepository.findAllByReceiverId(receiverId)).stream().map(notificationMapper::entityToModel).toList();
     }
+
+    @Override
+    public boolean updateNotificationsAsRead(List<Long> toReadNotifications) {
+        return notificationJpaRepository.updateAsRead(toReadNotifications)>0;
+    }
 }

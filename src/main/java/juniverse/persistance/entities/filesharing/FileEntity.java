@@ -2,8 +2,10 @@ package juniverse.persistance.entities.filesharing;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import juniverse.domain.enums.ChatType;
 import juniverse.domain.enums.FileExtension;
 import juniverse.domain.enums.FileStatus;
+import juniverse.persistance.entities.chat.PrivateChatEntity;
 import juniverse.persistance.entities.user.SysUserEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,20 +47,22 @@ public class FileEntity {
     @Enumerated(EnumType.STRING)
     private FileExtension extension;
 
-
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "folder_id")
-    @NotNull
+    @JoinColumn(name = "folder_id",nullable = true)
     private FolderEntity folder;
-
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "monitored_by_id")
     private SysUserEntity monitoredBy;
 
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", nullable = false)
     private SysUserEntity owner;
 
+    @Column(nullable = true)
+    private ChatType chatType;
+
+    @JoinColumn(nullable = true)
+    @OneToOne
+    private PrivateChatEntity privateChat;
 }

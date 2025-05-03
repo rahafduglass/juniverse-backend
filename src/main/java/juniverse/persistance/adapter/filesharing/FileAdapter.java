@@ -3,6 +3,7 @@ package juniverse.persistance.adapter.filesharing;
 import juniverse.domain.enums.FileStatus;
 import juniverse.domain.mappers.filesharing.FileMapper;
 import juniverse.domain.models.filesharing.FileModel;
+import juniverse.persistance.entities.filesharing.FileEntity;
 import juniverse.persistance.jpa.filesharing.FileJpaRepository;
 import juniverse.persistance.repositories.filesharing.FileRepository;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,13 @@ public class FileAdapter implements FileRepository {
     @Override
     public FileModel addFile(FileModel fileModel) {
         return fileMapper.entityToModel(fileJpaRepository.save(fileMapper.modelToEntity(fileModel)));
+    }
+
+    @Override
+    public FileModel addFileAttachmentToChat(FileModel fileModel) {
+        FileEntity file= fileMapper.modelToEntity(fileModel);
+        file.setFolder(null);
+        return fileMapper.entityToModel(fileJpaRepository.save(file));
     }
 
     @Override

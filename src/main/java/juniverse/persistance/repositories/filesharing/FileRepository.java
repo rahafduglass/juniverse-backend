@@ -11,6 +11,8 @@ import java.util.List;
 public interface FileRepository {
     FileModel addFile(FileModel fileModel);
 
+    FileModel addFileAttachmentToChat(FileModel fileModel);
+
     boolean updateFilePath(Long id, String filePath);
 
     List<FileModel> getAcceptedFiles(Long folderId);

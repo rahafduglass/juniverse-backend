@@ -4,10 +4,12 @@ import juniverse.application.dtos.chats.private_chat.MessageResponse;
 import juniverse.domain.models.chat.MessageModel;
 import juniverse.persistance.entities.chat.MessageEntity;
 import juniverse.persistance.entities.chat.PrivateChatEntity;
+import juniverse.persistance.entities.filesharing.FileEntity;
 import juniverse.persistance.entities.user.SysUserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.io.File;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -24,6 +26,7 @@ public interface MessageMapper {
     @Mapping(source = "receiverId", target = "receiver")
     @Mapping(source = "senderId", target = "sender")
     @Mapping(source = "privateChatId", target = "privateChat")
+    @Mapping(source="fileId",target="file")
     MessageEntity modelToEntity(MessageModel messageModel);
 
     @Mapping(source = "sender.username", target = "senderUsername")
@@ -33,6 +36,7 @@ public interface MessageMapper {
     @Mapping(source = "sender.id", target = "senderId")
     @Mapping(source = "sender.role", target = "senderRole")
     @Mapping(source = "privateChat.id", target = "privateChatId")
+    @Mapping(source="file.id",target="fileId")
     MessageModel entityToModel(MessageEntity messageEntity);
 
 
@@ -45,6 +49,17 @@ public interface MessageMapper {
         privateChatEntity.setId(privateChatId);
 
         return privateChatEntity;
+    }
+
+    default FileEntity mapFileIdToEntity(Long fileId) {
+        if (fileId == null) {
+            return null;
+        }
+
+        FileEntity fileEntity = new FileEntity();
+        fileEntity.setId(fileId);
+
+        return fileEntity;
     }
 
     default SysUserEntity mapSysUserIdToEntity(Long sysUserId) {

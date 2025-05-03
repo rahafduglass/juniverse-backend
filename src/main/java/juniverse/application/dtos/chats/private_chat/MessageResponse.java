@@ -33,4 +33,7 @@ public class MessageResponse {
 
     private Boolean isRead;
 
+    private Long fileId;
+
+    private boolean isFile;
 }

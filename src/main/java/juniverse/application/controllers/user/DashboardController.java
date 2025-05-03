@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,7 +74,10 @@ public class DashboardController {
     @GetMapping("/tasks")
     public ResponseEntity<ApiResponse<List<TaskResponse>>> getTasks(){
         try {
-            List<TaskResponse> response = (taskService.getTasks()).stream().map(taskMapper::modelToResponse).toList();
+            List<TaskResponse> response = (taskService.getTasks()).stream()
+                    .map(taskMapper::modelToResponse)
+                    .sorted(Comparator.comparing(TaskResponse::getId)).toList();
+
             boolean isFail = response.isEmpty();
             return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "failed to get" : "tasks retrieved successfully", isFail ? HttpStatus.EXPECTATION_FAILED : HttpStatus.OK);
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package juniverse.domain.mappers.filesharing;
 
+import juniverse.application.dtos.chats.private_chat.AttachPrivateChatFileRequest;
 import juniverse.application.dtos.file.FileRequest;
 import juniverse.application.dtos.file.FileResponse;
 import juniverse.domain.models.filesharing.FileModel;
@@ -27,6 +28,8 @@ public interface FileMapper {
     FileModel entityToModel(FileEntity fileEntity);
 
     FileResponse modelToResponse(FileModel element);
+
+    FileModel requestToModel(AttachPrivateChatFileRequest fileRequest);
 
     default SysUserEntity mapSysUserIdToEntity(Long sysUserId) {
         if (sysUserId == null) {

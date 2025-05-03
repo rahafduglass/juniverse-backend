@@ -2,6 +2,7 @@ package juniverse.persistance.entities.chat;
 
 import jakarta.persistence.*;
 import juniverse.domain.enums.MessageStatus;
+import juniverse.persistance.entities.filesharing.FileEntity;
 import juniverse.persistance.entities.user.SysUserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -50,11 +51,13 @@ public class MessageEntity {
     @JoinColumn(name = "private_chat_id", nullable = true)//null if its public chat
     private PrivateChatEntity privateChat;
 
-
-
     @ManyToOne
     @JoinColumn(name="deleted_by")
     private SysUserEntity deletedBy;
 
+    private Boolean isFile;
+
+    @OneToOne
+    private FileEntity file;
 
 }

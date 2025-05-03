@@ -44,4 +44,8 @@ public class MessageModel {
 
     private Boolean isRead;
 
+    private Boolean isFile;
+
+    private Long fileId;
+
 }

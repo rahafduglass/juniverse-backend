@@ -3,13 +3,11 @@ package juniverse.application.controllers.chat;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.application.dtos.ApiResponse;
 import juniverse.application.dtos.chats.UserMessageRequest;
-import juniverse.application.dtos.chats.private_chat.MessageResponse;
-import juniverse.application.dtos.chats.private_chat.TherapistChatResponse;
-import juniverse.application.dtos.chats.private_chat.TherapistMessageRequest;
-import juniverse.application.dtos.chats.private_chat.UserChatResponse;
+import juniverse.application.dtos.chats.private_chat.*;
 import juniverse.application.helpers.ApiResponseHelper;
 import juniverse.domain.mappers.chat.MessageMapper;
 import juniverse.domain.mappers.chat.PrivateChatMapper;
+import juniverse.domain.mappers.filesharing.FileMapper;
 import juniverse.domain.services.chat.MessageService;
 import juniverse.domain.services.chat.PrivateChatService;
 import lombok.AllArgsConstructor;
@@ -30,6 +28,7 @@ public class PrivateChatController {
     private final MessageMapper messageMapper;
     private final ApiResponseHelper apiResponseHelper;
     private final PrivateChatMapper privateChatMapper;
+    private final FileMapper fileMapper;
 
 
     @GetMapping("/{chatId}/allMessages")
@@ -120,6 +119,28 @@ public class PrivateChatController {
             return apiResponseHelper.buildApiResponse(isEdited, isEdited, !isEdited ? "couldn't find message" : "successfully edited", !isEdited ? HttpStatus.NOT_FOUND : HttpStatus.OK);
 
         } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PostMapping("/attachFileToTherapist")
+    public ResponseEntity<ApiResponse<Boolean>> attachFileToTherapist(@RequestBody AttachPrivateChatFileRequest request) {
+        try {
+            boolean isFail= !messageService.attachFile(fileMapper.requestToModel(request),request.getFileAsBase64());
+            return apiResponseHelper.buildApiResponse(isFail, !isFail, isFail ? "couldn't find message" : "successfully edited", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+
+        }catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PostMapping("/{chatId}/attachFileFromTherapist")
+    public ResponseEntity<ApiResponse<Boolean>> attachFileFromTherapist(@PathVariable Long chatId, @RequestBody AttachPrivateChatFileRequest request) {
+        try {
+            boolean isFail= !messageService.attachFileFromTherapist(chatId,fileMapper.requestToModel(request),request.getFileAsBase64());
+            return apiResponseHelper.buildApiResponse(isFail, !isFail, isFail ? "couldn't find message" : "successfully edited", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+
+        }catch (Exception e) {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }

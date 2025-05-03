@@ -1,6 +1,5 @@
 package juniverse.domain.services.filesharing;
 
-import jdk.jshell.Snippet;
 import juniverse.domain.enums.FileExtension;
 import juniverse.domain.enums.FileStatus;
 import juniverse.domain.enums.UserRole;
@@ -19,6 +18,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -120,10 +122,6 @@ public class FileService {
         return fileRepository.updateFileStatus(fileId, status, LocalDateTime.now(), identityProvider.currentIdentity().getId());
     }
 
-    public Long getFileUploaderId(Long fileId) {
-        return fileRepository.findUploaderIdById(fileId);
-    }
-
     public boolean deleteFile(Long fileId) {
         FileModel file = fileRepository.getFilePath(fileId);
         String filePath = file.getPath().concat(fileId.toString() + "." + file.getExtension());
@@ -150,5 +148,34 @@ public class FileService {
     public List<FileModel> getUserAcceptedFiles() {
         Long userId = identityProvider.currentIdentity().getId();
         return fileRepository.getUserAcceptedFiles(userId);
+    }
+
+    public FileModel attachPrivateChatFile(FileModel fileModel,String fileAsBase64)throws IOException {
+
+        SysUserEntity currentUser = identityProvider.currentIdentity();
+
+        fileModel.setDescription("file attachement private chat");
+        fileModel.setStatus(FileStatus.ACCEPTED);
+        fileModel.setOwnerId(currentUser.getId());
+        fileModel.setOwnerUsername(currentUser.getUsername());
+        fileModel.setUploadDate(LocalDateTime.now());
+        fileModel.setPath("src\\main\\resources\\juniverse_files\\folders\\chats\\private\\" + fileModel.getPrivateChatId() + "\\");
+        fileModel.setFolderId(null);
+        FileModel savedFile = fileRepository.addFileAttachmentToChat(fileModel);
+
+        byte[] decodedFile = Base64.getDecoder().decode(fileAsBase64);
+        String filePath = ("src\\main\\resources\\juniverse_files\\folders\\chats\\private\\" + fileModel.getPrivateChatId() + "\\" );
+        Path path= Paths.get(filePath);
+
+        if(!Files.exists(path)) {
+            Files.createDirectories(path);
+        }
+
+        filePath+=+ savedFile.getId() + "." + savedFile.getExtension();
+        FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+        fileOutputStream.write(decodedFile);
+        fileOutputStream.close();
+
+        return savedFile;
     }
 }

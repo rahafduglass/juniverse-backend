@@ -1,5 +1,6 @@
 package juniverse.domain.models.filesharing;
 
+import juniverse.domain.enums.ChatType;
 import juniverse.domain.enums.FileExtension;
 import juniverse.domain.enums.FileStatus;
 import lombok.AllArgsConstructor;
@@ -44,4 +45,8 @@ public class FileModel {
     private Long ownerId;
 
     private String ownerUsername;
+
+    private ChatType chatType;
+
+    private Long privateChatId;
 }

@@ -7,8 +7,10 @@ import juniverse.domain.enums.UserRole;
 import juniverse.domain.mappers.notification.NotificationMapper;
 import juniverse.domain.models.chat.MessageModel;
 import juniverse.domain.models.chat.PrivateChatModel;
+import juniverse.domain.models.filesharing.FileModel;
 import juniverse.domain.models.notification.NotificationModel;
 import juniverse.domain.provider.IdentityProvider;
+import juniverse.domain.services.filesharing.FileService;
 import juniverse.domain.services.notification.NotificationService;
 import juniverse.persistance.entities.user.SysUserEntity;
 import juniverse.persistance.repositories.chat.MessageRepository;
@@ -17,6 +19,7 @@ import juniverse.persistance.repositories.user.SysUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +35,7 @@ public class MessageService {
     private final PrivateChatService privateChatService;
     private final IdentityProvider identityProvider;
     private final NotificationService notificationService;
+    private final FileService fileService;
 
     public MessageModel sendMessageToTherapist(String content) throws Exception {
 
@@ -175,4 +179,71 @@ public class MessageService {
         return messageRepository.sendMessage(messageModel);
     }
 
+    public Boolean attachFile( FileModel fileModel,String fileAsBase64) throws IOException {
+
+        if (fileModel==null&& fileAsBase64.isEmpty())
+            throw new RuntimeException("can't send empty file");
+
+        SysUserEntity currentUser = identityProvider.currentIdentity();
+        SysUserEntity therapist = sysUserRepository.findByUsername("omar_khaled").get();
+        PrivateChatModel privateChat = privateChatRepository.findByUserId(currentUser.getId());
+
+        if (privateChat == null) {
+            privateChat = privateChatService.createChatBetween(currentUser.getId(), therapist.getId());
+        }
+
+
+        fileModel.setPrivateChatId(privateChat.getId());
+        fileModel.setChatType(ChatType.PRIVATE);
+        FileModel file= fileService.attachPrivateChatFile(fileModel,fileAsBase64);
+
+
+        MessageModel messageModel = new MessageModel();
+        messageModel.setContent(fileModel.getName());
+        messageModel.setSenderUsername(currentUser.getUsername());
+        messageModel.setSenderId(currentUser.getId());
+        messageModel.setReceiverUsername(therapist.getUsername());
+        messageModel.setReceiverId(therapist.getId());
+        messageModel.setChatType(ChatType.PRIVATE);
+        messageModel.setIsRead(false);
+        messageModel.setTimestamp(LocalDateTime.now());
+        messageModel.setPrivateChatId(privateChat.getId());
+        messageModel.setStatus(MessageStatus.SENT);
+        messageModel.setIsFile(true);
+        messageModel.setFileId(file.getId());
+
+        sendMessage(messageModel);
+        return true;
+    }
+
+    public boolean attachFileFromTherapist(Long chatId, FileModel fileModel, String fileAsBase64) throws IOException {
+        if (fileModel==null&& fileAsBase64.isEmpty())
+            throw new RuntimeException("can't send empty file");
+
+        SysUserEntity currentUser = identityProvider.currentIdentity();
+        PrivateChatModel privateChat = privateChatRepository.findById(chatId);
+
+
+        fileModel.setPrivateChatId(chatId);
+        fileModel.setChatType(ChatType.PRIVATE);
+        FileModel file= fileService.attachPrivateChatFile(fileModel,fileAsBase64);
+
+
+        MessageModel messageModel = new MessageModel();
+        messageModel.setContent(fileModel.getName());
+        messageModel.setSenderUsername(currentUser.getUsername());
+        messageModel.setSenderId(currentUser.getId());
+        messageModel.setReceiverUsername(privateChat.getUserUsername());
+        messageModel.setReceiverId(privateChat.getUserId());
+        messageModel.setChatType(ChatType.PRIVATE);
+        messageModel.setIsRead(false);
+        messageModel.setTimestamp(LocalDateTime.now());
+        messageModel.setPrivateChatId(chatId);
+        messageModel.setStatus(MessageStatus.SENT);
+        messageModel.setIsFile(true);
+        messageModel.setFileId(file.getId());
+
+        sendMessage(messageModel);
+        return true;
+    }
 }

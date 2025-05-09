@@ -51,7 +51,7 @@ public class NotificationController {
         }
     }
 
-    @PatchMapping("/readAll")
+    @PostMapping("/readAll")
     public ResponseEntity<ApiResponse<Boolean>> readAll(@RequestBody NotificationIdsRequest toReadNotifications) {
         try{
             boolean isFail= !notificationService.readAll(toReadNotifications.getNotificationIds());

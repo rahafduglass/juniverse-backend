@@ -54,6 +54,7 @@ public class DashboardController {
         try{
             List<FileResponse> response= (fileService.getUserAcceptedFiles()).stream()
                     .map(fileMapper::modelToResponse)
+                    .filter(e->e.getMonitoredAt()!=null)
                     .collect(Collectors.toList());
             boolean isFail = response.isEmpty();
             return apiResponseHelper.buildApiResponse(response, !isFail, isFail ? "there's no files" : " retrieved successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);

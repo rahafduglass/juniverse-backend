@@ -19,6 +19,8 @@ public class TherapistChatResponse {
 
     private String userLastName;
 
+    private Long userUserId;
+
     private Integer therapistUnreadMessagesCount;
 
 }

@@ -23,6 +23,8 @@ public class PrivateChatModel {
 
     private String userLastName;
 
+    private Long userUserId;
+
     private int userUnreadMessagesCount;
 
     private String therapistUsername;

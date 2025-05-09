@@ -8,6 +8,8 @@ import lombok.Data;
 public class SysUserResponse {
     private Long id;
 
+    private Long userId;
+
     private String username;
 
     private Major major;

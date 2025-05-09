@@ -15,6 +15,8 @@ public class SysUserModel {
 
     private Long id;
 
+    private Long userId;
+
     private String firstName;
 
     private String password;

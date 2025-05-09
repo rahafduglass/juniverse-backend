@@ -13,6 +13,7 @@ import java.util.List;
 public interface PrivateChatMapper {
 
     @Mapping(source = "user.id", target = "userId")
+    @Mapping(source="user.userId",target="userUserId")
     @Mapping(source = "user.username", target = "userUsername")
     @Mapping(source = "user.firstName", target = "userFirstName")
     @Mapping(source = "user.lastName", target = "userLastName")

@@ -24,6 +24,8 @@ public class SysUserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long userId;
+
     @Column(nullable=false)
     private String password;
 

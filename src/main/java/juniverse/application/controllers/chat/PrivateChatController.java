@@ -75,6 +75,15 @@ public class PrivateChatController {
             return apiResponseHelper.buildApiResponse(null, false, "An error occurred: " + e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
+    @DeleteMapping("/{messageId}")
+    public ResponseEntity<ApiResponse<Boolean>> markMessageAsDeleted(@PathVariable Long messageId) {
+        try {
+            boolean isDeleted = messageService.deleteMessage(messageId);
+            return apiResponseHelper.buildApiResponse(isDeleted, isDeleted, !isDeleted ? "couldn't find message" : "marked as deleted successfully", !isDeleted ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        } catch (Exception e) {
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 
     @GetMapping()
     public ResponseEntity<ApiResponse<UserChatResponse>> getChat() {

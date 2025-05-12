@@ -47,4 +47,10 @@ public class NotificationService {
     public boolean readAll(List<Long> toReadNotifications) {
          return notificationRepository.updateNotificationsAsRead(toReadNotifications);
     }
+
+    public boolean read(Long notificationId) {
+        List<Long> notification=new ArrayList<>();
+        notification.add(notificationId);
+        return notificationRepository.updateNotificationsAsRead(notification);
+    }
 }

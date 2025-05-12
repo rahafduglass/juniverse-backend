@@ -107,10 +107,6 @@ public class SecurityConfiguration {
                         //admin, mod only
                         .requestMatchers(
                                 HttpMethod.DELETE
-                                , "/api/v1/public-chat/{messageId}"
-                        ).hasAnyAuthority(UserRole.ADMIN.name(), UserRole.MODERATOR.name())
-                        .requestMatchers(
-                                HttpMethod.DELETE
                                 , "api/v1/files/file/{fileId}"
                         ).hasAnyAuthority(UserRole.ADMIN.name(), UserRole.MODERATOR.name())
 

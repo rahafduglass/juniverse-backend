@@ -60,4 +60,14 @@ public class NotificationController {
             return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
+
+    @PostMapping("/{notificationId}/read")
+    public ResponseEntity<ApiResponse<Boolean>> read(@PathVariable Long notificationId) {
+        try{
+            boolean isFail= !notificationService.read(notificationId);
+            return apiResponseHelper.buildApiResponse(isFail, !isFail, isFail ? "couldn't update" : " updated successfully", isFail ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        }catch (Exception e){
+            return apiResponseHelper.buildApiResponse(null, false, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 }

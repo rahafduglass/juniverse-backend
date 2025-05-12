@@ -6,8 +6,10 @@ import juniverse.persistance.entities.notification.NotificationEntity;
 import juniverse.persistance.jpa.notification.NotificationJpaRepository;
 import juniverse.persistance.repositories.notification.NotificationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -24,17 +26,28 @@ public class NotificationAdapter implements NotificationRepository {
 
     @Override
     public void saveAll(List<NotificationModel> notifications) {
-        List<NotificationEntity> notificationEntities=notifications.stream().map(notificationMapper::modelToEntity).toList();
-        List<NotificationEntity> entities=notificationJpaRepository.saveAll(notificationEntities);
+        List<NotificationEntity> notificationEntities = notifications.stream().map(notificationMapper::modelToEntity).toList();
+        List<NotificationEntity> entities = notificationJpaRepository.saveAll(notificationEntities);
     }
 
     @Override
     public List<NotificationModel> findAllByReceiverId(Long receiverId) {
-        return (notificationJpaRepository.findAllByReceiverId(receiverId)).stream().map(notificationMapper::entityToModel).toList();
+        List<NotificationModel> notifications = new ArrayList<>();
+        notifications.addAll(notificationJpaRepository.findAllReadNotificationsByReceiverId(receiverId, PageRequest.of(0, 7))
+                .stream()
+                .map(notificationMapper::entityToModel)
+                .toList()
+        );
+        notifications.addAll(notificationJpaRepository.findAllUnReadNotificationsByReceiverId(receiverId)
+                .stream()
+                .map(notificationMapper::entityToModel)
+                .toList()
+        );
+        return notifications;
     }
 
     @Override
     public boolean updateNotificationsAsRead(List<Long> toReadNotifications) {
-        return notificationJpaRepository.updateAsRead(toReadNotifications)>0;
+        return notificationJpaRepository.updateAsRead(toReadNotifications) > 0;
     }
 }

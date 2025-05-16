@@ -23,4 +23,6 @@ public class NotificationEntity {
 
     @ManyToOne
     private SysUserEntity receiver;
+
+    private Long folderId;
 }

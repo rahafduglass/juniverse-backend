@@ -17,4 +17,6 @@ public class NotificationResponse {
     private LocalDateTime createdOn;
 
     private String type;
+
+    private Long folderId;
 }

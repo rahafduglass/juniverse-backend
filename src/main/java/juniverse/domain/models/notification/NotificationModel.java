@@ -20,4 +20,6 @@ public class NotificationModel {
 
     private String type;
 
+    private Long folderId;
+
 }

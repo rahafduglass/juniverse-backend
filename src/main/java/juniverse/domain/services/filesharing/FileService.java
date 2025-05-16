@@ -114,7 +114,8 @@ public class FileService {
         NotificationModel notification = NotificationModel.builder()
                 .isRead(false)
                 .type("pending file")
-                .content(status == FileStatus.ACCEPTED ? "your file: "+file.getName()+" got accepted by a moderator" : "your file got rejected by a moderator")
+                .content(status == FileStatus.ACCEPTED ? "your file: " + file.getName() + " got accepted by a moderator" : "your file: " + file.getName() + " got rejected by a moderator")
+                .folderId(status==FileStatus.ACCEPTED?file.getFolderId():null)
                 .createdOn(LocalDateTime.now())
                 .receiverId(file.getOwnerId())
                 .build();
@@ -150,7 +151,7 @@ public class FileService {
         return fileRepository.getUserAcceptedFiles(userId);
     }
 
-    public FileModel attachPrivateChatFile(FileModel fileModel,String fileAsBase64)throws IOException {
+    public FileModel attachPrivateChatFile(FileModel fileModel, String fileAsBase64) throws IOException {
 
         SysUserEntity currentUser = identityProvider.currentIdentity();
 
@@ -164,14 +165,14 @@ public class FileService {
         FileModel savedFile = fileRepository.addFileAttachmentToChat(fileModel);
 
         byte[] decodedFile = Base64.getDecoder().decode(fileAsBase64);
-        String filePath = ("src\\main\\resources\\juniverse_files\\folders\\chats\\private\\" + fileModel.getPrivateChatId() + "\\" );
-        Path path= Paths.get(filePath);
+        String filePath = ("src\\main\\resources\\juniverse_files\\folders\\chats\\private\\" + fileModel.getPrivateChatId() + "\\");
+        Path path = Paths.get(filePath);
 
-        if(!Files.exists(path)) {
+        if (!Files.exists(path)) {
             Files.createDirectories(path);
         }
 
-        filePath+=+ savedFile.getId() + "." + savedFile.getExtension();
+        filePath += +savedFile.getId() + "." + savedFile.getExtension();
         FileOutputStream fileOutputStream = new FileOutputStream(filePath);
         fileOutputStream.write(decodedFile);
         fileOutputStream.close();

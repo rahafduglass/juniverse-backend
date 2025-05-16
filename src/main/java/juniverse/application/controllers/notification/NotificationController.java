@@ -1,5 +1,6 @@
 package juniverse.application.controllers.notification;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import juniverse.application.dtos.ApiResponse;
 import juniverse.application.dtos.notifications.GetNotificationsResponse;
 import juniverse.application.dtos.notifications.NotificationIdsRequest;
@@ -16,13 +17,9 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name="NOTIFICATIONS")
 @RequestMapping("api/v1/notifications")
 public class NotificationController {
-
-    //todo
-    // 1. clear notification
-    // 2. mark as read
-    // 3. get notifications
 
     private final NotificationService notificationService;
     private final NotificationMapper notificationMapper;

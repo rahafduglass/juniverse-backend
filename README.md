@@ -1,8 +1,3 @@
-To get started with this project, you will need to have the following installed on your local machine:
-
-JDK 17+
-Maven 3+
-
 To build and run the project, follow these steps: 
 
 Clone the repository: git clone https://github.com/rahafduglass/juniverse-backend.git
